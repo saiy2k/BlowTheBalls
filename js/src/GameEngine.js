@@ -1,7 +1,9 @@
 cc.dumpConfig();
 var winSize;
 var GameEngine = cc.Layer.extend({
-    ballArray: [],
+    ballArray: null,
+    hud: null,
+    loader: null,
     ctor:function () {
         cc.associateWithNative( this, cc.Layer );
     },
@@ -9,36 +11,52 @@ var GameEngine = cc.Layer.extend({
         var bRet = false;
         if (this._super()) {
             winSize = cc.Director.getInstance().getWinSize();
+
+            if (State.inputType == 'keyboard')
+                this.setKeyboardEnabled(true);
+            else if (State.inputType == 'accelerometer')
+                this.setAccelerometerEnabled(true);
+
             var bg = cc.Sprite.create(s_gameBg);
             bg.setPosition(cc.p(winSize.width/2, winSize.height/2));
             this.addChild(bg, 0, 1);
 
-            var hud = Hud.create();
+            hud = Hud.create();
+            hud.delegate = this;
             this.addChild(hud, 0, 100);
 
-            var lvlLdr = new LevelLoader();
-            lvlLdr.load(1, this, this.ballArray);
+            loader = new LevelLoader();
 
             this.schedule(this.update, 30/1000);
+            this.reset();
 
             bRet = true;
         }
 
         return bRet;
     },
+    didAccelerate:function (pAccelerationValue) {
+    },
+    onKeyUp:function (e) {
+    },
+    onKeyDown:function (e) {
+        if(e === cc.KEY.left) {
+            console.log('moveLeft');
+        } else if (e === cc.KEY.right) {
+            console.log('moveRight');
+        } else if (e === cc.KEY.up) {
+            console.log('moveUp');
+        }
+    }, 
+    reset:function () {
+        this.ballArray = [];
+        loader.load(State.currentLevel, this, this.ballArray);
+    },
     update:function (dt) {
         var i, len;
         for (i = 0, len = this.ballArray.length; i < len; i++) {
             this.ballArray[i].update(dt);
         }
-        /*
-        this.b.update(dt);
-        this.b1.update(dt);
-        this.b2.update(dt);
-        this.b3.update(dt);
-        this.b4.update(dt);
-        this.b5.update(dt);
-        */
     },
     onButtonEffect:function(){
         if (MW.SOUND) {

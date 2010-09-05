@@ -23,6 +23,7 @@ var MW = MW || {};
             'js/src/Hud.js',
             'js/src/Ball.js',
             'js/src/LevelLoader.js',
+            'js/src/State.js',
             'js/res/level1.js',
             'js/res/level2.js'
         ]
