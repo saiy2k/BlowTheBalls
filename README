@@ -1,0 +1,13 @@
+I cloned MoonWarrious (a sample cocos2dx project @ http://www.cocos2d-x.org/projects/cocos2d-x/wiki/MoonWarriors_-_Cocos2d-html5_Showcase) tweaked it a little to make it run on my system. Removed several game related files leaving only the screen menu, options and help.
+
+First we will run the project, create the menu screens (with just simple buttons) to get used to the framework and to get used to git.
+
+Let running this project be our first goal.
+
+Instructions to run this project:
+    *   Install MAMP / WAMP / LAMP depending on the OS u use. or any other web server you know.
+    *   Clone the project from https://github.com/saiy2k/gg-new-html5-game into your WWW root (or just dload the ZIP)
+    *   Try running via localhost.
+    *   For a newbie, above steps will be very daunting. Contact me anytime (mobile / skype / gmail chat / fb) for assistance.
+
+Once the project is run (u cant play the game, I removed gameplay files), see the files in js/src, starting with SysMenu.js (this the file that shows the menu screen), then move to SettingsLayer.js and AboutLayer.js
