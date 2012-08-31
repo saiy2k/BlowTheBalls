@@ -18,9 +18,6 @@ var MW = MW || {};
             'js/src/config/GameConfig.js',
             'js/src/config/EnemyType.js',
             'js/src/config/Level.js',
-            'js/src/GameController.js',
-            'js/src/GameLayer.js',
-            'js/src/GameOver.js',
             'js/src/AboutLayer.js',
             'js/src/SettingsLayer.js',
             'js/src/SysMenu.js'

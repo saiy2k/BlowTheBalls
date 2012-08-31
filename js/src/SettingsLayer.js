@@ -5,8 +5,8 @@ var SettingsLayer = cc.Layer.extend({
     init:function () {
         var bRet = false;
         if (this._super()) {
-            var sp = cc.Sprite.create(s_loading);
-            sp.setAnchorPoint(cc.p(0,0));
+            var sp = cc.Sprite.create(s_menuBg);
+            sp.setPosition(cc.p(winSize.width/2, winSize.height/2));
             this.addChild(sp, 0, 1);
 
             var cacheImage = cc.TextureCache.getInstance().addImage(s_menuTitle);
