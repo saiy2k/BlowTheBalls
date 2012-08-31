@@ -13,3 +13,5 @@ Instructions to run this project:
 Once the project is run (u cant play the game, I removed gameplay files), see the files in js/src (study only this folder), starting with SysMenu.js (this the file that shows the menu screen), then move to SettingsLayer.js and AboutLayer.js
 
 Note: This is only a temporary repo, feel free to play with it
+
+"Every journey must begin with a courage to take the first step."
