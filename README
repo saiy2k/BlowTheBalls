@@ -11,3 +11,6 @@ Instructions to run this project:
     *   For a newbie, above steps will be very daunting. Contact me anytime (mobile / skype / gmail chat / fb) for assistance.
 
 Once the project is run (u cant play the game, I removed gameplay files), see the files in js/src, starting with SysMenu.js (this the file that shows the menu screen), then move to SettingsLayer.js and AboutLayer.js
+
+
+"Every journey must begin with a courage to take the first step."
