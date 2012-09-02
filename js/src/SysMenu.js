@@ -58,8 +58,7 @@ var SysMenu = cc.Layer.extend({
     },
     onNewGame:function (pSender) {
         var scene = cc.Scene.create();
-        scene.addChild(GameLayer.create());
-        scene.addChild(GameControlMenu.create());
+        scene.addChild(GameEngine.create());
         cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
     },
     onSettings:function (pSender) {

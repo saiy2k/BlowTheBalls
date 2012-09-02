@@ -15,12 +15,11 @@ var MW = MW || {};
         engineDir:'libs/cocos2d/',
         appFiles:[
             'js/src/Resource.js',
-            'js/src/config/GameConfig.js',
-            'js/src/config/EnemyType.js',
-            'js/src/config/Level.js',
             'js/src/AboutLayer.js',
             'js/src/SettingsLayer.js',
-            'js/src/SysMenu.js'
+            'js/src/SysMenu.js',
+            'js/src/GameEngine.js',
+            'js/src/Hud.js'
         ]
     };
     window.addEventListener('DOMContentLoaded', function () {

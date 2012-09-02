@@ -28,6 +28,19 @@ var s_explodeEffect = dirMusic + "explodeEffect" + musicSuffix;
 var s_fireEffect = dirMusic + "fireEffect" + musicSuffix;
 var s_shipDestroyEffect = dirMusic + "shipDestroyEffect" + musicSuffix;
 
+//game
+var s_ball4 = dirImg + "ball4.png";
+var s_sideWall = dirImg + "sideWall.jpg";
+var s_gameBg = dirImg + "gameBg.jpg";
+var s_bombButton = dirImg + "bombButton.png";
+var s_bombButtonPressed  = dirImg + "bombButtonPress.png";
+var s_nailButton = dirImg + "nailButton.png";
+var s_nailButtonPressed  = dirImg + "nailButtonPress.png";
+var s_leftButton = dirImg + "leftButton.png";
+var s_leftButtonPressed = dirImg + "leftButtonPress.png";
+var s_rightButton = dirImg + "rightButton.png";
+var s_rightButtonPressed = dirImg + "rightButtonPress.png";
+
 var g_ressources = [
     //image
     {type:"image", src:s_loading},
@@ -45,5 +58,18 @@ var g_ressources = [
     {type:"effect", src:s_explodeEffect},
     {type:"effect", src:s_fireEffect},
     {type:"effect", src:s_shipDestroyEffect},
+
+    //game
+    {type:"image", src:s_ball4},
+    {type:"image", src:s_sideWall},
+    {type:"image", src:s_gameBg},
+    {type:"image", src:s_bombButton},
+    {type:"image", src:s_bombButtonPressed},
+    {type:"image", src:s_nailButton},
+    {type:"image", src:s_nailButtonPressed},
+    {type:"image", src:s_leftButton},
+    {type:"image", src:s_leftButtonPressed},
+    {type:"image", src:s_rightButton},
+    {type:"image", src:s_rightButtonPressed}
 
 ];
