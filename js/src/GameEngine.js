@@ -15,12 +15,29 @@ var GameEngine = cc.Layer.extend({
             var hud = Hud.create();
             this.addChild(hud, 0, 100);
 
-            this.ball = cc.Sprite.create(s_ball4);
-            this.ball.setPosition(cc.p(winSize.width/2, winSize.height/2));
-            this.ball.vx = 5;
-            this.ball.vy = -15;
-            this.ball.ay = -0.5;
-            this.addChild(this.ball, 0, 1);
+            this.b = new Ball(7);
+            this.b.setPosition(cc.p(100, 100));
+            this.addChild(this.b, 2, 2);
+
+            this.b1 = new Ball(7);
+            this.b1.setPosition(cc.p(200, 100));
+            this.addChild(this.b1, 2, 2);
+
+            this.b2 = new Ball(5);
+            this.b2.setPosition(cc.p(500, 100));
+            this.addChild(this.b2, 2, 2);
+
+            this.b3 = new Ball(5);
+            this.b3.setPosition(cc.p(600, 100));
+            this.addChild(this.b3, 2, 2);
+
+            this.b4 = new Ball(2);
+            this.b4.setPosition(cc.p(500, 100));
+            this.addChild(this.b4, 2, 2);
+
+            this.b5 = new Ball(2);
+            this.b5.setPosition(cc.p(400, 100));
+            this.addChild(this.b5, 2, 2);
 
             this.schedule(this.update, 30/1000);
 
@@ -29,17 +46,13 @@ var GameEngine = cc.Layer.extend({
 
         return bRet;
     },
-    update:function () {
-        var b = this.ball;
-        var pos = this.ball._position;
-        this.ball.setPosition(cc.p(pos.x + b.vx, pos.y + b.vy));
-        if (b._position.y < b._contentSize.height / 2) {
-            this.ball.setPosition(cc.p(pos.x + b.vx, pos.y - b.vy));
-            this.ball.vy = 15;
-        }
-        if (b._position.x > winSize.width - b._contentSize.width/2 || b._position.x < b._contentSize.width/2)
-            this.ball.vx *= -1;
-        b.vy += b.ay;
+    update:function (dt) {
+        this.b.update(dt);
+        this.b1.update(dt);
+        this.b2.update(dt);
+        this.b3.update(dt);
+        this.b4.update(dt);
+        this.b5.update(dt);
     },
     onButtonEffect:function(){
         if (MW.SOUND) {

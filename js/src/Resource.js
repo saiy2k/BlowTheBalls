@@ -29,7 +29,13 @@ var s_fireEffect = dirMusic + "fireEffect" + musicSuffix;
 var s_shipDestroyEffect = dirMusic + "shipDestroyEffect" + musicSuffix;
 
 //game
+var s_ball1 = dirImg + "ball1.png";
+var s_ball2 = dirImg + "ball2.png";
+var s_ball3 = dirImg + "ball3.png";
 var s_ball4 = dirImg + "ball4.png";
+var s_ball5 = dirImg + "ball5.png";
+var s_ball6 = dirImg + "ball6.png";
+var s_ball7 = dirImg + "ball7.png";
 var s_sideWall = dirImg + "sideWall.jpg";
 var s_gameBg = dirImg + "gameBg.jpg";
 var s_bombButton = dirImg + "bombButton.png";

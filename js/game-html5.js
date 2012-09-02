@@ -18,8 +18,10 @@ var MW = MW || {};
             'js/src/AboutLayer.js',
             'js/src/SettingsLayer.js',
             'js/src/SysMenu.js',
+            'js/src/Config.js',
             'js/src/GameEngine.js',
-            'js/src/Hud.js'
+            'js/src/Hud.js',
+            'js/src/Ball.js'
         ]
     };
     window.addEventListener('DOMContentLoaded', function () {
