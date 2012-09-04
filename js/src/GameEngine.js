@@ -1,6 +1,7 @@
 cc.dumpConfig();
 var winSize;
 var GameEngine = cc.Layer.extend({
+    ballArray: [],
     ctor:function () {
         cc.associateWithNative( this, cc.Layer );
     },
@@ -15,29 +16,8 @@ var GameEngine = cc.Layer.extend({
             var hud = Hud.create();
             this.addChild(hud, 0, 100);
 
-            this.b = new Ball(7);
-            this.b.setPosition(cc.p(100, 100));
-            this.addChild(this.b, 2, 2);
-
-            this.b1 = new Ball(7);
-            this.b1.setPosition(cc.p(200, 100));
-            this.addChild(this.b1, 2, 2);
-
-            this.b2 = new Ball(5);
-            this.b2.setPosition(cc.p(500, 100));
-            this.addChild(this.b2, 2, 2);
-
-            this.b3 = new Ball(5);
-            this.b3.setPosition(cc.p(600, 100));
-            this.addChild(this.b3, 2, 2);
-
-            this.b4 = new Ball(2);
-            this.b4.setPosition(cc.p(500, 100));
-            this.addChild(this.b4, 2, 2);
-
-            this.b5 = new Ball(2);
-            this.b5.setPosition(cc.p(400, 100));
-            this.addChild(this.b5, 2, 2);
+            var lvlLdr = new LevelLoader();
+            lvlLdr.load(1, this, this.ballArray);
 
             this.schedule(this.update, 30/1000);
 
@@ -47,12 +27,18 @@ var GameEngine = cc.Layer.extend({
         return bRet;
     },
     update:function (dt) {
+        var i, len;
+        for (i = 0, len = this.ballArray.length; i < len; i++) {
+            this.ballArray[i].update(dt);
+        }
+        /*
         this.b.update(dt);
         this.b1.update(dt);
         this.b2.update(dt);
         this.b3.update(dt);
         this.b4.update(dt);
         this.b5.update(dt);
+        */
     },
     onButtonEffect:function(){
         if (MW.SOUND) {

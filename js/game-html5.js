@@ -21,7 +21,10 @@ var MW = MW || {};
             'js/src/Config.js',
             'js/src/GameEngine.js',
             'js/src/Hud.js',
-            'js/src/Ball.js'
+            'js/src/Ball.js',
+            'js/src/LevelLoader.js',
+            'js/res/level1.js',
+            'js/res/level2.js'
         ]
     };
     window.addEventListener('DOMContentLoaded', function () {

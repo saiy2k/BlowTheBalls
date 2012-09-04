@@ -33,6 +33,8 @@ var cocos2dApp = cc.Application.extend({
         // run
         director.runWithScene(new this.startScene());
 
+        allLevels = [l1, l2];
+
         return true;
     }
 });
