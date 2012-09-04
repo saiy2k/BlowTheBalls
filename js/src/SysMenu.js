@@ -10,7 +10,7 @@ var SysMenu = cc.Layer.extend({
         var bRet = false;
         if (this._super()) {
             winSize = cc.Director.getInstance().getWinSize();
-            var sp = cc.Sprite.create(s_menuBg);
+            var sp = cc.Sprite.create(s_menuBackGround);
             //sp.setAnchorPoint(cc.p(1,1));
             sp.setPosition(cc.p(winSize.width/2, winSize.height/2));
             this.addChild(sp, 0, 1);
@@ -20,30 +20,41 @@ var SysMenu = cc.Layer.extend({
             logo.setPosition(cc.p(0, 250));
             //this.addChild(logo, 10, 1);
 
-            var newGameNormal = cc.Sprite.create(s_menu, cc.rect(0, 0, 126, 33));
-            var newGameSelected = cc.Sprite.create(s_menu, cc.rect(0, 33, 126, 33));
-            var newGameDisabled = cc.Sprite.create(s_menu, cc.rect(0, 33 * 2, 126, 33));
+            var playNormal = cc.Sprite.create(s_menuButtonPlayNormal, cc.rect(0, 0, 138, 24));
+            var playSelected = cc.Sprite.create(s_menuButtonPlayNormal, cc.rect(0, 0, 138, 24));
+            var playDisabled = cc.Sprite.create(s_menuButtonPlayNormal, cc.rect(0, 0 * 2, 138, 24));
 
-            var gameSettingsNormal = cc.Sprite.create(s_menu, cc.rect(126, 0, 126, 33));
-            var gameSettingsSelected = cc.Sprite.create(s_menu, cc.rect(126, 33, 126, 33));
-            var gameSettingsDisabled = cc.Sprite.create(s_menu, cc.rect(126, 33 * 2, 126, 33));
+			var highScoreNormal = cc.Sprite.create(s_menuButtonHighScoreNormal, cc.rect(0, 0, 138, 24));
+            var highScoreSelected = cc.Sprite.create(s_menuButtonHighScoreNormal, cc.rect(0, 0, 138, 24));
+            var highScoreDisabled = cc.Sprite.create(s_menuButtonHighScoreNormal, cc.rect(0, 0 * 2, 138, 24));
+			
+            var optionsNormal = cc.Sprite.create(s_menuButtonOptionsNormal, cc.rect(0, 0, 138, 24));
+            var optionsSelected = cc.Sprite.create(s_menuButtonOptionsNormal, cc.rect(0, 0, 138, 24));
+            var optionsDisabled = cc.Sprite.create(s_menuButtonOptionsNormal, cc.rect(0, 0 * 2, 138, 24));
+			
+            var instructionsNormal = cc.Sprite.create(s_menuButtonInstructionsNormal, cc.rect(0, 0, 138, 24));
+            var instructionsSelected = cc.Sprite.create(s_menuButtonInstructionsNormal, cc.rect(0, 0, 138, 24));
+            var instructionsDisabled = cc.Sprite.create(s_menuButtonInstructionsNormal, cc.rect(0, 0 * 2, 138, 24));
 
-            var aboutNormal = cc.Sprite.create(s_menu, cc.rect(252, 0, 126, 33));
-            var aboutSelected = cc.Sprite.create(s_menu, cc.rect(252, 33, 126, 33));
-            var aboutDisabled = cc.Sprite.create(s_menu, cc.rect(252, 33 * 2, 126, 33));
+            var creditsNormal = cc.Sprite.create(s_menuButtonCreditsNormal, cc.rect(0, 0, 138, 24));
+            var creditsSelected = cc.Sprite.create(s_menuButtonCreditsNormal, cc.rect(0, 0, 138, 24));
+            var creditsDisabled = cc.Sprite.create(s_menuButtonCreditsNormal, cc.rect(0, 0 * 2, 138, 24));
 
-            var newGame = cc.MenuItemSprite.create(newGameNormal, newGameSelected, newGameDisabled, this, function () {
+            var newGame = cc.MenuItemSprite.create(playNormal, playSelected, playDisabled, this, function () {
                 this.onButtonEffect();
                 this.onNewGame();
                 //flareEffect(this, this, this.onNewGame);
             });
-            var gameSettings = cc.MenuItemSprite.create(gameSettingsNormal, gameSettingsSelected, gameSettingsDisabled, this, this.onSettings);
-            var about = cc.MenuItemSprite.create(aboutNormal, aboutSelected, aboutDisabled, this, this.onAbout);
+			var highScore = cc.MenuItemSprite.create(highScoreNormal, highScoreSelected, highScoreDisabled, this, this.onSettings);
+            var options = cc.MenuItemSprite.create(optionsNormal, optionsSelected, optionsDisabled, this, this.onSettings);
+			var instructions = cc.MenuItemSprite.create(instructionsNormal, instructionsSelected, instructionsDisabled, this, this.onSettings);
+            var credits = cc.MenuItemSprite.create(creditsNormal, creditsSelected, creditsDisabled, this, this.onAbout);
 
-            var menu = cc.Menu.create(newGame, gameSettings, about);
+            var menu = cc.Menu.create(newGame, highScore, options, instructions, credits);
             menu.alignItemsVerticallyWithPadding(10);
             this.addChild(menu, 1, 2);
-            menu.setPosition(cc.p(winSize.width / 2, winSize.height / 2 - 80));
+			menu.setPosition(cc.p(winSize.width / 2 - 100, winSize.height / 2 - 70));
+            //menu.setPosition(cc.p(winSize.width / 2, winSize.height / 2 - 80));
             this.schedule(this.update, 0.1);
 
             if (MW.SOUND) {
