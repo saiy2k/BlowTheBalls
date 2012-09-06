@@ -19,12 +19,12 @@ var LevelLoader = cc.Class.extend({
      * reads the level data, creates game objects and adds it to the 
      * given layer
      */
-    load:function (lvl) {
+    load:function (wrld, lvl) {
             var i, len, obj;
             var level, arr = [];
             var self = this;
 
-            $.getJSON('js/res/w1level1.json', function(data) {
+            $.getJSON('js/res/w' + wrld + 'level' + lvl + '.json', function(data) {
                 level = data;
                 //l1 hard coded for now
                 //for each balls in the json object, create one sprite here
@@ -34,7 +34,7 @@ var LevelLoader = cc.Class.extend({
                     var b = new Ball(obj.type);
                     b.setPosition(cc.p(obj.x, obj.y));
                     arr.push(b);
-                    console.log(obj);
+                    //console.log(obj);
                 }
                 self.delegate.onLevelLoaded(arr);
             }).error(function(err) { console.log(err) } );
