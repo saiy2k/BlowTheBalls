@@ -24,8 +24,7 @@ var MW = MW || {};
             'js/src/Ball.js',
             'js/src/LevelLoader.js',
             'js/src/State.js',
-            'js/res/level1.js',
-            'js/res/level2.js'
+            'libs/jquery.js'
         ]
     };
     window.addEventListener('DOMContentLoaded', function () {

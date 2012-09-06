@@ -1,11 +1,13 @@
 cc.dumpConfig();
 var winSize;
+var self;
 var GameEngine = cc.Layer.extend({
     ballArray: null,
     hud: null,
     loader: null,
     ctor:function () {
         cc.associateWithNative( this, cc.Layer );
+        self = this;
     },
     init:function () {
         var bRet = false;
@@ -26,6 +28,7 @@ var GameEngine = cc.Layer.extend({
             this.addChild(hud, 0, 100);
 
             loader = new LevelLoader();
+            loader.delegate = this;
 
             this.schedule(this.update, 30/1000);
             this.reset();
@@ -50,7 +53,7 @@ var GameEngine = cc.Layer.extend({
     }, 
     reset:function () {
         this.ballArray = [];
-        loader.load(State.currentLevel, this, this.ballArray);
+        loader.load(State.currentLevel);
     },
     update:function (dt) {
         var i, len;
@@ -61,6 +64,13 @@ var GameEngine = cc.Layer.extend({
     onButtonEffect:function(){
         if (MW.SOUND) {
             var s = cc.AudioEngine.getInstance().playEffect(s_buttonEffect);
+        }
+    },
+    onLevelLoaded: function(objs) {
+        self.ballArray = objs;
+        var obj;
+        for (var i = 0, len = self.ballArray.length; i < len, obj = self.ballArray[i]; i++) {
+            self.addChild(obj, 2, 2);
         }
     }
 });

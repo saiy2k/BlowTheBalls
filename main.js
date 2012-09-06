@@ -33,21 +33,20 @@ var cocos2dApp = cc.Application.extend({
         // run
         director.runWithScene(new this.startScene());
 
-        allLevels = [l1, l2];
-
         return true;
     }
 });
 
 cc.adjustSizeForWindow = function () {
     var margin = document.documentElement.clientWidth - document.body.clientWidth;
+
     if (document.documentElement.clientWidth < cc.originalCanvasSize.width) {
-        cc.canvas.width = cc.originalCanvasSize.width;
+        cc.canvas.width = document.documentElement.clientWidth;//cc.originalCanvasSize.width;
     } else {
         cc.canvas.width = document.documentElement.clientWidth - margin;
     }
     if (document.documentElement.clientHeight < cc.originalCanvasSize.height) {
-        cc.canvas.height = cc.originalCanvasSize.height;
+        cc.canvas.height = document.documentElement.clientHeight;//cc.originalCanvasSize.height;
     } else {
         cc.canvas.height = document.documentElement.clientHeight - margin;
     }
