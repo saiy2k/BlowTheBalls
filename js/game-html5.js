@@ -24,6 +24,7 @@ var MW = MW || {};
             'js/src/Ball.js',
             'js/src/LevelLoader.js',
             'js/src/State.js',
+            'js/src/Hero.js',
             'libs/jquery.js'
         ]
     };

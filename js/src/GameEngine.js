@@ -12,7 +12,7 @@ var GameEngine = cc.Layer.extend({
      * array of balls in screen at any given time
      * when its length reaches zero, then level is over
      */
-    ballArray: null,
+    ballArray: [],
     /**
      * component that renders the UI controls
      */
@@ -22,6 +22,12 @@ var GameEngine = cc.Layer.extend({
      * specified level and return as cocos2d objects (sprites)
      */
     loader: null,
+    /**
+     * hero object
+     */
+    hero: null,
+    isLeftPressed: false,
+    isRightPressed: false,
     /**
      * constructor (dummy in my opinion)
      */
@@ -36,6 +42,7 @@ var GameEngine = cc.Layer.extend({
         var bRet = false;
         if (this._super()) {
             winSize = cc.Director.getInstance().getWinSize();
+            State.gameStatus = 'play'; //set it to start once 3,2,1 anim is ready
 
             // set right input method
             if (State.inputType == 'keyboard')
@@ -53,6 +60,12 @@ var GameEngine = cc.Layer.extend({
             hud.delegate = this;
             this.addChild(hud, 0, 100);
 
+            // loading hero
+            this.hero = new Hero();
+            this.hero.setPosition(cc.p(winSize.width/2, this.hero._contentSize.height/2));
+            this.hero.targetX = winSize.width/2;
+            this.addChild(this.hero, 0, 2);
+
             // level loader object
             loader = new LevelLoader();
             loader.delegate = this;
@@ -62,40 +75,68 @@ var GameEngine = cc.Layer.extend({
             this.reset();
 
             bRet = true;
+
+            // TODO: setup 3 2 1 anim here and change state to 'play' once its over
         }
 
         return bRet;
     },
     //callback method invoked on accelerometer change
     didAccelerate:function (pAccelerationValue) {
+        // calculate acc values and call moveleft / move right appropriately
     },
     //callback method invoked at the end of keypress
     onKeyUp:function (e) {
+        if(e === cc.KEY.left) {
+            this.isLeftPressed = false;
+        } else if (e === cc.KEY.right) {
+            this.isRightPressed = false;
+        }
     },
     //callback method invoked at the beginning of keypress
     onKeyDown:function (e) {
         if(e === cc.KEY.left) {
-            console.log('moveLeft');
+            this.isLeftPressed = true;
         } else if (e === cc.KEY.right) {
-            console.log('moveRight');
+            this.isRightPressed = true;
         } else if (e === cc.KEY.up) {
-            console.log('moveUp');
+            self.fireArrow();
+        } else if (e === cc.KEY.z) {
+            self.placeBomb();
+        } else if (e === cc.KEY.x) {
+            self.placeNails();
         }
     }, 
     /**
      * resets the stage and loads the game objects freshly
      */
     reset:function () {
-        this.ballArray = [];
-        loader.load(State. currentWorld, State.currentLevel);
+        for (var i = 0, len = this.ballArray.length; i < len; i++) {
+            this.ballArray[i].removeFromParentAndCleanup(true);
+        }
+        loader.load(State.currentWorld, State.currentLevel);
     },
     /**
      * update loop
      */
     update:function (dt) {
-        var i, len;
-        for (i = 0, len = this.ballArray.length; i < len; i++) {
-            this.ballArray[i].update(dt);
+        if (State.gameStatus == 'play') {
+            var i, len;
+            for (i = 0, len = this.ballArray.length; i < len; i++) {
+                var bb = this.ballArray[i];
+                bb.update(dt);
+                if (cc.Rect.CCRectOverlapsRect(
+                            cc.RectMake(bb._position.x, bb._position.y, bb._rect.size.width, bb._rect.size.height),
+                            cc.RectMake(this.hero._position.x, this.hero._position.y, this.hero._rect.size.width, this.hero._rect.size.height))) {
+                                this.reset();
+                                return;
+                }
+            }
+            if (this.isLeftPressed)
+                this.hero.moveLeft();
+            if (this.isRightPressed)
+                this.hero.moveRight();
+            this.hero.update(dt);
         }
     },
     /**
@@ -113,6 +154,38 @@ var GameEngine = cc.Layer.extend({
         for (var i = 0, len = self.ballArray.length; i < len, obj = self.ballArray[i]; i++) {
             self.addChild(obj, 2, 2);
         }
+    },
+    /**
+     * command left that makes the character walk to the left side
+     */
+    moveLeft: function() {
+        this.hero.moveLeft();
+        console.log('move left');
+    },
+    /**
+     * command right that makes the character walk to the right side
+     */
+    moveRight: function() {
+        this.hero.moveRight();
+        console.log('move right');
+    },
+    /**
+     * command to fire curently selected arrow
+     */
+    fireArrow: function() {
+        console.log('fire arrow');
+    },
+    /**
+     * command to place a bomb if its available 
+     */
+    placeBomb: function() {
+        console.log('place bomb');
+    },
+    /**
+     * command to place nails if its available 
+     */
+    placeNails: function() {
+        console.log('place nails');
     }
 });
 
