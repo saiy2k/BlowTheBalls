@@ -23,6 +23,12 @@ var GameEngine = cc.Layer.extend({
      */
     loader: null,
     /**
+     * hero object
+     */
+    hero: null,
+    isLeftPressed: false,
+    isRightPressed: false,
+    /**
      * constructor (dummy in my opinion)
      */
     ctor:function () {
@@ -53,6 +59,12 @@ var GameEngine = cc.Layer.extend({
             hud.delegate = this;
             this.addChild(hud, 0, 100);
 
+            // loading hero
+            this.hero = new Hero();
+            this.hero.setPosition(cc.p(winSize.width/2, winSize.height*0.1));
+            this.hero.targetX = winSize.width/2;
+            this.addChild(this.hero, 0, 2);
+
             // level loader object
             loader = new LevelLoader();
             loader.delegate = this;
@@ -68,18 +80,29 @@ var GameEngine = cc.Layer.extend({
     },
     //callback method invoked on accelerometer change
     didAccelerate:function (pAccelerationValue) {
+        // calculate acc values and call moveleft / move right appropriately
     },
     //callback method invoked at the end of keypress
     onKeyUp:function (e) {
+        if(e === cc.KEY.left) {
+            this.isLeftPressed = false;
+        } else if (e === cc.KEY.right) {
+            this.isRightPressed = false;
+        }
     },
     //callback method invoked at the beginning of keypress
     onKeyDown:function (e) {
+        console.log(e);
         if(e === cc.KEY.left) {
-            console.log('moveLeft');
+            this.isLeftPressed = true;
         } else if (e === cc.KEY.right) {
-            console.log('moveRight');
+            this.isRightPressed = true;
         } else if (e === cc.KEY.up) {
-            console.log('moveUp');
+            self.fireArrow();
+        } else if (e === cc.KEY.z) {
+            self.placeBomb();
+        } else if (e === cc.KEY.x) {
+            self.placeNails();
         }
     }, 
     /**
@@ -97,6 +120,11 @@ var GameEngine = cc.Layer.extend({
         for (i = 0, len = this.ballArray.length; i < len; i++) {
             this.ballArray[i].update(dt);
         }
+        if (this.isLeftPressed)
+            this.hero.moveLeft();
+        if (this.isRightPressed)
+            this.hero.moveRight();
+        this.hero.update(dt);
     },
     /**
      * callback function invoked by level loader once the specified
@@ -113,6 +141,38 @@ var GameEngine = cc.Layer.extend({
         for (var i = 0, len = self.ballArray.length; i < len, obj = self.ballArray[i]; i++) {
             self.addChild(obj, 2, 2);
         }
+    },
+    /**
+     * command left that makes the character walk to the left side
+     */
+    moveLeft: function() {
+        this.hero.moveLeft();
+        console.log('move left');
+    },
+    /**
+     * command right that makes the character walk to the right side
+     */
+    moveRight: function() {
+        this.hero.moveRight();
+        console.log('move right');
+    },
+    /**
+     * command to fire curently selected arrow
+     */
+    fireArrow: function() {
+        console.log('fire arrow');
+    },
+    /**
+     * command to place a bomb if its available 
+     */
+    placeBomb: function() {
+        console.log('place bomb');
+    },
+    /**
+     * command to place nails if its available 
+     */
+    placeNails: function() {
+        console.log('place nails');
     }
 });
 
