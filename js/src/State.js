@@ -40,6 +40,16 @@ State = {
     bombCount: 0,
 
     /**
+     * the remaining time to finish the current level
+     */
+    remainingTime: 0,
+
+    /**
+     * number of bombs remaining
+     */
+    bombCount: 0,
+
+    /**
      * number of nails remaining
      */
     nailCount: 0,

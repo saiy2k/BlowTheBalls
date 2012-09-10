@@ -62,7 +62,7 @@ var GameEngine = cc.Layer.extend({
 
             // loading hero
             this.hero = new Hero();
-            this.hero.setPosition(cc.p(winSize.width/2, this.hero._contentSize.height/2));
+            this.hero.setPosition(cc.p(winSize.width/2, winSize.height*0.1));
             this.hero.targetX = winSize.width/2;
             this.addChild(this.hero, 0, 2);
 
@@ -95,6 +95,7 @@ var GameEngine = cc.Layer.extend({
     },
     //callback method invoked at the beginning of keypress
     onKeyDown:function (e) {
+        console.log(e);
         if(e === cc.KEY.left) {
             this.isLeftPressed = true;
         } else if (e === cc.KEY.right) {
@@ -138,6 +139,11 @@ var GameEngine = cc.Layer.extend({
                 this.hero.moveRight();
             this.hero.update(dt);
         }
+        if (this.isLeftPressed)
+            this.hero.moveLeft();
+        if (this.isRightPressed)
+            this.hero.moveRight();
+        this.hero.update(dt);
     },
     /**
      * callback function invoked by level loader once the specified
