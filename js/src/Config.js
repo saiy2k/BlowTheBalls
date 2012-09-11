@@ -1,5 +1,12 @@
+/**
+ * This global Object contains variables that is used to 
+ * configure different aspects of the game
+ */
 GAME = {};
 
+/**
+ * A Simple enum to differentiate different balls
+ */
 GAME.BALLTYPE = [
     s_ball1,
     s_ball2,
