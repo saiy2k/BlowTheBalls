@@ -60,6 +60,7 @@ var s_ball4 = dirImg + "ball4.png";
 var s_ball5 = dirImg + "ball5.png";
 var s_ball6 = dirImg + "ball6.png";
 var s_ball7 = dirImg + "ball7.png";
+var s_arrow = dirImg + "arrow.jpg";
 var s_sideWall = dirImg + "sideWall.jpg";
 var s_gameBg = dirImg + "gameBg.jpg";
 var s_bombButton = dirImg + "bombButton.png";
@@ -109,6 +110,7 @@ var g_ressources = [
 
     //game
     {type:"image", src:s_ball4},
+    {type:"image", src:s_arrow},
     {type:"image", src:s_sideWall},
     {type:"image", src:s_gameBg},
     {type:"image", src:s_bombButton},

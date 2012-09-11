@@ -22,11 +22,11 @@ var Hero = cc.Sprite.extend({
         console.log('hero');
 
     },
-    moveLeft: function() {
-        this.targetX -= 10;
+    moveLeft: function(dt) {
+        this.targetX -= 200 * dt;
     },
-    moveRight: function() {
-        this.targetX += 10;
+    moveRight: function(dt) {
+        this.targetX += 200 * dt;
     },
 	/**
      * Update, called on each frame
