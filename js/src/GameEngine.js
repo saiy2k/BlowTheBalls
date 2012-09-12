@@ -46,7 +46,7 @@ var GameEngine = cc.Layer.extend({
         var bRet = false;
         if (this._super()) {
             winSize = cc.Director.getInstance().getWinSize();
-            State.gameStatus = 'play'; //set it to start once 3,2,1 anim is ready
+            State.gameStatus = 'start'; //set it to start once 3,2,1 anim is ready
 
             // set right input method
             if (State.inputType == 'keyboard')
@@ -60,9 +60,9 @@ var GameEngine = cc.Layer.extend({
             this.addChild(bg, 0, 1);
 
             // HUD Component
-            hud = Hud.create();
-            hud.delegate = this;
-            this.addChild(hud, 0, 100);
+            self.hud = Hud.create();
+            self.hud.delegate = this;
+            this.addChild(self.hud, 0, 100);
 
             // loading hero
             this.hero = new Hero();
@@ -79,11 +79,13 @@ var GameEngine = cc.Layer.extend({
             this.reset();
 
             bRet = true;
-
-            // TODO: setup 3 2 1 anim here and change state to 'play' once its over
         }
 
         return bRet;
+    },
+    startGame: function () {
+        console.log('started');
+        State.gameStatus = 'play';
     },
     //callback method invoked on accelerometer change
     didAccelerate:function (pAccelerationValue) {
@@ -91,38 +93,56 @@ var GameEngine = cc.Layer.extend({
     },
     //callback method invoked at the end of keypress
     onKeyUp:function (e) {
-        if(e === cc.KEY.left) {
-            this.isLeftPressed = false;
-        } else if (e === cc.KEY.right) {
-            this.isRightPressed = false;
+        if (State.gameStatus == 'play') {
+            if(e === cc.KEY.left) {
+                self.isLeftPressed = false;
+            } else if (e === cc.KEY.right) {
+                self.isRightPressed = false;
+            }
         }
     },
     //callback method invoked at the beginning of keypress
     onKeyDown:function (e) {
-        console.log(e);
-        if(e === cc.KEY.left) {
-            this.isLeftPressed = true;
-        } else if (e === cc.KEY.right) {
-            this.isRightPressed = true;
-        } else if (e === cc.KEY.up) {
-            self.fireArrow();
-        } else if (e === cc.KEY.z) {
-            self.placeBomb();
-        } else if (e === cc.KEY.x) {
-            self.placeNails();
+        if (State.gameStatus == 'play') {
+            if(e === cc.KEY.left) {
+                self.isLeftPressed = true;
+            } else if (e === cc.KEY.right) {
+                self.isRightPressed = true;
+            } else if (e === cc.KEY.up) {
+                self.fireArrow();
+            } else if (e === cc.KEY.z) {
+                self.placeBomb();
+            } else if (e === cc.KEY.x) {
+                self.placeNails();
+            }
         }
     }, 
     /**
      * resets the stage and loads the game objects freshly
      */
     reset:function () {
+        self.cleanUp();
+        loader.load(State.currentWorld, State.currentLevel);
+
+        // TODO: setup 3 2 1 anim here and change state to 'play' once its over
+        this.runAction(cc.Sequence.create(
+                    cc.DelayTime.create(2),
+                    cc.CallFunc.create(this, this.startGame)));
+
+        State.lives = 3;
+    },
+    /**
+     * function that removes all sprites from the scene
+     */
+    cleanUp:function() {
         for (var i = 0, len = this.ballArray.length; i < len; i++) {
             this.ballArray[i].removeFromParentAndCleanup(true);
         }
         for (var i = 0, len = this.arrowArray.length; i < len; i++) {
             this.arrowArray[i].removeFromParentAndCleanup(true);
         }
-        loader.load(State.currentWorld, State.currentLevel);
+        self.isLeftPressed = false;
+        self.isRightPressed = false;
     },
     /**
      * update loop
@@ -135,11 +155,13 @@ var GameEngine = cc.Layer.extend({
                 var bb = this.ballArray[i];
                 bb.update(dt);
                 // check if the ball hits the hero, if yes, reduce life
-                if (cc.Rect.CCRectOverlapsRect(
-                            cc.RectMake(bb._position.x, bb._position.y, bb._rect.size.width, bb._rect.size.height),
-                            cc.RectMake(this.hero._position.x, this.hero._position.y, this.hero._rect.size.width, this.hero._rect.size.height))) {
-                                this.reset();
-                                return;
+                if (!self.hero.isSafe) {
+                    if (cc.Rect.CCRectOverlapsRect(
+                                cc.RectMake(bb._position.x, bb._position.y, bb._rect.size.width, bb._rect.size.height),
+                                cc.RectMake(this.hero._position.x, this.hero._position.y, this.hero._rect.size.width, this.hero._rect.size.height))) {
+                                    self.reduceLife();
+                                    return;
+                    }
                 }
                 //for each arrow
                 for (j = 0, len2 = this.arrowArray.length; j < len2; j++) {
@@ -188,17 +210,16 @@ var GameEngine = cc.Layer.extend({
                     break;
                 }
             }
-            if (this.isLeftPressed)
-                this.hero.moveLeft(dt);
-            if (this.isRightPressed)
-                this.hero.moveRight(dt);
-            this.hero.update(dt);
+            if (self.isLeftPressed) {
+                console.log('left');
+                self.hero.moveLeft(dt);
+            }
+            if (self.isRightPressed) {
+                console.log('right');
+                self.hero.moveRight(dt);
+            }
+            self.hero.update(dt);
         }
-        if (this.isLeftPressed)
-            this.hero.moveLeft(dt);
-        if (this.isRightPressed)
-            this.hero.moveRight(dt);
-        this.hero.update(dt);
     },
     /**
      * callback function invoked by level loader once the specified
@@ -206,10 +227,7 @@ var GameEngine = cc.Layer.extend({
      */
     onLevelLoaded: function(objs) {
         var obj;
-        // remove old objects from screen
-        for (var i = 0, len = self.ballArray.length; i < len, obj = self.ballArray[i]; i++) {
-            self.ballArray[i].removeFromParentAndCleanup(true);
-        }
+        self.cleanUp();
         // add new objects to screen
         self.ballArray = objs;
         for (var i = 0, len = self.ballArray.length; i < len, obj = self.ballArray[i]; i++) {
@@ -252,6 +270,23 @@ var GameEngine = cc.Layer.extend({
      */
     placeNails: function() {
         console.log('place nails');
+    },
+    reduceLife: function() {
+        State.lives--;
+        if (State.lives < 1) {
+            var scene = cc.Scene.create();
+            scene.addChild(SysMenu.create());
+            cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
+        } else {
+            self.hud.decrementLife();
+            this.hero._opacity = 100;
+            this.hero.isSafe = true;
+            this.runAction(cc.Sequence.create(
+                        cc.DelayTime.create(5),
+                        cc.CallFunc.create(this, function() {
+                            self.hero.isSafe = false; } )));
+            self.hero.runAction(cc.FadeTo.create(5, 255));
+        }
     }
 });
 

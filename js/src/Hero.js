@@ -8,6 +8,11 @@ var Hero = cc.Sprite.extend({
      * position to move to in x-direction
      */
     targetX: 0,
+    /**
+     * when this flag is set, the hero is safe
+     * and no collision occurs
+     */
+    isSafe: false,
 
     ctor:function (type) {
 		//Dunno what this does :)

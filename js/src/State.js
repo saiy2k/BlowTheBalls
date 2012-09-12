@@ -40,11 +40,6 @@ State = {
     bombCount: 0,
 
     /**
-     * the remaining time to finish the current level
-     */
-    remainingTime: 0,
-
-    /**
      * number of bombs remaining
      */
     bombCount: 0,
@@ -57,7 +52,8 @@ State = {
     /**
      * number of lives remaining
      */
-    lives: 5
+    lives: 3
+
 };
 
 

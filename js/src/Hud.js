@@ -2,6 +2,7 @@ cc.dumpConfig();
 var winSize;
 var Hud = cc.Layer.extend({
     delegate: null,
+    lives: [],
     ctor:function () {
         cc.associateWithNative( this, cc.Layer );
     },
@@ -63,6 +64,13 @@ var Hud = cc.Layer.extend({
                     menu = cc.Menu.create(bombButton, nailButton);
                 this.addChild(menu, 0, 2);
                 menu.setPosition(cc.p(winSize.width / 2, winSize.height / 2));
+
+            }
+            for (var i = 0; i < 3; i++) {
+                var lif = cc.Sprite.create(GAME.BALLTYPE[0], cc.rect(0, 0, 24, 24));
+                lif.setPosition(cc.p(50 + i * 50, winSize.height * 0.9));
+                this.addChild(lif, 2, 2);
+                this.lives.push(lif);
             }
 
             bRet = true;
@@ -76,6 +84,11 @@ var Hud = cc.Layer.extend({
         if (MW.SOUND) {
             var s = cc.AudioEngine.getInstance().playEffect(s_buttonEffect);
         }
+    },
+    decrementLife: function() {
+        var lev = this.lives.length;
+        this.lives[lev-1].removeFromParentAndCleanup(true);
+        this.lives.splice(lev-1, 1);
     }
 });
 
