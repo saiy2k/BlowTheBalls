@@ -40,11 +40,6 @@ State = {
     bombCount: 0,
 
     /**
-     * number of bombs remaining
-     */
-    bombCount: 0,
-
-    /**
      * number of nails remaining
      */
     nailCount: 0,
@@ -52,7 +47,12 @@ State = {
     /**
      * number of lives remaining
      */
-    lives: 3
+    lives: 3,
+
+    /**
+     * current score
+     */
+    score: 0
 
 };
 

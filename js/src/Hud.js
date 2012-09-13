@@ -1,8 +1,11 @@
 cc.dumpConfig();
 var winSize;
+var self;
 var Hud = cc.Layer.extend({
     delegate: null,
     lives: [],
+    scoreLabel: null,
+    dScore: 0,
     ctor:function () {
         cc.associateWithNative( this, cc.Layer );
     },
@@ -10,6 +13,10 @@ var Hud = cc.Layer.extend({
         var bRet = false;
         if (this._super()) {
             winSize = cc.Director.getInstance().getWinSize();
+
+            this.scoreLabel = cc.LabelTTF.create('0', 'Arial', 60);
+            this.scoreLabel.setPosition(cc.p(winSize.width / 2, winSize.height * 0.95));
+            this.addChild(this.scoreLabel, 0, 0);
 
             if (State.inputType != 'keyboard') {
                 if (State.inputType == 'dpad') {
@@ -78,7 +85,13 @@ var Hud = cc.Layer.extend({
 
         return bRet;
     },
-    update:function () {
+    update:function (dt) {
+        if (State.score != this.dScore) {
+            var ds = State.score - this.dScore;
+            this.dScore += ds/5 < 0 ? 1 : ds/5;
+            this.scoreLabel.setString(Math.round(this.dScore));
+            console.log('runn');
+        }
     },
     onButtonEffect:function(){
         if (MW.SOUND) {

@@ -30,6 +30,9 @@ var GameEngine = cc.Layer.extend({
      * hero object
      */
     hero: null,
+    /**
+     * UI helpeer vars
+     */
     isLeftPressed: false,
     isRightPressed: false,
     /**
@@ -57,18 +60,18 @@ var GameEngine = cc.Layer.extend({
             // loading background picture
             var bg = cc.Sprite.create(s_gameBg);
             bg.setPosition(cc.p(winSize.width/2, winSize.height/2));
-            this.addChild(bg, 0, 1);
+            this.addChild(bg, 0, 0);
 
             // HUD Component
             self.hud = Hud.create();
             self.hud.delegate = this;
-            this.addChild(self.hud, 0, 100);
+            this.addChild(self.hud, 100, 0);
 
             // loading hero
             this.hero = new Hero();
             this.hero.setPosition(cc.p(winSize.width/2, this.hero._contentSize.height/2));
             this.hero.targetX = winSize.width/2;
-            this.addChild(this.hero, 0, 2);
+            this.addChild(this.hero, 1, 0);
 
             // level loader object
             loader = new LevelLoader();
@@ -83,14 +86,18 @@ var GameEngine = cc.Layer.extend({
 
         return bRet;
     },
+
+    /** function that starts a game */
     startGame: function () {
         console.log('started');
         State.gameStatus = 'play';
     },
+
     //callback method invoked on accelerometer change
     didAccelerate:function (pAccelerationValue) {
         // calculate acc values and call moveleft / move right appropriately
     },
+
     //callback method invoked at the end of keypress
     onKeyUp:function (e) {
         if (State.gameStatus == 'play') {
@@ -101,6 +108,7 @@ var GameEngine = cc.Layer.extend({
             }
         }
     },
+
     //callback method invoked at the beginning of keypress
     onKeyDown:function (e) {
         if (State.gameStatus == 'play') {
@@ -117,6 +125,7 @@ var GameEngine = cc.Layer.extend({
             }
         }
     }, 
+
     /**
      * resets the stage and loads the game objects freshly
      */
@@ -130,7 +139,9 @@ var GameEngine = cc.Layer.extend({
                     cc.CallFunc.create(this, this.startGame)));
 
         State.lives = 3;
+        State.score = 0;
     },
+
     /**
      * function that removes all sprites from the scene
      */
@@ -144,6 +155,7 @@ var GameEngine = cc.Layer.extend({
         self.isLeftPressed = false;
         self.isRightPressed = false;
     },
+
     /**
      * update loop
      */
@@ -170,18 +182,16 @@ var GameEngine = cc.Layer.extend({
                     if (cc.Rect.CCRectOverlapsRect(
                                 cc.RectMake(bb._position.x, bb._position.y, bb._rect.size.width, bb._rect.size.height),
                                 cc.RectMake(arr._position.x, arr._position.y - arr._rect.size.height/2, arr._rect.size.width/20, arr._rect.size.height))) {
-                                    console.log('exxxx');
+                                    State.score += 100 + bb.type * 10;
                                     //remove the arrow from screen
                                     arr.removeFromParentAndCleanup(true);
                                     self.arrowArray.splice(j, 1);
                                     //if its already smallest ball, remove it
                                     if (bb.type == 1) {
-                                        console.log('ty');
                                         bb.removeFromParentAndCleanup(true);
                                         self.ballArray.splice(i, 1);
                                     // else split the big ball into 2 small balls
                                     } else {
-                                        console.log('tyyy');
                                         self.ballArray.splice(i, 1);
                                         var b1 = new Ball(bb.type - 1);
                                         b1.setPosition(bb._position);
@@ -204,23 +214,22 @@ var GameEngine = cc.Layer.extend({
                 arr.setPosition(cc.p(arr._position.x, arr._position.y + 50));
                 // and once it goes beyong border remove it
                 if (arr._position.y > 1200) {
-                    console.log(self.arrowArray.length);
                     arr.removeFromParentAndCleanup(true);
                     self.arrowArray.splice(i, 1);
                     break;
                 }
             }
             if (self.isLeftPressed) {
-                console.log('left');
                 self.hero.moveLeft(dt);
             }
             if (self.isRightPressed) {
-                console.log('right');
                 self.hero.moveRight(dt);
             }
             self.hero.update(dt);
+            self.hud.update(dt);
         }
     },
+
     /**
      * callback function invoked by level loader once the specified
      * level is loaded and objects are ready to be added to screen
@@ -234,20 +243,7 @@ var GameEngine = cc.Layer.extend({
             self.addChild(obj, 2, 2);
         }
     },
-    /**
-     * command left that makes the character walk to the left side
-     */
-    moveLeft: function(dt) {
-        this.hero.moveLeft(dt);
-        console.log('move left');
-    },
-    /**
-     * command right that makes the character walk to the right side
-     */
-    moveRight: function(dt) {
-        this.hero.moveRight(dt);
-        console.log('move right');
-    },
+    
     /**
      * command to fire curently selected arrow
      */
@@ -259,18 +255,21 @@ var GameEngine = cc.Layer.extend({
         this.arrowArray.push(arr);
         console.log('fire arrow');
     },
+
     /**
      * command to place a bomb if its available 
      */
     placeBomb: function() {
         console.log('place bomb');
     },
+
     /**
      * command to place nails if its available 
      */
     placeNails: function() {
         console.log('place nails');
     },
+
     reduceLife: function() {
         State.lives--;
         if (State.lives < 1) {
