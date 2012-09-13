@@ -140,6 +140,7 @@ var GameEngine = cc.Layer.extend({
 
         State.lives = 3;
         State.score = 0;
+        State.remainingTime = 10.0;
     },
 
     /**
@@ -162,6 +163,26 @@ var GameEngine = cc.Layer.extend({
     update:function (dt) {
         if (State.gameStatus == 'play') {
             var i, j, len, len2;
+            State.remainingTime -= dt;
+            // on time out
+            if (State.remainingTime < 0) {
+                State.gameStatus = 'timeOut';
+
+                // show a 'time out' label with zoom in animation and then move to main menu
+                var lbl;
+                lbl = cc.LabelTTF.create('Time Out', 'Arial', 60);
+                lbl.setPosition(cc.p(winSize.width * 0.5, winSize.height * 0.5));
+                lbl.setScale(0.02, 0.02);
+                this.addChild(lbl, 0, 0);
+
+                lbl.runAction(cc.Sequence.create(
+                            cc.ScaleTo.create(2.0, 1, 1),
+                            cc.CallFunc.create(this, function() {
+                                var scene = cc.Scene.create();
+                                scene.addChild(SysMenu.create());
+                                cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
+                            } )));
+            }
             // for each ball
             for (i = 0, len = this.ballArray.length; i < len; i++) {
                 var bb = this.ballArray[i];

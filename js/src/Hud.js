@@ -5,6 +5,7 @@ var Hud = cc.Layer.extend({
     delegate: null,
     lives: [],
     scoreLabel: null,
+    timeLabel: null,
     dScore: 0,
     ctor:function () {
         cc.associateWithNative( this, cc.Layer );
@@ -17,6 +18,10 @@ var Hud = cc.Layer.extend({
             this.scoreLabel = cc.LabelTTF.create('0', 'Arial', 60);
             this.scoreLabel.setPosition(cc.p(winSize.width / 2, winSize.height * 0.95));
             this.addChild(this.scoreLabel, 0, 0);
+
+            this.timeLabel = cc.LabelTTF.create('0', 'Arial', 30);
+            this.timeLabel.setPosition(cc.p(winSize.width * 0.95, winSize.height * 0.95));
+            this.addChild(this.timeLabel, 0, 0);
 
             if (State.inputType != 'keyboard') {
                 if (State.inputType == 'dpad') {
@@ -92,6 +97,7 @@ var Hud = cc.Layer.extend({
             this.scoreLabel.setString(Math.round(this.dScore));
             console.log('runn');
         }
+        this.timeLabel.setString(State.remainingTime + ' ');
     },
     onButtonEffect:function(){
         if (MW.SOUND) {
