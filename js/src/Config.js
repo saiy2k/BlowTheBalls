@@ -8,11 +8,11 @@ GAME = {};
  * A Simple enum to differentiate different balls
  */
 GAME.BALLTYPE = [
-    s_ball1,
-    s_ball2,
-    s_ball3,
-    s_ball4,
-    s_ball5,
-    s_ball6,
-    s_ball7
+    r.world1.ball1,
+    r.world1.ball2,
+    r.world1.ball3,
+    r.world1.ball4,
+    r.world1.ball5,
+    r.world1.ball6,
+    r.world1.ball7
 ];

@@ -8,6 +8,7 @@ var Hero = cc.Sprite.extend({
      * position to move to in x-direction
      */
     targetX: 0,
+
     /**
      * when this flag is set, the hero is safe
      * and no collision occurs
@@ -27,12 +28,15 @@ var Hero = cc.Sprite.extend({
         console.log('hero');
 
     },
+
     moveLeft: function(dt) {
         this.targetX -= 200 * dt;
     },
+
     moveRight: function(dt) {
         this.targetX += 200 * dt;
     },
+
 	/**
      * Update, called on each frame
      * dt: delta time since the last frame
@@ -40,5 +44,5 @@ var Hero = cc.Sprite.extend({
     update:function (dt) {
         var dx = this._position.x - this.targetX;
         this._position.x -= dx/4;
-    },
+    }
 });

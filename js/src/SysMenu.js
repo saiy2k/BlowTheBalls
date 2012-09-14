@@ -12,35 +12,29 @@ var SysMenu = cc.Layer.extend({
         var bRet = false;
         if (this._super()) {
             winSize = cc.Director.getInstance().getWinSize();
-            var sp = cc.Sprite.create(s_menuBackGround);
-            //sp.setAnchorPoint(cc.p(1,1));
+            var sp = cc.Sprite.create(r.menu.background);
             sp.setPosition(cc.p(winSize.width/2, winSize.height/2));
             this.addChild(sp, 0, 1);
 
-            var logo = cc.Sprite.create(s_logo);
-            logo.setAnchorPoint(cc.p(0, 0));
-            logo.setPosition(cc.p(0, 250));
-            //this.addChild(logo, 10, 1);
+            var playNormal = cc.Sprite.create(r.menu.play.normal, cc.rect(0, 0, 138, 24));
+            var playSelected = cc.Sprite.create(r.menu.play.select, cc.rect(0, 0, 138, 24));
+            var playDisabled = cc.Sprite.create(r.menu.play.disabl, cc.rect(0, 0 * 2, 138, 24));
 
-            var playNormal = cc.Sprite.create(s_menuButtonPlayNormal, cc.rect(0, 0, 138, 24));
-            var playSelected = cc.Sprite.create(s_menuButtonPlayNormal, cc.rect(0, 0, 138, 24));
-            var playDisabled = cc.Sprite.create(s_menuButtonPlayNormal, cc.rect(0, 0 * 2, 138, 24));
-
-			var highScoreNormal = cc.Sprite.create(s_menuButtonHighScoreNormal, cc.rect(0, 0, 138, 24));
-            var highScoreSelected = cc.Sprite.create(s_menuButtonHighScoreNormal, cc.rect(0, 0, 138, 24));
-            var highScoreDisabled = cc.Sprite.create(s_menuButtonHighScoreNormal, cc.rect(0, 0 * 2, 138, 24));
+			var highScoreNormal = cc.Sprite.create(r.menu.score.normal, cc.rect(0, 0, 138, 24));
+            var highScoreSelected = cc.Sprite.create(r.menu.score.select, cc.rect(0, 0, 138, 24));
+            var highScoreDisabled = cc.Sprite.create(r.menu.score.disabl, cc.rect(0, 0 * 2, 138, 24));
 			
-            var optionsNormal = cc.Sprite.create(s_menuButtonOptionsNormal, cc.rect(0, 0, 138, 24));
-            var optionsSelected = cc.Sprite.create(s_menuButtonOptionsNormal, cc.rect(0, 0, 138, 24));
-            var optionsDisabled = cc.Sprite.create(s_menuButtonOptionsNormal, cc.rect(0, 0 * 2, 138, 24));
+            var optionsNormal = cc.Sprite.create(r.menu.options.normal, cc.rect(0, 0, 138, 24));
+            var optionsSelected = cc.Sprite.create(r.menu.options.select, cc.rect(0, 0, 138, 24));
+            var optionsDisabled = cc.Sprite.create(r.menu.options.disabl, cc.rect(0, 0 * 2, 138, 24));
 			
-            var instructionsNormal = cc.Sprite.create(s_menuButtonInstructionsNormal, cc.rect(0, 0, 138, 24));
-            var instructionsSelected = cc.Sprite.create(s_menuButtonInstructionsNormal, cc.rect(0, 0, 138, 24));
-            var instructionsDisabled = cc.Sprite.create(s_menuButtonInstructionsNormal, cc.rect(0, 0 * 2, 138, 24));
+            var instructionsNormal = cc.Sprite.create(r.menu.inst.normal, cc.rect(0, 0, 138, 24));
+            var instructionsSelected = cc.Sprite.create(r.menu.inst.select, cc.rect(0, 0, 138, 24));
+            var instructionsDisabled = cc.Sprite.create(r.menu.inst.disabl, cc.rect(0, 0 * 2, 138, 24));
 
-            var creditsNormal = cc.Sprite.create(s_menuButtonCreditsNormal, cc.rect(0, 0, 138, 24));
-            var creditsSelected = cc.Sprite.create(s_menuButtonCreditsNormal, cc.rect(0, 0, 138, 24));
-            var creditsDisabled = cc.Sprite.create(s_menuButtonCreditsNormal, cc.rect(0, 0 * 2, 138, 24));
+            var creditsNormal = cc.Sprite.create(r.menu.credit.normal, cc.rect(0, 0, 138, 24));
+            var creditsSelected = cc.Sprite.create(r.menu.credit.select, cc.rect(0, 0, 138, 24));
+            var creditsDisabled = cc.Sprite.create(r.menu.credit.disabl, cc.rect(0, 0 * 2, 138, 24));
 			var actionMoveTo = cc.MoveTo.create(1,cc.p(winSize.width / 2 - 80, winSize.height / 2 - 70));
 			var actionMoveToBack = cc.MoveTo.create(1,cc.p(winSize.width / 2 - 100, winSize.height / 2 - 70));
 			

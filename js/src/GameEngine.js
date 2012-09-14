@@ -35,6 +35,7 @@ var GameEngine = cc.Layer.extend({
      */
     isLeftPressed: false,
     isRightPressed: false,
+    res: r.world1,
     /**
      * constructor (dummy in my opinion)
      */
@@ -58,7 +59,7 @@ var GameEngine = cc.Layer.extend({
                 this.setAccelerometerEnabled(true);
 
             // loading background picture
-            var bg = cc.Sprite.create(s_gameBg);
+            var bg = cc.Sprite.create(this.res.background);
             bg.setPosition(cc.p(winSize.width/2, winSize.height/2));
             this.addChild(bg, 0, 0);
 
@@ -140,7 +141,7 @@ var GameEngine = cc.Layer.extend({
 
         State.lives = 3;
         State.score = 0;
-        State.remainingTime = 10.0;
+        State.remainingTime = 60.0;
     },
 
     /**
@@ -269,7 +270,7 @@ var GameEngine = cc.Layer.extend({
      * command to fire curently selected arrow
      */
     fireArrow: function() {
-        var arr = cc.Sprite.create(s_arrow);
+        var arr = cc.Sprite.create(this.res.arrow);
         arr._scaleX = 0.04;
         arr.setPosition(cc.p(self.hero._position.x, -400));
         self.addChild(arr, 2, 2);
