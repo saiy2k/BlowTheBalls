@@ -96,7 +96,6 @@ var Hud = cc.Layer.extend({
             var ds = State.score - this.dScore;
             this.dScore += ds/5 < 0 ? 1 : ds/5;
             this.scoreLabel.setString(Math.round(this.dScore));
-            console.log('runn');
         }
         this.timeLabel.setString(State.remainingTime + ' ');
     },

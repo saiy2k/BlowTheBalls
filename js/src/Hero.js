@@ -30,11 +30,11 @@ var Hero = cc.Sprite.extend({
     },
 
     moveLeft: function(dt) {
-        this.targetX -= 200 * dt;
+        this.targetX -= 400 * dt;
     },
 
     moveRight: function(dt) {
-        this.targetX += 200 * dt;
+        this.targetX += 400 * dt;
     },
 
 	/**

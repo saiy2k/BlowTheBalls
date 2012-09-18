@@ -16,3 +16,29 @@ GAME.BALLTYPE = [
     r.world1.ball6,
     r.world1.ball7
 ];
+
+/**
+ * Power Up objects 
+ */
+GAME.POWERUPS = [
+    {
+        "id": 0,
+        "name": "Extra Time",
+        "icon": "extraTimeIcon.png",
+    },
+    {
+        "id": 1,
+        "name": "Extra Life",
+        "icon": "extraLifeIcon.png",
+    },
+    {
+        "id": 2,
+        "name": "100 Points",
+        "icon": "featherIcon.png",
+    },
+    {
+        "id": 3,
+        "name": "500 Points",
+        "icon": "scrollIcon.png",
+    }
+];

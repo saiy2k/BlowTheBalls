@@ -1,6 +1,5 @@
 cc.dumpConfig();
 var winSize;
-var self;
 /**
  * The Core component of the game. this class manages and 
  * co-ordinates between different game components from
@@ -14,9 +13,17 @@ var GameEngine = cc.Layer.extend({
      */
     ballArray: [],
     /**
+     * list of powerups to be dropped
+     */
+    powerData: [],
+    /**
      * array of arrows that are currently on screen
      */
     arrowArray: [],
+    /**
+     * array of power ups on state to be picked up by player
+     */
+    powerUpArray: [],
     /**
      * component that renders the UI controls
      */
@@ -46,7 +53,6 @@ var GameEngine = cc.Layer.extend({
      * the real constructor
      */
     init:function () {
-        self = this;
         var bRet = false;
         if (this._super()) {
             winSize = cc.Director.getInstance().getWinSize();
@@ -64,9 +70,9 @@ var GameEngine = cc.Layer.extend({
             this.addChild(bg, 0, 0);
 
             // HUD Component
-            self.hud = Hud.create();
-            self.hud.delegate = this;
-            this.addChild(self.hud, 100, 0);
+            this.hud = Hud.create();
+            this.hud.delegate = this;
+            this.addChild(this.hud, 100, 0);
 
             // loading hero
             this.hero = new Hero();
@@ -103,9 +109,9 @@ var GameEngine = cc.Layer.extend({
     onKeyUp:function (e) {
         if (State.gameStatus == 'play') {
             if(e === cc.KEY.left) {
-                self.isLeftPressed = false;
+                this.isLeftPressed = false;
             } else if (e === cc.KEY.right) {
-                self.isRightPressed = false;
+                this.isRightPressed = false;
             }
         }
     },
@@ -114,15 +120,15 @@ var GameEngine = cc.Layer.extend({
     onKeyDown:function (e) {
         if (State.gameStatus == 'play') {
             if(e === cc.KEY.left) {
-                self.isLeftPressed = true;
+                this.isLeftPressed = true;
             } else if (e === cc.KEY.right) {
-                self.isRightPressed = true;
+                this.isRightPressed = true;
             } else if (e === cc.KEY.up) {
-                self.fireArrow();
+                this.fireArrow();
             } else if (e === cc.KEY.z) {
-                self.placeBomb();
+                this.placeBomb();
             } else if (e === cc.KEY.x) {
-                self.placeNails();
+                this.placeNails();
             }
         }
     }, 
@@ -131,7 +137,7 @@ var GameEngine = cc.Layer.extend({
      * resets the stage and loads the game objects freshly
      */
     reset:function () {
-        self.cleanUp();
+        this.cleanUp();
         loader.load(State.currentWorld, State.currentLevel);
 
         // TODO: setup 3 2 1 anim here and change state to 'play' once its over
@@ -154,8 +160,9 @@ var GameEngine = cc.Layer.extend({
         for (var i = 0, len = this.arrowArray.length; i < len; i++) {
             this.arrowArray[i].removeFromParentAndCleanup(true);
         }
-        self.isLeftPressed = false;
-        self.isRightPressed = false;
+        this.isLeftPressed = false;
+        this.isRightPressed = false;
+        this.powerData = [];
     },
 
     /**
@@ -189,11 +196,11 @@ var GameEngine = cc.Layer.extend({
                 var bb = this.ballArray[i];
                 bb.update(dt);
                 // check if the ball hits the hero, if yes, reduce life
-                if (!self.hero.isSafe) {
+                if (!this.hero.isSafe) {
                     if (cc.Rect.CCRectOverlapsRect(
                                 cc.RectMake(bb._position.x, bb._position.y, bb._rect.size.width, bb._rect.size.height),
                                 cc.RectMake(this.hero._position.x, this.hero._position.y, this.hero._rect.size.width, this.hero._rect.size.height))) {
-                                    self.reduceLife();
+                                    this.reduceLife();
                                     return;
                     }
                 }
@@ -207,25 +214,39 @@ var GameEngine = cc.Layer.extend({
                                     State.score += 100 + bb.type * 10;
                                     //remove the arrow from screen
                                     arr.removeFromParentAndCleanup(true);
-                                    self.arrowArray.splice(j, 1);
+                                    this.arrowArray.splice(j, 1);
                                     //if its already smallest ball, remove it
                                     if (bb.type == 1) {
                                         bb.removeFromParentAndCleanup(true);
-                                        self.ballArray.splice(i, 1);
+                                        this.ballArray.splice(i, 1);
                                     // else split the big ball into 2 small balls
                                     } else {
-                                        self.ballArray.splice(i, 1);
+                                        this.ballArray.splice(i, 1);
                                         var b1 = new Ball(bb.type - 1);
                                         b1.setPosition(bb._position);
-                                        self.ballArray.push(b1);
-                                        self.addChild(b1, 2, 2);
+                                        this.ballArray.push(b1);
+                                        this.addChild(b1, 2, 2);
                                         var b2 = new Ball(bb.type - 1);
                                         b2.setPosition(bb._position);
                                         b2.vx = -4;
-                                        self.ballArray.push(b2);
-                                        self.addChild(b2, 2, 2);
+                                        this.ballArray.push(b2);
+                                        this.addChild(b2, 2, 2);
                                         bb.removeFromParentAndCleanup(true);
                                     }
+                                    var pp;
+                                    for (var k = 0, len3 = this.powerData.length; k < len3, pp = this.powerData[k]; k++) {
+                                        if (Math.random() < pp.seed) {
+                                            console.log('POWER UP');
+                                            console.log(pp.id);
+                                            State.score += 500 * pp.id;
+                                            pp.count--;
+                                            if(pp.count == 0) {
+                                                this.powerData.splice(k, 1);
+                                            }
+                                            return;
+                                        }
+                                    }
+
                                     return;
                     }
                 }
@@ -237,18 +258,18 @@ var GameEngine = cc.Layer.extend({
                 // and once it goes beyong border remove it
                 if (arr._position.y > 1200) {
                     arr.removeFromParentAndCleanup(true);
-                    self.arrowArray.splice(i, 1);
+                    this.arrowArray.splice(i, 1);
                     break;
                 }
             }
-            if (self.isLeftPressed) {
-                self.hero.moveLeft(dt);
+            if (this.isLeftPressed) {
+                this.hero.moveLeft(dt);
             }
-            if (self.isRightPressed) {
-                self.hero.moveRight(dt);
+            if (this.isRightPressed) {
+                this.hero.moveRight(dt);
             }
-            self.hero.update(dt);
-            self.hud.update(dt);
+            this.hero.update(dt);
+            this.hud.update(dt);
         }
     },
 
@@ -256,14 +277,18 @@ var GameEngine = cc.Layer.extend({
      * callback function invoked by level loader once the specified
      * level is loaded and objects are ready to be added to screen
      */
-    onLevelLoaded: function(objs) {
+    onLevelLoaded: function(objs, tpowerups) {
         var obj;
-        self.cleanUp();
+        console.log(this);
+        this.cleanUp();
         // add new objects to screen
-        self.ballArray = objs;
-        for (var i = 0, len = self.ballArray.length; i < len, obj = self.ballArray[i]; i++) {
-            self.addChild(obj, 2, 2);
+        this.ballArray = objs;
+        for (var i = 0, len = this.ballArray.length; i < len, obj = this.ballArray[i]; i++) {
+            this.addChild(obj, 2, 2);
         }
+        this.powerData = tpowerups;
+        console.log(this.powerData);
+        console.log('level loaderd');
     },
     
     /**
@@ -272,8 +297,8 @@ var GameEngine = cc.Layer.extend({
     fireArrow: function() {
         var arr = cc.Sprite.create(this.res.arrow);
         arr._scaleX = 0.04;
-        arr.setPosition(cc.p(self.hero._position.x, -400));
-        self.addChild(arr, 2, 2);
+        arr.setPosition(cc.p(this.hero._position.x, -400));
+        this.addChild(arr, 2, 2);
         this.arrowArray.push(arr);
         console.log('fire arrow');
     },
@@ -299,14 +324,14 @@ var GameEngine = cc.Layer.extend({
             scene.addChild(SysMenu.create());
             cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
         } else {
-            self.hud.decrementLife();
+            this.hud.decrementLife();
             this.hero._opacity = 100;
             this.hero.isSafe = true;
             this.runAction(cc.Sequence.create(
                         cc.DelayTime.create(5),
                         cc.CallFunc.create(this, function() {
-                            self.hero.isSafe = false; } )));
-            self.hero.runAction(cc.FadeTo.create(5, 255));
+                            this.hero.isSafe = false; } )));
+            this.hero.runAction(cc.FadeTo.create(5, 255));
         }
     }
 });

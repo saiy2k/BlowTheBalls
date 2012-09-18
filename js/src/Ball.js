@@ -1,4 +1,5 @@
 cc.dumpConfig();
+var self;
 
 /*
 	CLASS Ball : cc.Sprite
@@ -27,6 +28,8 @@ var Ball = cc.Sprite.extend({
 		
 		//Initialize
         this.initWithTexture(texture, cc.rect(0, 0, 72 - (7-this.type)*8, 72 - (7-this.type)*8));
+
+        self = this;
 
     },
 	
@@ -61,6 +64,6 @@ var Ball = cc.Sprite.extend({
 	/*
 		Explode, called when...
 	*/
-    explode:function() {
+    explode:function(layer, bArray) {
     }
 });

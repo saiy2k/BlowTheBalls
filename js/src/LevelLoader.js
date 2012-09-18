@@ -20,6 +20,7 @@ var LevelLoader = cc.Class.extend({
      * given layer
      */
     load:function (wrld, lvl) {
+        console.log('loadin start');
             var i, len, obj;
             var level, arr = [];
             var self = this;
@@ -36,7 +37,7 @@ var LevelLoader = cc.Class.extend({
                     arr.push(b);
                     //console.log(obj);
                 }
-                self.delegate.onLevelLoaded(arr);
+                self.delegate.onLevelLoaded(arr, level.objects);
             }).error(function(err) { console.log(err) } );
     }
 });
