@@ -13,6 +13,7 @@ var Hud = cc.Layer.extend({
     },
     init:function () {
         var bRet = false;
+        var self = this;
         if (this._super()) {
             winSize = cc.Director.getInstance().getWinSize();
 
@@ -34,27 +35,33 @@ var Hud = cc.Layer.extend({
                     this.addChild(sideWall, 0, 0);
 
                     var leftButtonNormal = cc.Sprite.create(this.res.leftButton, cc.rect(0, 0, 105, 105));
-                    var leftButtonSelected = cc.Sprite.create(this.res.leftButtonPressed, cc.rect(0, 0, 105, 105));
-                    var leftButtonDisabled = cc.Sprite.create(this.res.leftButtonPressed, cc.rect(0, 0, 105, 105));
-                    var leftButton = cc.MenuItemSprite.create(leftButtonNormal, leftButtonSelected, leftButtonDisabled, this, function() {
-                        this.delegate.moveLeft();
+                    var leftButtonSelected = cc.Sprite.create(this.res.leftButtonP, cc.rect(0, 0, 105, 105));
+                    var leftButtonDisabled = cc.Sprite.create(this.res.leftButtonP, cc.rect(0, 0, 105, 105));
+                    var leftButton = cc.MenuItemSprite.create(leftButtonNormal, leftButtonSelected, leftButtonDisabled, this, function(e) {
+                        this.delegate.isLeftPressed = false;
                         this.onButtonEffect();
                     });
+                    leftButton.touched = function() {
+                        self.delegate.isLeftPressed = true;
+                    };
                     leftButton.setPosition(cc.p((-winSize.width + leftButton._contentSize.width) / 2, 0));
 
                     var rightButtonNormal = cc.Sprite.create(this.res.rightButton, cc.rect(0, 0, 105, 105));
-                    var rightButtonSelected = cc.Sprite.create(this.res.rightButtonPressed, cc.rect(0, 0, 105, 105));
-                    var rightButtonDisabled = cc.Sprite.create(this.res.rightButtonPressed, cc.rect(0, 0, 105, 105));
+                    var rightButtonSelected = cc.Sprite.create(this.res.rightButtonP, cc.rect(0, 0, 105, 105));
+                    var rightButtonDisabled = cc.Sprite.create(this.res.rightButtonP, cc.rect(0, 0, 105, 105));
                     var rightButton = cc.MenuItemSprite.create(rightButtonNormal, rightButtonSelected, rightButtonDisabled, this, function() {
-                        this.delegate.moveRight();
+                        this.delegate.isRightPressed = false;
                         this.onButtonEffect();
                     });
+                    rightButton.touched = function() {
+                        self.delegate.isRightPressed = true;
+                    };
                     rightButton.setPosition(cc.p((winSize.width - rightButton._contentSize.width) / 2, 0));
                 }
 
                 var bombButtonNormal = cc.Sprite.create(this.res.bombButton, cc.rect(0, 0, 105, 105));
-                var bombButtonSelected = cc.Sprite.create(this.res.bombButtonPressed, cc.rect(0, 0, 105, 105));
-                var bombButtonDisabled = cc.Sprite.create(this.res.bombButtonPressed, cc.rect(0, 0, 105, 105));
+                var bombButtonSelected = cc.Sprite.create(this.res.bombButtonP, cc.rect(0, 0, 105, 105));
+                var bombButtonDisabled = cc.Sprite.create(this.res.bombButtonP, cc.rect(0, 0, 105, 105));
                 var bombButton = cc.MenuItemSprite.create(bombButtonNormal, bombButtonSelected, bombButtonDisabled, this, function() {
                     this.delegate.placeBomb();
                     this.onButtonEffect();
@@ -62,8 +69,8 @@ var Hud = cc.Layer.extend({
                 bombButton.setPosition(cc.p((-winSize.width + bombButton._contentSize.width) / 2, (-winSize.height + bombButton._contentSize.height) / 2));
 
                 var nailButtonNormal = cc.Sprite.create(this.res.nailButton, cc.rect(0, 0, 105, 105));
-                var nailButtonSelected = cc.Sprite.create(this.res.nailButtonPressed, cc.rect(0, 0, 105, 105));
-                var nailButtonDisabled = cc.Sprite.create(this.res.nailButtonPressed, cc.rect(0, 0, 105, 105));
+                var nailButtonSelected = cc.Sprite.create(this.res.nailButtonP, cc.rect(0, 0, 105, 105));
+                var nailButtonDisabled = cc.Sprite.create(this.res.nailButtonP, cc.rect(0, 0, 105, 105));
                 var nailButton = cc.MenuItemSprite.create(nailButtonNormal, nailButtonSelected, nailButtonDisabled, this, function() {
                     this.delegate.placeNails();
                     this.onButtonEffect();

@@ -17,8 +17,7 @@ State = {
     currentLevel : 0,
 
     /**
-     * represents the current state of the game
-     * can hav values: start, play, time out, hit, win
+     * represents the current state of the game * can hav values: start, play, time out, hit, win
      */
     gameStatus: '',
 
@@ -27,7 +26,7 @@ State = {
      * device in which the game is played.
      * can hav values 'keyboard', 'dpad', 'accelerometer'
      */
-    inputType: 'keyboard',
+    inputType: ('ontouchstart' in document.documentElement) ? 'dpad': 'keyboard',
 
     /**
      * the remaining time to finish the current level
@@ -52,7 +51,17 @@ State = {
     /**
      * current score
      */
-    score: 0
+    score: 0,
+
+    /**
+     * gameplay width
+     */
+    gameWidth: 0,
+
+    /**
+     * gameplay height
+     */
+    gameHeight: 0
 
 };
 

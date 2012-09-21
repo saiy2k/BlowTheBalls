@@ -63,6 +63,8 @@ var GameEngine = cc.Layer.extend({
                 this.setKeyboardEnabled(true);
             else if (State.inputType == 'accelerometer')
                 this.setAccelerometerEnabled(true);
+            else if (State.inputType == 'dpad')
+                this.setTouchEnabled(true);
 
             // loading background picture
             var bg = cc.Sprite.create(this.res.background);
@@ -92,6 +94,24 @@ var GameEngine = cc.Layer.extend({
         }
 
         return bRet;
+    },
+
+    registerWithTouchDispatcher:function () {
+        cc.Director.getInstance().getTouchDispatcher().addTargetedDelegate(this, cc.MENU_HANDLER_PRIORITY, true);
+    },
+
+    onTouchBegan:function (touch, e) {
+        console.log('began');
+        return true;
+    },
+
+    onTouchMoved:function (touch, e) {
+        console.log('moved')
+    },
+
+    onTouchEnded:function (touch, e) {
+        console.log('end');
+        this.fireArrow();
     },
 
     /** function that starts a game */
@@ -279,7 +299,6 @@ var GameEngine = cc.Layer.extend({
      */
     onLevelLoaded: function(objs, tpowerups) {
         var obj;
-        console.log(this);
         this.cleanUp();
         // add new objects to screen
         this.ballArray = objs;
@@ -287,20 +306,21 @@ var GameEngine = cc.Layer.extend({
             this.addChild(obj, 2, 2);
         }
         this.powerData = tpowerups;
-        console.log(this.powerData);
         console.log('level loaderd');
     },
     
     /**
      * command to fire curently selected arrow
+     * can have only one arrow at a time on screen
      */
     fireArrow: function() {
-        var arr = cc.Sprite.create(this.res.arrow);
-        arr._scaleX = 0.04;
-        arr.setPosition(cc.p(this.hero._position.x, -400));
-        this.addChild(arr, 2, 2);
-        this.arrowArray.push(arr);
-        console.log('fire arrow');
+        //if (this.hero.lastFired > 1) {
+        if (this.arrowArray.length == 0) {
+            var arr = this.hero.fire(this.res.arrow);
+            this.addChild(arr, 2, 2);
+            this.arrowArray.push(arr);
+            console.log('fire arrow');
+        }
     },
 
     /**
