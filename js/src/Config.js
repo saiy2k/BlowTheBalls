@@ -16,3 +16,4 @@ GAME.BALLTYPE = [
     s_ball6,
     s_ball7
 ];
+

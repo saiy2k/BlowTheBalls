@@ -18,6 +18,16 @@ var s_logo = dirImg + "logo.png";
 var s_cocos2dhtml5 = dirImg + "cocos2d-html5.png";
 var s_gameOver = dirImg + "gameOver.png";
 var s_menuTitle = dirImg + "menuTitle.png";
+/*
+	hero sprite
+*/
+//Image
+var s_Hero 		= dirImg + "heroSprite.png";
+
+
+// plist
+var s_Hero_plist = dirImg + "heroSprite.plist";
+
 
 var s_menuButtonPlayNormal = dirImg + "menuButtonPlayNormal.png";
 //var s_menuButtonPlaySelected = dirImg + "menuButtonPlaySelected.png";
@@ -108,6 +118,12 @@ var g_ressources = [
     {type:"effect", src:s_fireEffect},
     {type:"effect", src:s_shipDestroyEffect},
 
+	//Hero walk
+   {type:"image", src:s_Hero},
+	
+	//plist
+	{type:"plist",src:s_Hero_plist},
+    
     //game
     {type:"image", src:s_ball4},
     {type:"image", src:s_arrow},
