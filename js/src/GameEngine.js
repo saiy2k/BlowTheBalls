@@ -162,7 +162,7 @@ var GameEngine = cc.Layer.extend({
 
         // TODO: setup 3 2 1 anim here and change state to 'play' once its over
         this.runAction(cc.Sequence.create(
-                    cc.DelayTime.create(2),
+                    cc.DelayTime.create(GAME.LEVELSTARTLAPSE),
                     cc.CallFunc.create(this, this.startGame)));
 
         State.lives = 9;
@@ -217,62 +217,23 @@ var GameEngine = cc.Layer.extend({
                 bb.update(dt);
                 // check if the ball hits the hero, if yes, reduce life
                 if (!this.hero.isSafe) {
-                    if (cc.Rect.CCRectOverlapsRect(
-                                cc.RectMake(bb._position.x, bb._position.y, bb._rect.size.width, bb._rect.size.height),
-                                cc.RectMake(this.hero._position.x, this.hero._position.y, this.hero._rect.size.width, this.hero._rect.size.height))) {
-                                    this.reduceLife();
-                                    return;
+                    if (Logic.spriteHitTest(bb, this.hero)) {
+                        this.reduceLife();
+                        return;
                     }
                 }
                 //for each arrow
                 for (j = 0, len2 = this.arrowArray.length; j < len2; j++) {
                     var arr = this.arrowArray[j];
-                    // if ball and arrow collides
-                    if (cc.Rect.CCRectOverlapsRect(
-                                cc.RectMake(bb._position.x, bb._position.y, bb._rect.size.width, bb._rect.size.height),
-                                cc.RectMake(arr._position.x, arr._position.y - arr._rect.size.height/2, arr._rect.size.width/20, arr._rect.size.height))) {
-                                    State.score += 100 + bb.type * 10;
-                                    //remove the arrow from screen
-                                    arr.removeFromParentAndCleanup(true);
-                                    this.arrowArray.splice(j, 1);
-                                    //if its already smallest ball, remove it
-                                    if (bb.type == 1) {
-                                        bb.removeFromParentAndCleanup(true);
-                                        this.ballArray.splice(i, 1);
-                                    // else split the big ball into 2 small balls
-                                    } else {
-                                        this.ballArray.splice(i, 1);
-                                        var b1 = new Ball(bb.type - 1);
-                                        b1.setPosition(bb._position);
-                                        this.ballArray.push(b1);
-                                        this.addChild(b1, 2, 2);
-                                        var b2 = new Ball(bb.type - 1);
-                                        b2.setPosition(bb._position);
-                                        b2.vx = -4;
-                                        this.ballArray.push(b2);
-                                        this.addChild(b2, 2, 2);
-                                        bb.removeFromParentAndCleanup(true);
-                                    }
-                                    var pp;
-                                    for (var k = 0, len3 = this.powerData.length; k < len3, pp = this.powerData[k]; k++) {
-                                        if (Math.random() < pp.seed) {
-                                            pp.count--;
-                                            if(pp.count == 0) {
-                                                this.powerData.splice(k, 1);
-                                            }
-                                            var pup = cc.Sprite.create(GAME.POWERUPS[pp.id].icon);
-                                            pup.setPosition(bb._position);
-                                            pup.vx = (Math.random() * 100) - 50;
-                                            pup.vy = 100;
-                                            pup.dt = 5;
-                                            pup.tag= pp.id;
-                                            this.powerUpArray.push(pup);
-                                            this.addChild(pup, 2, 0);
-                                            return;
-                                        }
-                                    }
-
-                                    return;
+                    if (Logic.isArrowHitBall(bb, arr, this)) {
+                        this.arrowArray.splice(j, 1);
+                        this.ballArray.splice(i, 1);
+                        var pup = Logic.powerDrop(bb, this.powerData);
+                        if (pup) {
+                            this.powerUpArray.push(pup);
+                            this.addChild(pup, 2, 0);
+                        }
+                        return;
                     }
                 }
             }
@@ -306,24 +267,22 @@ var GameEngine = cc.Layer.extend({
                     pup.vy -= 5;
                     pup.setPosition(cc.p(pos.x + pup.vx*dt, pos.y + pup.vy*dt));
                 }
-                if (cc.Rect.CCRectOverlapsRect(
-                            cc.RectMake(pup._position.x, pup._position.y, pup._rect.size.width, pup._rect.size.height),
-                            cc.RectMake(this.hero._position.x, this.hero._position.y, this.hero._rect.size.width, this.hero._rect.size.height))) {
-                                pup.removeFromParentAndCleanup(true);
-                                this.powerUpArray.splice(i, 1);
-                                if (pup.tag == 0) {
-                                    State.score += 500;
-                                } else if (pup.tag == 1) {
-                                    State.remainingTime += 5;
-                                } else if (pup.tag == 2) {
-                                    State.nailCount++;
-                                } else if (pup.tag == 3) {
-                                    State.bombCount++;
-                                } else if (pup.tag == 4) {
-                                    State.lives++;
-                                }
-                                return;
-                            }
+                if (Logic.spriteHitTest(pup, this.hero)) {
+                    pup.removeFromParentAndCleanup(true);
+                    this.powerUpArray.splice(i, 1);
+                    if (pup.tag == 0) {
+                        State.score += 500;
+                    } else if (pup.tag == 1) {
+                        State.remainingTime += 5;
+                    } else if (pup.tag == 2) {
+                        State.nailCount++;
+                    } else if (pup.tag == 3) {
+                        State.bombCount++;
+                    } else if (pup.tag == 4) {
+                        State.lives++;
+                    }
+                    return;
+                }
 
             }
             if (this.isLeftPressed) {

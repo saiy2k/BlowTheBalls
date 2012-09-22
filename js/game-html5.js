@@ -25,6 +25,8 @@ var MW = MW || {};
             'js/src/LevelLoader.js',
             'js/src/State.js',
             'js/src/Hero.js',
+            'js/src/Powerup.js',
+            'js/src/Logic.js',
             'libs/jquery.js'
         ]
     };

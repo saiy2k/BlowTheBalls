@@ -1,4 +1,3 @@
-cc.dumpConfig();
 var winSize;
 var self;
 var Hud = cc.Layer.extend({

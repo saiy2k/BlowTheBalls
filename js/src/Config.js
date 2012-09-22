@@ -5,6 +5,11 @@
 GAME = {};
 
 /**
+ * level start lapse time
+ */
+GAME.LEVELSTARTLAPSE = 1.0;
+
+/**
  * A Simple enum to differentiate different balls
  */
 GAME.BALLTYPE = [ r.world1.ball1,
@@ -44,5 +49,10 @@ GAME.POWERUPS = [
         "id": 4,
         "name": "Extra Life",
         "icon": r.world1.livesIcon
+    },
+    {
+        "id": 5,
+        "name": "Shrink Hero",
+        "icon": r.world1.shrinkIcon
     }
 ];
