@@ -219,7 +219,7 @@ var GameEngine = cc.Layer.extend({
                 if (!this.hero.isSafe) {
                     if (Logic.spriteHitTest(bb, this.hero)) {
                         this.reduceLife();
-                        return;
+                        break;
                     }
                 }
                 //for each arrow
@@ -251,39 +251,18 @@ var GameEngine = cc.Layer.extend({
             // for each powerup icons
             for (i = 0, len = this.powerUpArray.length; i < len; i++) {
                 var pup = this.powerUpArray[i];
-                var pos = pup._position;
-                if (pos.y < pup._contentSize.height / 2) {
-                    pup.vx = 0;
-                    pup.vy = 0;
-                    pup.dt -= dt;
-                    pup._opacity = 100 + 150 * pup.dt / 5.0;
-                    if (pup.dt < 0) {
-                        pup.removeFromParentAndCleanup(true);
-                        this.powerUpArray.splice(i, 1);
-
-                        return;
-                    }
-                } else {
-                    pup.vy -= 5;
-                    pup.setPosition(cc.p(pos.x + pup.vx*dt, pos.y + pup.vy*dt));
-                }
-                if (Logic.spriteHitTest(pup, this.hero)) {
+                pup.update(dt);
+                if (pup.dt < 0) {
                     pup.removeFromParentAndCleanup(true);
                     this.powerUpArray.splice(i, 1);
-                    if (pup.tag == 0) {
-                        State.score += 500;
-                    } else if (pup.tag == 1) {
-                        State.remainingTime += 5;
-                    } else if (pup.tag == 2) {
-                        State.nailCount++;
-                    } else if (pup.tag == 3) {
-                        State.bombCount++;
-                    } else if (pup.tag == 4) {
-                        State.lives++;
-                    }
-                    return;
+                    break;
                 }
-
+                if (Logic.spriteHitTest(pup, this.hero)) {
+                    pup.hitReact();
+                    pup.removeFromParentAndCleanup(true);
+                    this.powerUpArray.splice(i, 1);
+                    break;
+                }
             }
             if (this.isLeftPressed) {
                 this.hero.moveLeft(dt);

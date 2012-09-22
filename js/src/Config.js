@@ -10,6 +10,11 @@ GAME = {};
 GAME.LEVELSTARTLAPSE = 1.0;
 
 /**
+ * powerup fade out time
+ */
+GAME.POWERUPFADETIME = 3.0;
+
+/**
  * A Simple enum to differentiate different balls
  */
 GAME.BALLTYPE = [ r.world1.ball1,

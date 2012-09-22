@@ -51,12 +51,8 @@ var Logic = {
                 if(pp.count == 0) {
                     powerData.splice(k, 1);
                 }
-                var pup = cc.Sprite.create(GAME.POWERUPS[pp.id].icon);
+                var pup = new Powerup(pp.id);
                 pup.setPosition(bb._position);
-                pup.vx = (Math.random() * 100) - 50;
-                pup.vy = 100;
-                pup.dt = 5;
-                pup.tag= pp.id;
                 return pup;
             }
         }
