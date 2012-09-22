@@ -165,7 +165,7 @@ var GameEngine = cc.Layer.extend({
                     cc.DelayTime.create(2),
                     cc.CallFunc.create(this, this.startGame)));
 
-        State.lives = 3;
+        State.lives = 9;
         State.score = 0;
         State.remainingTime = 60.0;
     },
@@ -256,13 +256,18 @@ var GameEngine = cc.Layer.extend({
                                     var pp;
                                     for (var k = 0, len3 = this.powerData.length; k < len3, pp = this.powerData[k]; k++) {
                                         if (Math.random() < pp.seed) {
-                                            console.log('POWER UP');
-                                            console.log(pp.id);
-                                            State.score += 500 * pp.id;
                                             pp.count--;
                                             if(pp.count == 0) {
                                                 this.powerData.splice(k, 1);
                                             }
+                                            var pup = cc.Sprite.create(GAME.POWERUPS[pp.id].icon);
+                                            pup.setPosition(bb._position);
+                                            pup.vx = (Math.random() * 100) - 50;
+                                            pup.vy = 100;
+                                            pup.dt = 5;
+                                            pup.tag= pp.id;
+                                            this.powerUpArray.push(pup);
+                                            this.addChild(pup, 2, 0);
                                             return;
                                         }
                                     }
@@ -281,6 +286,45 @@ var GameEngine = cc.Layer.extend({
                     this.arrowArray.splice(i, 1);
                     break;
                 }
+            }
+            // for each powerup icons
+            for (i = 0, len = this.powerUpArray.length; i < len; i++) {
+                var pup = this.powerUpArray[i];
+                var pos = pup._position;
+                if (pos.y < pup._contentSize.height / 2) {
+                    pup.vx = 0;
+                    pup.vy = 0;
+                    pup.dt -= dt;
+                    pup._opacity = 100 + 150 * pup.dt / 5.0;
+                    if (pup.dt < 0) {
+                        pup.removeFromParentAndCleanup(true);
+                        this.powerUpArray.splice(i, 1);
+
+                        return;
+                    }
+                } else {
+                    pup.vy -= 5;
+                    pup.setPosition(cc.p(pos.x + pup.vx*dt, pos.y + pup.vy*dt));
+                }
+                if (cc.Rect.CCRectOverlapsRect(
+                            cc.RectMake(pup._position.x, pup._position.y, pup._rect.size.width, pup._rect.size.height),
+                            cc.RectMake(this.hero._position.x, this.hero._position.y, this.hero._rect.size.width, this.hero._rect.size.height))) {
+                                pup.removeFromParentAndCleanup(true);
+                                this.powerUpArray.splice(i, 1);
+                                if (pup.tag == 0) {
+                                    State.score += 500;
+                                } else if (pup.tag == 1) {
+                                    State.remainingTime += 5;
+                                } else if (pup.tag == 2) {
+                                    State.nailCount++;
+                                } else if (pup.tag == 3) {
+                                    State.bombCount++;
+                                } else if (pup.tag == 4) {
+                                    State.lives++;
+                                }
+                                return;
+                            }
+
             }
             if (this.isLeftPressed) {
                 this.hero.moveLeft(dt);

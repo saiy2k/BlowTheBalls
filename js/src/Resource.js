@@ -82,7 +82,7 @@ for (var i = 0; i < 1; i++) {
     r[worldS].ball5 = dirImg + "ball5.png";
     r[worldS].ball6 = dirImg + "ball6.png";
     r[worldS].ball7 = dirImg + "ball7.png";
-    r[worldS].arrow = dirImg + "arrow.jpg";
+    r[worldS].arrow = dirImg + "arrow.png";
     r[worldS].sideWall = dirImg + "sideWall.jpg";
     r[worldS].background = dirImg + "gameBg.jpg";
     r[worldS].bombButton = dirImg + "bombButton.png";
@@ -93,6 +93,13 @@ for (var i = 0; i < 1; i++) {
     r[worldS].leftButtonP = dirImg + "leftButtonPress.png";
     r[worldS].rightButton = dirImg + "rightButton.png";
     r[worldS].rightButtonP = dirImg + "rightButtonPress.png";
+    r[worldS].timeIcon = dirImg + "timeIcon.png";
+    r[worldS].nailsIcon = dirImg + "nailsIcon.png";
+    r[worldS].livesIcon = dirImg + "livesIcon.png";
+    r[worldS].cashIcon = dirImg + "cashIcon.png";
+    r[worldS].bombIcon = dirImg + "bombIcon.png";
+    r[worldS].bombPower = dirImg + "bomb.png";
+    r[worldS].spikesPower = dirImg + "spikes.png";
 }
 
 var g_ressources = [
@@ -147,6 +154,12 @@ var g_ressources = [
 	{type:"image", src:r.world1.leftButton},
 	{type:"image", src:r.world1.leftButtonP},
 	{type:"image", src:r.world1.rightButton},
-	{type:"image", src:r.world1.rightButtonP}
-
+	{type:"image", src:r.world1.rightButtonP},
+	{type:"image", src:r.world1.timeIcon},
+	{type:"image", src:r.world1.nailsIcon},
+	{type:"image", src:r.world1.livesIcon},
+	{type:"image", src:r.world1.cashIcon},
+	{type:"image", src:r.world1.bombIcon},
+	{type:"image", src:r.world1.bombPower},
+	{type:"image", src:r.world1.spikesPower}
 ];

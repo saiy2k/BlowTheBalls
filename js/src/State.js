@@ -46,7 +46,7 @@ State = {
     /**
      * number of lives remaining
      */
-    lives: 3,
+    lives: 9,
 
     /**
      * current score

@@ -7,8 +7,7 @@ GAME = {};
 /**
  * A Simple enum to differentiate different balls
  */
-GAME.BALLTYPE = [
-    r.world1.ball1,
+GAME.BALLTYPE = [ r.world1.ball1,
     r.world1.ball2,
     r.world1.ball3,
     r.world1.ball4,
@@ -23,22 +22,27 @@ GAME.BALLTYPE = [
 GAME.POWERUPS = [
     {
         "id": 0,
-        "name": "Extra Time",
-        "icon": "extraTimeIcon.png",
+        "name": "Cash",
+        "icon": r.world1.cashIcon
     },
     {
         "id": 1,
-        "name": "Extra Life",
-        "icon": "extraLifeIcon.png",
+        "name": "Extra Time",
+        "icon": r.world1.timeIcon
     },
     {
         "id": 2,
-        "name": "100 Points",
-        "icon": "featherIcon.png",
+        "name": "Nails",
+        "icon": r.world1.nailsIcon
     },
     {
         "id": 3,
-        "name": "500 Points",
-        "icon": "scrollIcon.png",
+        "name": "Bomb",
+        "icon": r.world1.bombIcon
+    },
+    {
+        "id": 4,
+        "name": "Extra Life",
+        "icon": r.world1.livesIcon
     }
 ];

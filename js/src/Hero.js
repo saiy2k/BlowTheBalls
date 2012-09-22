@@ -1,4 +1,3 @@
-cc.dumpConfig();
 
 /**
  * This class handles all the functionalities and renders of the hero
@@ -52,7 +51,6 @@ var Hero = cc.Sprite.extend({
     fire: function(spriteFile) {
         this.lastFired = 0;
         var arr = cc.Sprite.create(spriteFile);
-        arr._scaleX = 0.04;
         arr.setPosition(cc.p(this._position.x, -400));
         return arr;
     },

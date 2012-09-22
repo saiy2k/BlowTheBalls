@@ -86,7 +86,7 @@ var Hud = cc.Layer.extend({
                 menu.setPosition(cc.p(winSize.width / 2, winSize.height / 2));
 
             }
-            for (var i = 0; i < 3; i++) {
+            for (var i = 0; i < State.lives; i++) {
                 var lif = cc.Sprite.create(GAME.BALLTYPE[0], cc.rect(0, 0, 24, 24));
                 lif.setPosition(cc.p(50 + i * 50, winSize.height * 0.9));
                 this.addChild(lif, 2, 2);

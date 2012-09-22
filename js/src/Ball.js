@@ -1,4 +1,3 @@
-cc.dumpConfig();
 var self;
 
 /*

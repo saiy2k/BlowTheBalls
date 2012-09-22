@@ -1,4 +1,3 @@
-cc.dumpConfig();
 
 /*
 	CLASS LevelLoader : Class

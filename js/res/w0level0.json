@@ -19,18 +19,18 @@
         ],
     "objects": [
                 {
+                    "id": 0,
+                    "seed": 0.1,
+                    "count": 2
+                },
+                {
                     "id": 1,
-                    "seed": 0.02,
+                    "seed": 0.1,
                     "count": 2
                 },
                 {
                     "id": 2,
-                    "seed": 0.02,
-                    "count": 1
-                },
-                {
-                    "id": 3,
-                    "seed": 0.9,
+                    "seed": 0.1,
                     "count": 2
                 }
         ]
