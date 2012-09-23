@@ -25,7 +25,7 @@ var Logic = {
             arr.removeFromParentAndCleanup(true);
             //if its already smallest ball, remove it
             if (bb.type == 1) {
-                bb.removeFromParentAndCleanup(true);
+                bb.explode();
             // else split the big ball into 2 small balls
             } else {
                 var b1 = new Ball(bb.type - 1);
@@ -53,6 +53,7 @@ var Logic = {
                 }
                 var pup = new Powerup(pp.id);
                 pup.setPosition(bb._position);
+                pup.jump();
                 return pup;
             }
         }

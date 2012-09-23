@@ -232,6 +232,7 @@ var GameEngine = cc.Layer.extend({
                         if (pup) {
                             this.powerUpArray.push(pup);
                             this.addChild(pup, 2, 0);
+                            pup.delegate = this;
                         }
                         return;
                     }
@@ -251,15 +252,8 @@ var GameEngine = cc.Layer.extend({
             // for each powerup icons
             for (i = 0, len = this.powerUpArray.length; i < len; i++) {
                 var pup = this.powerUpArray[i];
-                pup.update(dt);
-                if (pup.dt < 0) {
-                    pup.removeFromParentAndCleanup(true);
-                    this.powerUpArray.splice(i, 1);
-                    break;
-                }
                 if (Logic.spriteHitTest(pup, this.hero)) {
-                    pup.hitReact();
-                    pup.removeFromParentAndCleanup(true);
+                    pup.hitReact(this.hero._position);
                     this.powerUpArray.splice(i, 1);
                     break;
                 }
@@ -335,6 +329,11 @@ var GameEngine = cc.Layer.extend({
                             this.hero.isSafe = false; } )));
             this.hero.runAction(cc.FadeTo.create(5, 255));
         }
+    },
+
+    powerRemoved: function(pup) {
+        var index = this.powerUpArray.indexOf(pup);
+        this.powerUpArray.splice(index, 1);
     }
 });
 

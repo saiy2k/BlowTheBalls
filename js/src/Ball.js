@@ -30,6 +30,9 @@ var Ball = cc.Sprite.extend({
 
         self = this;
 
+        var actionRotate = cc.EaseOut.create(cc.RotateTo.create(2, -1440), 2);
+        this.runAction(actionRotate);
+
     },
 	
 	/*
@@ -63,6 +66,12 @@ var Ball = cc.Sprite.extend({
 	/*
 		Explode, called when...
 	*/
-    explode:function(layer, bArray) {
+    explode:function() {
+        console.log('exp');
+        this.runAction(cc.Sequence.create(
+                    cc.ScaleTo.create(0.2, 1.5, 1.5),
+                    cc.CallFunc.create(this, this.removeFromParentAndCleanup, true)));
+        this.runAction(cc.FadeTo.create(0.2, 50));
+        this.runAction(cc.EaseIn.create(cc.MoveBy.create(0.2, cc.p(0, this._position.y/8 + 60)), 2.0));
     }
 });
