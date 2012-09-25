@@ -100,6 +100,8 @@ for (var i = 0; i < 1; i++) {
     r[worldS].bombIcon = dirImg + "bombIcon.png";
     r[worldS].bombPower = dirImg + "bomb.png";
     r[worldS].spikesPower = dirImg + "spikes.png";
+    r[worldS].pauseButton = dirImg + "pauseButton.png";
+    r[worldS].topSpikes = dirImg + "topSpikes.png";
 }
 
 var g_ressources = [
@@ -161,5 +163,7 @@ var g_ressources = [
 	{type:"image", src:r.world1.cashIcon},
 	{type:"image", src:r.world1.bombIcon},
 	{type:"image", src:r.world1.bombPower},
-	{type:"image", src:r.world1.spikesPower}
+	{type:"image", src:r.world1.spikesPower},
+	{type:"image", src:r.world1.pauseButton},
+	{type:"image", src:r.world1.topSpikes}
 ];

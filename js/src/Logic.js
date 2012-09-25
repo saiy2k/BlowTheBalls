@@ -57,6 +57,7 @@ var Logic = {
                 return pup;
             }
         }
+    },
+        checkForWinCondition: function() {
     }
-
 };

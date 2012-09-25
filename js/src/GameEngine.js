@@ -234,6 +234,8 @@ var GameEngine = cc.Layer.extend({
                             this.addChild(pup, 2, 0);
                             pup.delegate = this;
                         }
+                        if (Logic.checkForWinCondition()) {
+                        }
                         return;
                     }
                 }
@@ -255,6 +257,11 @@ var GameEngine = cc.Layer.extend({
                 if (Logic.spriteHitTest(pup, this.hero)) {
                     pup.hitReact(this.hero._position);
                     this.powerUpArray.splice(i, 1);
+                    if (pup.tag == 2) {
+                        this.hud.incrementNailCount();
+                    } else if (pup.tag == 3) {
+                        this.hud.incrementBombCount();
+                    }
                     break;
                 }
             }
