@@ -23,8 +23,11 @@ var Hud = cc.Layer.extend({
                     var leftButtonNormal = cc.Sprite.create(s_leftButton, cc.rect(0, 0, 105, 105));
                     var leftButtonSelected = cc.Sprite.create(s_leftButtonPressed, cc.rect(0, 0, 105, 105));
                     var leftButtonDisabled = cc.Sprite.create(s_leftButtonPressed, cc.rect(0, 0, 105, 105));
-                    var leftButton = cc.MenuItemSprite.create(leftButtonNormal, leftButtonSelected, leftButtonDisabled, this, function() {
-                        this.delegate.moveLeft();
+                    var leftButton = cc.MenuItemSprite.create(leftButtonNormal, leftButtonSelected, leftButtonDisabled, this, function(obj, held) {
+                        if (held && held == true)
+                            this.delegate.isLeftPressed = true;
+                        else
+                            this.delegate.isLeftPressed = false;
                         this.onButtonEffect();
                     });
                     leftButton.setPosition(cc.p((-winSize.width + leftButton._contentSize.width) / 2, 0));
@@ -32,9 +35,11 @@ var Hud = cc.Layer.extend({
                     var rightButtonNormal = cc.Sprite.create(s_rightButton, cc.rect(0, 0, 105, 105));
                     var rightButtonSelected = cc.Sprite.create(s_rightButtonPressed, cc.rect(0, 0, 105, 105));
                     var rightButtonDisabled = cc.Sprite.create(s_rightButtonPressed, cc.rect(0, 0, 105, 105));
-                    var rightButton = cc.MenuItemSprite.create(rightButtonNormal, rightButtonSelected, rightButtonDisabled, this, function() {
-                        this.delegate.moveRight();
-                        this.onButtonEffect();
+                    var rightButton = cc.MenuItemSprite.create(rightButtonNormal, rightButtonSelected, rightButtonDisabled, this, function(obj, held) {
+                        if (held && held == true)
+                            this.delegate.isRightPressed = true;
+                        else
+                            this.delegate.isRightPressed = false;
                     });
                     rightButton.setPosition(cc.p((winSize.width - rightButton._contentSize.width) / 2, 0));
                 }

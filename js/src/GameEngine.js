@@ -29,16 +29,11 @@ var GameEngine = cc.Layer.extend({
     /**
      * hero object
      */
-     
-     /*
-     componants that renders the winning screen
-     */
-     
     hero: null,
     isLeftPressed: false,
     isRightPressed: false,
     
-       /**
+    /**
      * constructor (dummy in my opinion)
      */
     ctor:function () {
@@ -76,8 +71,6 @@ var GameEngine = cc.Layer.extend({
             this.hero.targetX = winSize.width/2;
             this.addChild(this.hero, 0, 2);
 
-
-
             // level loader object
             loader = new LevelLoader();
             loader.delegate = this;
@@ -94,13 +87,11 @@ var GameEngine = cc.Layer.extend({
     startGame: function () {
         console.log('started');
         State.gameStatus = 'play';	
-       //         State.gameStatus = 'win';
-        //        State.gameStatus = 'loss';
 
 
     },
                                  
-       //callback method invoked on accelerometer change
+    //callback method invoked on accelerometer change
     didAccelerate:function (pAccelerationValue) {
         // calculate acc values and call moveleft / move right appropriately
     },
@@ -164,11 +155,9 @@ var GameEngine = cc.Layer.extend({
         if (State.gameStatus == 'play') {
             var i, j, len, len2;
                                  
-//                                 if(this.ballArray.length==0)
-//                                 {
-//                                 State.gameStatus = 'win';
-//                                 console.log('win');
-//                                 }
+            if(this.ballArray.length == 0) {
+                State.gameStatus = 'win';
+            }
                                  
             // for each ball
             for (i = 0, len = this.ballArray.length; i < len; i++) {
@@ -240,20 +229,10 @@ var GameEngine = cc.Layer.extend({
             }
             self.hero.update(dt);
         }
-        else if (State.gameStatus == 'win')
-                                 {
-                                 this.wingame();
-                                 }
-
+        else if (State.gameStatus == 'win') {
+            //TODO: win game screen logic
+        }
     },
-    
-      wingame: function () {
-      	     console.log('winLayer')
- var scene = cc.Scene.create();
-        scene.addChild(WinLayer.create());
-        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
-     },
-
 
     /**
      * callback function invoked by level loader once the specified
@@ -272,19 +251,11 @@ var GameEngine = cc.Layer.extend({
      * command left that makes the character walk to the left side
      */
     moveLeft: function(dt) {
-    	 //isLeftPressed: false,
-    isRightPressed: false,
-        this.hero.moveLeft(dt);
-        console.log('move left');
     },
     /**
      * command right that makes the character walk to the right side
      */
     moveRight: function(dt) {
-    	 isLeftPressed: false,
-   // isRightPressed: false,
-        this.hero.moveRight(dt);
-        console.log('move right');
     },
     /**
      * command to fire curently selected arrow

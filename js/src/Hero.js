@@ -10,12 +10,8 @@ var Hero = cc.Sprite.extend({
     targetX: 0,
     
     herotexture:null,
-     /*
-    Actions hero sprites
-    */
-//    fAnimate:null,
-//    bAnimate:null,
 
+    walkAction:null,
     /**
      * when this flag is set, the hero is safe
      * and no collision occurs
@@ -23,104 +19,50 @@ var Hero = cc.Sprite.extend({
     isSafe: false,
 
     ctor:function (type) {
+        var lft = [];
+
 		//Dunno what this does :)
         cc.associateWithNative( this, cc.Sprite );
 
-		//Get texture
-       // var texture = cc.TextureCache.getInstance().addImage(GAME.BALLTYPE[0]);
-          herotexture = cc.TextureCache.getInstance().addImage(s_Hero);
+        var frameCache = cc.SpriteFrameCache.getInstance();
+
+        herotexture = cc.TextureCache.getInstance().addImage(s_Hero);
+        frameCache.addSpriteFrames(s_Hero_plist);
+
+        var bFrame0 = frameCache.getSpriteFrame("walk10.png");
+        var bFrame1 = frameCache.getSpriteFrame("walk20.png");
+        var bFrame2 = frameCache.getSpriteFrame("walk30.png");
+        var bFrame3 = frameCache.getSpriteFrame("walk40.png");
+
+        lft.push(bFrame0);
+        lft.push(bFrame1);
+        lft.push(bFrame2);
+        lft.push(bFrame3);
+
+        var lanimation = cc.Animation.create(lft, 60/1000);
+
+        this.walkAction = cc.Animate.create(lanimation);
+        this.runAction(this.walkAction);
 
 		//Initialize
         this.initWithTexture(herotexture, cc.rect(0, 0, 120, 153));
-
-		 this.setTag(this.zOrder);
-       // this.setPosition(this.appearPosition);
-
-        console.log('hero');
-        
-
-
-
-  	  
-
-// 		var fani = cc.Animation.create();   
-//        
-//		fani.addSpriteFrameWithFileName(s_downback); 
-//        fani.addSpriteFrameWithFileName(s_passback); 
-//        fani.addSpriteFrameWithFileName(s_upback); 
-//
-//        fani.setDelayPerUnit(1); 
-//        fani.setLoops(5); 
-//        var faction = cc.Animate.create(fani);
-//
-//
-//
-//		var bani = cc.Animation.create();   
-//        
-//		bani.addSpriteFrameWithFileName(s_down); 
-//        bani.addSpriteFrameWithFileName(s_pass); 
-//        bani.addSpriteFrameWithFileName(s_up); 
-//
-//        bani.setDelayPerUnit(1); 
-//        bani.setLoops(5); 
-//        var baction = cc.Animate.create(bani);
-        
-        
     },
     moveLeft: function(dt) {
         this.targetX -= 200 * dt;
-        if(this.action)
-        this.stopAction();
-        
-
- cc.SpriteFrameCache.getInstance().addSpriteFrames(s_Hero_plist);
-    var banimFrames = [];
-
-
-        var bFrame0 = cc.SpriteFrameCache.getInstance().getSpriteFrame("contactback.png");
-        var bFrame1 = cc.SpriteFrameCache.getInstance().getSpriteFrame("downback.png");
-        var bFrame2 = cc.SpriteFrameCache.getInstance().getSpriteFrame("passback.png");
-        var bFrame3 = cc.SpriteFrameCache.getInstance().getSpriteFrame("upback.png");
-
-        banimFrames.push(bFrame0);
-        banimFrames.push(bFrame1);
-        banimFrames.push(bFrame2);
-        banimFrames.push(bFrame3);
-
-
-    var banimation = cc.Animation.create(banimFrames, 0.04);
-
-        var bAnimate = cc.Animate.create(banimation);
-       	this.runAction(bAnimate);        
-
-           },
+        if (this.walkAction.getElapsed() >= this.walkAction.getDuration()) {
+            this.stopAllActions();
+            this.runAction(this.walkAction);
+            this.setFlipX(true);
+        }
+    },
     
     moveRight: function(dt) {
         this.targetX += 200 * dt;
-         if(this.action)
-        this.stopAction();
-        
-       
- cc.SpriteFrameCache.getInstance().addSpriteFrames(s_Hero_plist);
-    var fanimFrames = [];
-
-
-        var fFrame0 = cc.SpriteFrameCache.getInstance().getSpriteFrame("contact.png");
-        var fFrame1 = cc.SpriteFrameCache.getInstance().getSpriteFrame("down.png");
-        var fFrame2 = cc.SpriteFrameCache.getInstance().getSpriteFrame("pass.png");
-        var fFrame3 = cc.SpriteFrameCache.getInstance().getSpriteFrame("up.png");
-
-        fanimFrames.push(fFrame0);
-        fanimFrames.push(fFrame1);
-        fanimFrames.push(fFrame2);
-        fanimFrames.push(fFrame3);
-
-
-    var fanimation = cc.Animation.create(fanimFrames, 0.04);
-
-        var fAnimate = cc.Animate.create(fanimation);
-       	this.runAction(fAnimate);        
-
+        if (this.walkAction.getElapsed() >= this.walkAction.getDuration()) {
+            this.stopAllActions();
+            this.runAction(this.walkAction);
+            this.setFlipX(false);
+        }
     },
 	/**
      * Update, called on each frame
@@ -131,19 +73,3 @@ var Hero = cc.Sprite.extend({
         this._position.x -= dx/4;
     },
 });
-//Hero.sharedExplosion = function () {
-//    cc.SpriteFrameCache.getInstance().addSpriteFrames(s_explosion_plist);
-//    var animFrames = [];
-//    
-//    if()
-//    
-////    var str = "";
-////    for (var i = 1; i < 35; i++) {
-////        str = "explosion_" + (i < 10 ? ("0" + i) : i) + ".png";
-////        var frame = cc.SpriteFrameCache.getInstance().getSpriteFrame(str);
-////        animFrames.push(frame);
-////    }
-//    var animation = cc.Animation.create(animFrames, 0.04);
-//    cc.AnimationCache.getInstance().addAnimation(animation, "Explosion");
-//};
-//

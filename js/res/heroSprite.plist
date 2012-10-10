@@ -4,178 +4,84 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>contact.png</key>
+            <key>shoot.png</key>
             <dict>
-                <key>height</key>
-                <integer>153</integer>
-                <key>offsetX</key>
-                <real>0</real>
-                <key>offsetY</key>
-                <real>0</real>
-                <key>originalHeight</key>
-                <integer>153</integer>
-                <key>originalWidth</key>
-                <integer>112</integer>
-                <key>width</key>
-                <integer>112</integer>
-                <key>x</key>
-                <integer>352</integer>
-                <key>y</key>
-                <integer>2</integer>
+                <key>frame</key>
+                <string>{{2,2},{120,153}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{120,153}}</string>
+                <key>sourceSize</key>
+                <string>{120,153}</string>
             </dict>
-            <key>contactback.png</key>
+            <key>walk10.png</key>
             <dict>
-                <key>height</key>
-                <integer>153</integer>
-                <key>offsetX</key>
-                <real>0</real>
-                <key>offsetY</key>
-                <real>0</real>
-                <key>originalHeight</key>
-                <integer>153</integer>
-                <key>originalWidth</key>
-                <integer>112</integer>
-                <key>width</key>
-                <integer>112</integer>
-                <key>x</key>
-                <integer>238</integer>
-                <key>y</key>
-                <integer>2</integer>
+                <key>frame</key>
+                <string>{{124,2},{120,153}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{120,153}}</string>
+                <key>sourceSize</key>
+                <string>{120,153}</string>
             </dict>
-            <key>down.png</key>
+            <key>walk20.png</key>
             <dict>
-                <key>height</key>
-                <integer>153</integer>
-                <key>offsetX</key>
-                <real>0</real>
-                <key>offsetY</key>
-                <real>0</real>
-                <key>originalHeight</key>
-                <integer>153</integer>
-                <key>originalWidth</key>
-                <integer>116</integer>
-                <key>width</key>
-                <integer>116</integer>
-                <key>x</key>
-                <integer>120</integer>
-                <key>y</key>
-                <integer>2</integer>
+                <key>frame</key>
+                <string>{{2,157},{120,153}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{120,153}}</string>
+                <key>sourceSize</key>
+                <string>{120,153}</string>
             </dict>
-            <key>downback.png</key>
+            <key>walk30.png</key>
             <dict>
-                <key>height</key>
-                <integer>153</integer>
-                <key>offsetX</key>
-                <real>0</real>
-                <key>offsetY</key>
-                <real>0</real>
-                <key>originalHeight</key>
-                <integer>153</integer>
-                <key>originalWidth</key>
-                <integer>116</integer>
-                <key>width</key>
-                <integer>116</integer>
-                <key>x</key>
-                <integer>2</integer>
-                <key>y</key>
-                <integer>2</integer>
+                <key>frame</key>
+                <string>{{124,157},{120,153}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{120,153}}</string>
+                <key>sourceSize</key>
+                <string>{120,153}</string>
             </dict>
-            <key>pass.png</key>
+            <key>walk40.png</key>
             <dict>
-                <key>height</key>
-                <integer>153</integer>
-                <key>offsetX</key>
-                <real>0</real>
-                <key>offsetY</key>
-                <real>0</real>
-                <key>originalHeight</key>
-                <integer>153</integer>
-                <key>originalWidth</key>
-                <integer>108</integer>
-                <key>width</key>
-                <integer>108</integer>
-                <key>x</key>
-                <integer>796</integer>
-                <key>y</key>
-                <integer>2</integer>
-            </dict>
-            <key>passback.png</key>
-            <dict>
-                <key>height</key>
-                <integer>153</integer>
-                <key>offsetX</key>
-                <real>0</real>
-                <key>offsetY</key>
-                <real>0</real>
-                <key>originalHeight</key>
-                <integer>153</integer>
-                <key>originalWidth</key>
-                <integer>108</integer>
-                <key>width</key>
-                <integer>108</integer>
-                <key>x</key>
-                <integer>686</integer>
-                <key>y</key>
-                <integer>2</integer>
-            </dict>
-            <key>up.png</key>
-            <dict>
-                <key>height</key>
-                <integer>153</integer>
-                <key>offsetX</key>
-                <real>0</real>
-                <key>offsetY</key>
-                <real>0</real>
-                <key>originalHeight</key>
-                <integer>153</integer>
-                <key>originalWidth</key>
-                <integer>108</integer>
-                <key>width</key>
-                <integer>108</integer>
-                <key>x</key>
-                <integer>576</integer>
-                <key>y</key>
-                <integer>2</integer>
-            </dict>
-            <key>upback.png</key>
-            <dict>
-                <key>height</key>
-                <integer>153</integer>
-                <key>offsetX</key>
-                <real>0</real>
-                <key>offsetY</key>
-                <real>0</real>
-                <key>originalHeight</key>
-                <integer>153</integer>
-                <key>originalWidth</key>
-                <integer>108</integer>
-                <key>width</key>
-                <integer>108</integer>
-                <key>x</key>
-                <integer>466</integer>
-                <key>y</key>
-                <integer>2</integer>
+                <key>frame</key>
+                <string>{{2,312},{120,153}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{120,153}}</string>
+                <key>sourceSize</key>
+                <string>{120,153}</string>
             </dict>
         </dict>
         <key>metadata</key>
         <dict>
             <key>format</key>
-            <integer>0</integer>
+            <integer>2</integer>
             <key>realTextureFileName</key>
             <string>heroSprite.png</string>
             <key>size</key>
-            <string>{906,157}</string>
+            <string>{256,512}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:11c25c876e85adaa61207104b6a19a95$</string>
+            <string>$TexturePacker:SmartUpdate:0c4fe3f6e0099fedfe25fc38f27217a8$</string>
             <key>textureFileName</key>
             <string>heroSprite.png</string>
-        </dict>
-        <key>texture</key>
-        <dict>
-            <key>height</key>
-            <integer>157</integer>
-            <key>width</key>
-            <integer>906</integer>
         </dict>
     </dict>
 </plist>
