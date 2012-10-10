@@ -117,9 +117,10 @@ var GameEngine = cc.Layer.extend({
     /** function that starts a game */
     startGame: function () {
         console.log('started');
-        State.gameStatus = 'play';
-    },
+        State.gameStatus = 'play';	
 
+
+    },
     //callback method invoked on accelerometer change
     didAccelerate:function (pAccelerationValue) {
         // calculate acc values and call moveleft / move right appropriately
@@ -211,6 +212,11 @@ var GameEngine = cc.Layer.extend({
                                 cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
                             } )));
             }
+                                 
+            if(this.ballArray.length == 0) {
+                State.gameStatus = 'win';
+            }
+                                 
             // for each ball
             for (i = 0, len = this.ballArray.length; i < len; i++) {
                 var bb = this.ballArray[i];
@@ -274,6 +280,9 @@ var GameEngine = cc.Layer.extend({
             this.hero.update(dt);
             this.hud.update(dt);
         }
+        else if (State.gameStatus == 'win') {
+            //TODO: win game screen logic
+        }
     },
 
     /**
@@ -291,7 +300,16 @@ var GameEngine = cc.Layer.extend({
         this.powerData = tpowerups;
         console.log('level loaderd');
     },
-    
+    /**
+     * command left that makes the character walk to the left side
+     */
+    moveLeft: function(dt) {
+    },
+    /**
+     * command right that makes the character walk to the right side
+     */
+    moveRight: function(dt) {
+    },
     /**
      * command to fire curently selected arrow
      * can have only one arrow at a time on screen

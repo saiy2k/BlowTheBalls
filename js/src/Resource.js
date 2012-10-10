@@ -38,6 +38,40 @@ if( cc.config.deviceType == 'browser') {
 var s_loading = dirImg + "loading.png";
 var s_cocos2dhtml5 = dirImg + "cocos2d-html5.png";
 var s_logo = dirImg + "logo.png";
+var s_gameOver = dirImg + "gameOver.png";
+var s_menuTitle = dirImg + "menuTitle.png";
+/*
+	hero sprite
+*/
+//Image
+var s_Hero 		= dirImg + "heroSprite.png";
+
+
+// plist
+var s_Hero_plist = dirImg + "heroSprite.plist";
+
+
+var s_menuButtonPlayNormal = dirImg + "menuButtonPlayNormal.png";
+//var s_menuButtonPlaySelected = dirImg + "menuButtonPlaySelected.png";
+//var s_menuButtonPlayDisabled = dirImg + "menuButtonPlayDisabled.png";
+
+var s_menuButtonOptionsNormal = dirImg + "menuButtonOptionsNormal.png";
+//var s_menuButtonOptionsSelected = dirImg + "menuButtonOptionsSelected.png";
+//var s_menuButtonOptionsDisabled = dirImg + "menuButtonOptionsDisabled.png";
+
+var s_menuButtonInstructionsNormal = dirImg + "menuButtonInstructionsNormal.png";
+//var s_menuButtonInstructionsSelected = dirImg + "menuButtonInstructionsSelected.png";
+//var s_menuButtonInstructionsDisabled = dirImg + "menuButtonInstructionsDisabled.png";
+
+var s_menuButtonCreditsNormal = dirImg + "menuButtonCreditsNormal.png";
+//var s_menuButtonCreditesSelected = dirImg + "menuButtonCreditsSelected.png";
+//var s_menuButtonCreditesDisabled = dirImg + "menuButtonCreditsDisabled.png";
+
+var s_menuButtonHighScoreNormal = dirImg + "menuButtonHighScoreNormal.png";
+//var s_menuButtonHighScoreSelected = dirImg + "menuButtonHighScoreSelected.png";
+//var s_menuButtonHighScoreDisabled = dirImg + "menuButtonHighScoreDisabled.png";
+
+
 
 //menu
 r.menu.background = dirImg + "menu_bg.jpg";
@@ -138,6 +172,12 @@ var g_ressources = [
     {type:"effect", src:s_fireEffect},
     {type:"effect", src:s_shipDestroyEffect},
 
+	//Hero walk
+   {type:"image", src:s_Hero},
+	
+	//plist
+	{type:"plist",src:s_Hero_plist},
+    
     //game
 	{type:"image", src:r.world1.ball1},
 	{type:"image", src:r.world1.ball2},

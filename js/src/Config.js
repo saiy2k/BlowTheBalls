@@ -61,3 +61,4 @@ GAME.POWERUPS = [
         "icon": r.world1.shrinkIcon
     }
 ];
+

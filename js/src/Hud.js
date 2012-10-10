@@ -56,11 +56,14 @@ var Hud = cc.Layer.extend({
                     sideWall.setPosition(cc.p(winSize.width - sideWall._contentSize.width/2, sideWall._contentSize.height / 2));
                     this.addChild(sideWall, 0, 0);
 
-                    var leftButtonNormal = cc.Sprite.create(this.res.leftButton, cc.rect(0, 0, 105, 105));
-                    var leftButtonSelected = cc.Sprite.create(this.res.leftButtonP, cc.rect(0, 0, 105, 105));
-                    var leftButtonDisabled = cc.Sprite.create(this.res.leftButtonP, cc.rect(0, 0, 105, 105));
-                    var leftButton = cc.MenuItemSprite.create(leftButtonNormal, leftButtonSelected, leftButtonDisabled, this, function(e) {
-                        this.delegate.isLeftPressed = false;
+                    var leftButtonNormal = cc.Sprite.create(s_leftButton, cc.rect(0, 0, 105, 105));
+                    var leftButtonSelected = cc.Sprite.create(s_leftButtonPressed, cc.rect(0, 0, 105, 105));
+                    var leftButtonDisabled = cc.Sprite.create(s_leftButtonPressed, cc.rect(0, 0, 105, 105));
+                    var leftButton = cc.MenuItemSprite.create(leftButtonNormal, leftButtonSelected, leftButtonDisabled, this, function(obj, held) {
+                        if (held && held == true)
+                            this.delegate.isLeftPressed = true;
+                        else
+                            this.delegate.isLeftPressed = false;
                         this.onButtonEffect();
                     });
                     leftButton.touched = function() {
@@ -68,12 +71,14 @@ var Hud = cc.Layer.extend({
                     };
                     leftButton.setPosition(cc.p((-winSize.width + leftButton._contentSize.width) / 2, 0));
 
-                    var rightButtonNormal = cc.Sprite.create(this.res.rightButton, cc.rect(0, 0, 105, 105));
-                    var rightButtonSelected = cc.Sprite.create(this.res.rightButtonP, cc.rect(0, 0, 105, 105));
-                    var rightButtonDisabled = cc.Sprite.create(this.res.rightButtonP, cc.rect(0, 0, 105, 105));
-                    var rightButton = cc.MenuItemSprite.create(rightButtonNormal, rightButtonSelected, rightButtonDisabled, this, function() {
-                        this.delegate.isRightPressed = false;
-                        this.onButtonEffect();
+                    var rightButtonNormal = cc.Sprite.create(s_rightButton, cc.rect(0, 0, 105, 105));
+                    var rightButtonSelected = cc.Sprite.create(s_rightButtonPressed, cc.rect(0, 0, 105, 105));
+                    var rightButtonDisabled = cc.Sprite.create(s_rightButtonPressed, cc.rect(0, 0, 105, 105));
+                    var rightButton = cc.MenuItemSprite.create(rightButtonNormal, rightButtonSelected, rightButtonDisabled, this, function(obj, held) {
+                        if (held && held == true)
+                            this.delegate.isRightPressed = true;
+                        else
+                            this.delegate.isRightPressed = false;
                     });
                     rightButton.touched = function() {
                         self.delegate.isRightPressed = true;

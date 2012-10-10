@@ -80,6 +80,11 @@ cc.MenuItem = cc.Node.extend(/** @lends cc.MenuItem# */{
     _isSelected:false,
 
     /**
+     * press and hold functionality
+     */
+    itemHeld:false,
+
+    /**
      * @return {Boolean}
      */
     isSelected:function () {
@@ -130,6 +135,11 @@ cc.MenuItem = cc.Node.extend(/** @lends cc.MenuItem# */{
      */
     selected:function () {
         this._isSelected = true;
+        if (this._listener && (typeof(this._selector) == "string")) {
+            this._listener[this._selector](this, true);
+        } else if (this._listener && (typeof(this._selector) == "function")) {
+            this._selector.call(this._listener, this, true);
+        }
     },
 
     /**
@@ -713,6 +723,7 @@ cc.MenuItemSprite = cc.MenuItem.extend(/** @lends cc.MenuItemSprite# */{
             else {
                 this._normalImage.setVisible(true);
             }
+            this.buttonHeld = true;
         }
     },
 
@@ -732,6 +743,7 @@ cc.MenuItemSprite = cc.MenuItem.extend(/** @lends cc.MenuItemSprite# */{
             if (this._disabledImage) {
                 this._disabledImage.setVisible(false);
             }
+            this.buttonHeld = false;
         }
     },
 
