@@ -34,7 +34,7 @@ var Logic = {
                 layer.addChild(b1, 2, 2);
                 var b2 = new Ball(bb.type - 1);
                 b2.setPosition(bb._position);
-                b2.vx = -4;
+                b2.vx = -b2.vx;
                 layer.ballArray.push(b2);
                 layer.addChild(b2, 2, 2);
                 bb.removeFromParentAndCleanup(true);

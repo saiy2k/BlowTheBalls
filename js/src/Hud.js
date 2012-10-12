@@ -56,9 +56,9 @@ var Hud = cc.Layer.extend({
                     sideWall.setPosition(cc.p(winSize.width - sideWall._contentSize.width/2, sideWall._contentSize.height / 2));
                     this.addChild(sideWall, 0, 0);
 
-                    var leftButtonNormal = cc.Sprite.create(s_leftButton, cc.rect(0, 0, 105, 105));
-                    var leftButtonSelected = cc.Sprite.create(s_leftButtonPressed, cc.rect(0, 0, 105, 105));
-                    var leftButtonDisabled = cc.Sprite.create(s_leftButtonPressed, cc.rect(0, 0, 105, 105));
+                    var leftButtonNormal = cc.Sprite.create(this.res.leftButton, cc.rect(0, 0, 105, 105));
+                    var leftButtonSelected = cc.Sprite.create(this.res.leftButtonP, cc.rect(0, 0, 105, 105));
+                    var leftButtonDisabled = cc.Sprite.create(this.res.leftButtonP, cc.rect(0, 0, 105, 105));
                     var leftButton = cc.MenuItemSprite.create(leftButtonNormal, leftButtonSelected, leftButtonDisabled, this, function(obj, held) {
                         if (held && held == true)
                             this.delegate.isLeftPressed = true;
@@ -71,9 +71,9 @@ var Hud = cc.Layer.extend({
                     };
                     leftButton.setPosition(cc.p((-winSize.width + leftButton._contentSize.width) / 2, 0));
 
-                    var rightButtonNormal = cc.Sprite.create(s_rightButton, cc.rect(0, 0, 105, 105));
-                    var rightButtonSelected = cc.Sprite.create(s_rightButtonPressed, cc.rect(0, 0, 105, 105));
-                    var rightButtonDisabled = cc.Sprite.create(s_rightButtonPressed, cc.rect(0, 0, 105, 105));
+                    var rightButtonNormal = cc.Sprite.create(this.res.rightButton, cc.rect(0, 0, 105, 105));
+                    var rightButtonSelected = cc.Sprite.create(this.res.rightButtonP, cc.rect(0, 0, 105, 105));
+                    var rightButtonDisabled = cc.Sprite.create(this.res.rightButtonP, cc.rect(0, 0, 105, 105));
                     var rightButton = cc.MenuItemSprite.create(rightButtonNormal, rightButtonSelected, rightButtonDisabled, this, function(obj, held) {
                         if (held && held == true)
                             this.delegate.isRightPressed = true;
@@ -112,32 +112,31 @@ var Hud = cc.Layer.extend({
                 this.addChild(menu, 0, 2);
                 menu.setPosition(cc.p(winSize.width / 2, winSize.height / 2));
 
-            } else {
-                livesIcon = cc.Sprite.create(this.res.livesIcon, cc.rect(0, 0, 55, 55));
-                livesIcon.setPosition(cc.p(40, 40));
-                this.addChild(livesIcon, 2, 0);
-
-                bombIcon = cc.Sprite.create(this.res.bombIcon, cc.rect(0, 0, 55, 55));
-                bombIcon.setPosition(cc.p(160, 40));
-                this.addChild(bombIcon, 2, 0);
-
-                nailsIcon = cc.Sprite.create(this.res.nailsIcon, cc.rect(0, 0, 55, 55));
-                nailsIcon.setPosition(cc.p(280, 40));
-                this.addChild(nailsIcon, 2, 0);
-
-                this.livesCountLabel = cc.LabelTTF.create('x ' + State.lives, 'Arial', 30);
-                this.livesCountLabel.setPosition(cc.p(90, 40));
-                this.addChild(this.livesCountLabel, 2, 0);
-
-                this.bombCountLabel = cc.LabelTTF.create('x ' + State.bombCount, 'Arial', 30);
-                this.bombCountLabel.setPosition(cc.p(210, 40));
-                this.addChild(this.bombCountLabel, 2, 0);
-
-                this.nailsCountLabel = cc.LabelTTF.create('x ' + State.nailCount, 'Arial', 30);
-                this.nailsCountLabel.setPosition(cc.p(330, 40));
-                this.addChild(this.nailsCountLabel, 2, 0);
-
             }
+
+            livesIcon = cc.Sprite.create(this.res.livesIcon, cc.rect(0, 0, 55, 55));
+            livesIcon.setPosition(cc.p(40, 40));
+            this.addChild(livesIcon, 2, 0);
+
+            bombIcon = cc.Sprite.create(this.res.bombIcon, cc.rect(0, 0, 55, 55));
+            bombIcon.setPosition(cc.p(160, 40));
+            this.addChild(bombIcon, 2, 0);
+
+            nailsIcon = cc.Sprite.create(this.res.nailsIcon, cc.rect(0, 0, 55, 55));
+            nailsIcon.setPosition(cc.p(280, 40));
+            this.addChild(nailsIcon, 2, 0);
+
+            this.livesCountLabel = cc.LabelTTF.create('x ' + State.lives, 'Arial', 30);
+            this.livesCountLabel.setPosition(cc.p(90, 40));
+            this.addChild(this.livesCountLabel, 2, 0);
+
+            this.bombCountLabel = cc.LabelTTF.create('x ' + State.bombCount, 'Arial', 30);
+            this.bombCountLabel.setPosition(cc.p(210, 40));
+            this.addChild(this.bombCountLabel, 2, 0);
+
+            this.nailsCountLabel = cc.LabelTTF.create('x ' + State.nailCount, 'Arial', 30);
+            this.nailsCountLabel.setPosition(cc.p(330, 40));
+            this.addChild(this.nailsCountLabel, 2, 0);
 
             bRet = true;
         }

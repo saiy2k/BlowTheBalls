@@ -11,6 +11,8 @@ var Hero = cc.Sprite.extend({
     herotexture:null,
 
     walkAction:null,
+
+    speed: 10,
     /**
      * when this flag is set, the hero is safe
      * and no collision occurs
@@ -86,7 +88,7 @@ var Hero = cc.Sprite.extend({
      */
     update:function (dt) {
         var dx = this._position.x - this.targetX;
-        this._position.x -= dx/4;
+        this._position.x -= dx * this.speed * dt;
         this.lastFired += dt;
     }
 });
