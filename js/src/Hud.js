@@ -33,19 +33,18 @@ var Hud = cc.Layer.extend({
             topSpikes.setPosition(cc.p(winSize.width / 2, winSize.height - topSpikes._contentSize.height / 2));
             this.addChild(topSpikes, 0, 0);
 
-            console.log('creating hud');
-
             var pauseButtonNormal = cc.Sprite.create(this.res.pauseButton, cc.rect(0, 0, 60, 60));
             var pauseButtonSelected = cc.Sprite.create(this.res.pauseButton, cc.rect(0, 0, 60, 60));
             var pauseButtonDisabled = cc.Sprite.create(this.res.pauseButton, cc.rect(0, 0, 60, 60));
             var pauseButton = cc.MenuItemSprite.create(pauseButtonNormal, pauseButtonSelected, pauseButtonDisabled, this, function(e, held) {
                 if (!held) {
+                    this.onButtonEffect();
                     var endScreen = EndScreen.create();
                     endScreen.delegate = this.delegate;
+                    endScreen.configPause();
                     endScreen.setPosition(cc.p(winSize.width / 2, - winSize.height / 2));
                     endScreen.runAction(cc.EaseOut.create(cc.MoveTo.create(0.5, cc.p(winSize.width * 0.5, winSize.height * 0.5)), 2.0));
                     this.addChild(endScreen, 10, 0);
-                    this.onButtonEffect();
                     this.delegate.pause();
                 }
             });
@@ -59,10 +58,10 @@ var Hud = cc.Layer.extend({
                 if (State.inputType == 'dpad') {
                     var sideWall = cc.Sprite.create(this.res.sideWall, cc.rect(0, 0, 120, 800));
                     sideWall.setPosition(cc.p(sideWall._contentSize.width/2, sideWall._contentSize.height / 2));
-                    this.addChild(sideWall, 0, 0);
+                    this.addChild(sideWall, -1, 0);
                     sideWall = cc.Sprite.create(this.res.sideWall, cc.rect(0, 0, 120, 800));
                     sideWall.setPosition(cc.p(winSize.width - sideWall._contentSize.width/2, sideWall._contentSize.height / 2));
-                    this.addChild(sideWall, 0, 0);
+                    this.addChild(sideWall, -1, 0);
 
                     var leftButtonNormal = cc.Sprite.create(this.res.leftButton, cc.rect(0, 0, 105, 105));
                     var leftButtonSelected = cc.Sprite.create(this.res.leftButtonP, cc.rect(0, 0, 105, 105));

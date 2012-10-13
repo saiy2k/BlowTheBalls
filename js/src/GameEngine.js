@@ -83,8 +83,8 @@ var GameEngine = cc.Layer.extend({
             this.addChild(this.hero, 1, 0);
 
             // level loader object
-            loader = new LevelLoader();
-            loader.delegate = this;
+            this.loader = new LevelLoader();
+            this.loader.delegate = this;
 
             // setup gameloop
             this.schedule(this.update, 30/1000);
@@ -159,14 +159,14 @@ var GameEngine = cc.Layer.extend({
      */
     reset:function () {
         this.cleanUp();
-        loader.load(State.currentWorld, State.currentLevel);
+        this.loader.load(State.currentWorld, State.currentLevel);
 
         // TODO: setup 3 2 1 anim here and change state to 'play' once its over
         this.runAction(cc.Sequence.create(
                     cc.DelayTime.create(GAME.LEVELSTARTLAPSE),
                     cc.CallFunc.create(this, this.startGame)));
 
-        State.lives = 9;
+        State.lives = 99;
         State.score = 0;
         State.remainingTime = 60.0;
     },
@@ -196,25 +196,24 @@ var GameEngine = cc.Layer.extend({
             // on time out
             if (State.remainingTime < 0) {
                 State.gameStatus = 'timeOut';
-
-                // show a 'time out' label with zoom in animation and then move to main menu
-                var lbl;
-                lbl = cc.LabelTTF.create('Time Out', 'Arial', 60);
-                lbl.setPosition(cc.p(winSize.width * 0.5, winSize.height * 0.5));
-                lbl.setScale(0.02, 0.02);
-                this.addChild(lbl, 0, 0);
-
-                lbl.runAction(cc.Sequence.create(
-                            cc.ScaleTo.create(2.0, 1, 1),
-                            cc.CallFunc.create(this, function() {
-                                var scene = cc.Scene.create();
-                                scene.addChild(SysMenu.create());
-                                cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
-                            } )));
+                var endScreen = EndScreen.create();
+                endScreen.delegate = this;
+                endScreen.configLevelOver();
+                endScreen.setPosition(cc.p(winSize.width / 2, - winSize.height / 2));
+                endScreen.runAction(cc.EaseOut.create(cc.MoveTo.create(0.5, cc.p(winSize.width * 0.5, winSize.height * 0.5)), 2.0));
+                this.addChild(endScreen, 10, 0);
+                this.pause();
             }
                                  
             if(this.ballArray.length == 0) {
                 State.gameStatus = 'win';
+                var endScreen = EndScreen.create();
+                endScreen.delegate = this;
+                endScreen.configLevelWin();
+                endScreen.setPosition(cc.p(winSize.width / 2, - winSize.height / 2));
+                endScreen.runAction(cc.EaseOut.create(cc.MoveTo.create(0.5, cc.p(winSize.width * 0.5, winSize.height * 0.5)), 2.0));
+                this.addChild(endScreen, 10, 0);
+                this.pause();
             }
                                  
             // for each ball
@@ -341,9 +340,13 @@ var GameEngine = cc.Layer.extend({
     reduceLife: function() {
         State.lives--;
         if (State.lives < 1) {
-            var scene = cc.Scene.create();
-            scene.addChild(SysMenu.create());
-            cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
+            var endScreen = EndScreen.create();
+            endScreen.delegate = this;
+            endScreen.configLevelOver();
+            endScreen.setPosition(cc.p(winSize.width / 2, - winSize.height / 2));
+            endScreen.runAction(cc.EaseOut.create(cc.MoveTo.create(0.5, cc.p(winSize.width * 0.5, winSize.height * 0.5)), 2.0));
+            this.addChild(endScreen, 10, 0);
+            this.pause();
         } else {
             this.hud.decrementLife();
             this.hero._opacity = 100;
@@ -373,6 +376,17 @@ var GameEngine = cc.Layer.extend({
             State.gameStatus = 'play';
             this.resumeSchedulerAndActions();
         }
+    },
+
+    retry: function() {
+        this.resume();
+        this.reset();
+    },
+
+    nextLevel: function() {
+        this.resume();
+        State.currentLevel++;
+        this.reset();
     }
 
 });
