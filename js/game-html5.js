@@ -29,6 +29,7 @@ var MW = MW || {};
             'js/src/Hero.js',
             'js/src/Powerup.js',
             'js/src/Logic.js',
+            'js/src/EndScreen.js',
             'libs/jquery.js'
         ]
     };

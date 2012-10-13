@@ -136,6 +136,9 @@ for (var i = 0; i < 1; i++) {
     r[worldS].spikesPower = dirImg + "spikes.png";
     r[worldS].pauseButton = dirImg + "pauseButton.png";
     r[worldS].topSpikes = dirImg + "topSpikes.png";
+    r[worldS].timeSeekBG = dirImg + "timeSeekBG.png";
+    r[worldS].pauseMenuBG = dirImg + "pauseMenuBG.png";
+    r[worldS].pauseMenuButton = dirImg + "pauseMenuButton.png";
 }
 
 var g_ressources = [
@@ -205,5 +208,8 @@ var g_ressources = [
 	{type:"image", src:r.world1.bombPower},
 	{type:"image", src:r.world1.spikesPower},
 	{type:"image", src:r.world1.pauseButton},
-	{type:"image", src:r.world1.topSpikes}
+	{type:"image", src:r.world1.topSpikes},
+	{type:"image", src:r.world1.timeSeekBG},
+	{type:"image", src:r.world1.pauseMenuBG},
+	{type:"image", src:r.world1.pauseMenuButton}
 ];

@@ -359,7 +359,22 @@ var GameEngine = cc.Layer.extend({
     powerRemoved: function(pup) {
         var index = this.powerUpArray.indexOf(pup);
         this.powerUpArray.splice(index, 1);
+    },
+
+    pause: function() {
+        if (State.gameStatus == 'play') {
+            State.gameStatus = 'pause';
+            this.pauseSchedulerAndActions();
+        }
+    },
+
+    resume: function() {
+        if (State.gameStatus == 'pause') {
+            State.gameStatus = 'play';
+            this.resumeSchedulerAndActions();
+        }
     }
+
 });
 
 GameEngine.create = function () {

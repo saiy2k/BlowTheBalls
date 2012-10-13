@@ -29,23 +29,31 @@ var Hud = cc.Layer.extend({
             this.timeLabel.setPosition(cc.p(winSize.width * 0.95, winSize.height * 0.95));
             this.addChild(this.timeLabel, 0, 0);
 
-            var pauseButtonNormal = cc.Sprite.create(this.res.pauseButton, cc.rect(0, 0, 60, 60));
-            var pauseButtonSelected = cc.Sprite.create(this.res.pauseButton, cc.rect(0, 0, 60, 60));
-            var pauseButtonDisabled = cc.Sprite.create(this.res.pauseButton, cc.rect(0, 0, 60, 60));
-            var pauseButton = cc.MenuItemSprite.create(pauseButtonNormal, pauseButtonSelected, pauseButtonDisabled, this, function(e) {
-                this.onButtonEffect();
-            });
-
             var topSpikes = cc.Sprite.create(this.res.topSpikes, cc.rect(0, 0, 1080, 50));
             topSpikes.setPosition(cc.p(winSize.width / 2, winSize.height - topSpikes._contentSize.height / 2));
             this.addChild(topSpikes, 0, 0);
-        
-            var menu;
-            menu = cc.Menu.create(pauseButton);
-            this.addChild(menu, 0, 2);
-            menu.setPosition(cc.p(winSize.width * 0.05, winSize.height * 0.95));
 
+            console.log('creating hud');
 
+            var pauseButtonNormal = cc.Sprite.create(this.res.pauseButton, cc.rect(0, 0, 60, 60));
+            var pauseButtonSelected = cc.Sprite.create(this.res.pauseButton, cc.rect(0, 0, 60, 60));
+            var pauseButtonDisabled = cc.Sprite.create(this.res.pauseButton, cc.rect(0, 0, 60, 60));
+            var pauseButton = cc.MenuItemSprite.create(pauseButtonNormal, pauseButtonSelected, pauseButtonDisabled, this, function(e, held) {
+                if (!held) {
+                    var endScreen = EndScreen.create();
+                    endScreen.delegate = this.delegate;
+                    endScreen.setPosition(cc.p(winSize.width / 2, - winSize.height / 2));
+                    endScreen.runAction(cc.EaseOut.create(cc.MoveTo.create(0.5, cc.p(winSize.width * 0.5, winSize.height * 0.5)), 2.0));
+                    this.addChild(endScreen, 10, 0);
+                    this.onButtonEffect();
+                    this.delegate.pause();
+                }
+            });
+
+            var mmenu;
+            mmenu = cc.Menu.create(pauseButton);
+            this.addChild(mmenu, 0, 2);
+            mmenu.setPosition(cc.p(winSize.width * 0.05, winSize.height * 0.95));
 
             if (State.inputType != 'keyboard') {
                 if (State.inputType == 'dpad') {

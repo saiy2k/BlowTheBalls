@@ -17,7 +17,7 @@ State = {
     currentLevel : 0,
 
     /**
-     * represents the current state of the game * can hav values: start, play, time out, hit, win
+     * represents the current state of the game * can hav values: start, play, pause, time out, hit, win
      */
     gameStatus: '',
 

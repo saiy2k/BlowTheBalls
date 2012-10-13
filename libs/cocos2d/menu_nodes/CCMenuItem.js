@@ -82,7 +82,7 @@ cc.MenuItem = cc.Node.extend(/** @lends cc.MenuItem# */{
     /**
      * press and hold functionality
      */
-    itemHeld:false,
+    buttonHeld:false,
 
     /**
      * @return {Boolean}
