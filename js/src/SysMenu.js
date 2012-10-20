@@ -3,7 +3,8 @@ cc.dumpConfig();
  var actionScaleTo = cc.ScaleTo.create(1, 2,1.5);
 var SysMenu = cc.Layer.extend({
     _ship:null,
-	
+    sheetTexture: null,
+    menu: null,
 
     ctor:function () {
         cc.associateWithNative( this, cc.Layer );
@@ -12,70 +13,88 @@ var SysMenu = cc.Layer.extend({
         var bRet = false;
         if (this._super()) {
             winSize = cc.Director.getInstance().getWinSize();
-            var sp = cc.Sprite.create(r.menu.background);
+
+            var frameCache = cc.SpriteFrameCache.getInstance();
+            sheetTexture = cc.TextureCache.getInstance().addImage(menuSheet);
+            frameCache.addSpriteFrames(menuSheetPlist);
+
+            var sp = cc.Sprite.createWithSpriteFrameName('menuBackground.jpg');
             sp.setPosition(cc.p(winSize.width/2, winSize.height/2));
             this.addChild(sp, 0, 1);
 
-            var playNormal = cc.Sprite.create(r.menu.play.normal, cc.rect(0, 0, 138, 24));
-            var playSelected = cc.Sprite.create(r.menu.play.select, cc.rect(0, 0, 138, 24));
-            var playDisabled = cc.Sprite.create(r.menu.play.disabl, cc.rect(0, 0 * 2, 138, 24));
+            var playNormal = cc.Sprite.createWithSpriteFrameName('menuPlayButton.png');
+            var playSelected = cc.Sprite.createWithSpriteFrameName('menuPlayButton.png');
+            var playDisabled = cc.Sprite.createWithSpriteFrameName('menuPlayButton.png');
 
-			var highScoreNormal = cc.Sprite.create(r.menu.score.normal, cc.rect(0, 0, 138, 24));
-            var highScoreSelected = cc.Sprite.create(r.menu.score.select, cc.rect(0, 0, 138, 24));
-            var highScoreDisabled = cc.Sprite.create(r.menu.score.disabl, cc.rect(0, 0 * 2, 138, 24));
+            var highScoreNormal = cc.Sprite.createWithSpriteFrameName('menuScoreButton.png');
+            var highScoreSelected = cc.Sprite.createWithSpriteFrameName('menuScoreButton.png');
+            var highScoreDisabled = cc.Sprite.createWithSpriteFrameName('menuScoreButton.png');
 			
-            var optionsNormal = cc.Sprite.create(r.menu.options.normal, cc.rect(0, 0, 138, 24));
-            var optionsSelected = cc.Sprite.create(r.menu.options.select, cc.rect(0, 0, 138, 24));
-            var optionsDisabled = cc.Sprite.create(r.menu.options.disabl, cc.rect(0, 0 * 2, 138, 24));
+            var optionsNormal = cc.Sprite.createWithSpriteFrameName('menuOptionsButton.png');
+            var optionsSelected = cc.Sprite.createWithSpriteFrameName('menuOptionsButton.png');
+            var optionsDisabled = cc.Sprite.createWithSpriteFrameName('menuOptionsButton.png');
 			
-            var instructionsNormal = cc.Sprite.create(r.menu.inst.normal, cc.rect(0, 0, 138, 24));
-            var instructionsSelected = cc.Sprite.create(r.menu.inst.select, cc.rect(0, 0, 138, 24));
-            var instructionsDisabled = cc.Sprite.create(r.menu.inst.disabl, cc.rect(0, 0 * 2, 138, 24));
+            var instructionsNormal = cc.Sprite.createWithSpriteFrameName('menuInstructionButton.png');
+            var instructionsSelected = cc.Sprite.createWithSpriteFrameName('menuInstructionButton.png');
+            var instructionsDisabled = cc.Sprite.createWithSpriteFrameName('menuInstructionButton.png');
 
-            var creditsNormal = cc.Sprite.create(r.menu.credit.normal, cc.rect(0, 0, 138, 24));
-            var creditsSelected = cc.Sprite.create(r.menu.credit.select, cc.rect(0, 0, 138, 24));
-            var creditsDisabled = cc.Sprite.create(r.menu.credit.disabl, cc.rect(0, 0 * 2, 138, 24));
-			var actionMoveTo = cc.MoveTo.create(1,cc.p(winSize.width / 2 - 80, winSize.height / 2 - 70));
-			var actionMoveToBack = cc.MoveTo.create(1,cc.p(winSize.width / 2 - 100, winSize.height / 2 - 70));
+            var creditsNormal = cc.Sprite.createWithSpriteFrameName('menuCreditsButton.png');
+            var creditsSelected = cc.Sprite.createWithSpriteFrameName('menuCreditsButton.png');
+            var creditsDisabled = cc.Sprite.createWithSpriteFrameName('menuCreditsButton.png');
 			
-            var playGame = cc.MenuItemSprite.create(playNormal, playSelected, playDisabled, this, function () {
-                this.onButtonEffect();
-				playGame.runAction(actionScaleTo, null);
-                this.onPlayGame();
-                //flareEffect(this, this, this.onNewGame);
+            var playGame = cc.MenuItemSprite.create(playNormal, playSelected, playDisabled, this, function (e, held) {
+                if (!held) {
+                    this.onButtonEffect();
+                    var scene = cc.Scene.create();
+                    scene.addChild(GameEngine.create());
+                    this.slideOutButtons(e, scene);
+                }
             });
-			var highScore = cc.MenuItemSprite.create(highScoreNormal, highScoreSelected, highScoreDisabled, this, function () {
-                this.onButtonEffect();
-				highScore.runAction(actionScaleTo, null);
-                this.onHighScore();
+
+			var highScore = cc.MenuItemSprite.create(highScoreNormal, highScoreSelected, highScoreDisabled, this, function (e, held) {
+                if (!held) {
+                    this.onButtonEffect();
+                    var scene = cc.Scene.create();
+                    scene.addChild(SettingsLayer.create());
+                    this.slideOutButtons(e, scene);
+                }
             });
-            var options = cc.MenuItemSprite.create(optionsNormal, optionsSelected, optionsDisabled, this, function () {
-                this.onButtonEffect();
-				options.runAction(actionScaleTo, null);
-                this.onOptions();
+
+            var options = cc.MenuItemSprite.create(optionsNormal, optionsSelected, optionsDisabled, this, function (e, held) {
+                if (!held) {
+                    this.onButtonEffect();
+                    var scene = cc.Scene.create();
+                    scene.addChild(SettingsLayer.create());
+                    this.slideOutButtons(e, scene);
+                }
             });
-			var instructions = cc.MenuItemSprite.create(instructionsNormal, instructionsSelected, instructionsDisabled, this, function () {
-                this.onButtonEffect();
-				instructions.runAction(actionScaleTo, null);
-                this.onInstructions();
+
+			var instructions = cc.MenuItemSprite.create(instructionsNormal, instructionsSelected, instructionsDisabled, this, function (e, held) {
+                if (!held) {
+                    this.onButtonEffect();
+                    var scene = cc.Scene.create();
+                    scene.addChild(SettingsLayer.create());
+                    this.slideOutButtons(e, scene);
+                }
             });
-            var credits = cc.MenuItemSprite.create(creditsNormal, creditsSelected, creditsDisabled, this, function () {
-                this.onButtonEffect();
-				credits.runAction(actionScaleTo, null);
-                this.onCredits();
+
+            var credits = cc.MenuItemSprite.create(creditsNormal, creditsSelected, creditsDisabled, this, function (e, held) {
+                if (!held) {
+                    this.onButtonEffect();
+                    var scene = cc.Scene.create();
+                    scene.addChild(AboutLayer.create());
+                    this.slideOutButtons(e, scene);
+                }
             });
 				
+            this.menu = cc.Menu.create(playGame, highScore, options, instructions, credits);
+            this.menu.alignItemsVerticallyWithPadding(10);
+            this.addChild(this.menu, 1, 2);
+			this.menu.setPosition(cc.p(-playNormal._contentSize.width, winSize.height * 0.25));
+			this.menu.runAction(
+                    cc.EaseElasticIn.create(
+                       cc.MoveTo.create(1,cc.p(winSize.width * 0.3, winSize.height * 0.25))));
 			
-			
-		
-            var menu = cc.Menu.create(playGame, highScore, options, instructions, credits);
-            menu.alignItemsVerticallyWithPadding(10);
-            this.addChild(menu, 1, 2);
-			menu.setPosition(cc.p(winSize.width / 2 - 200, winSize.height / 2 - 70));
-			menu.runAction(cc.Sequence.create(actionMoveTo,actionMoveToBack,null));
-            this.schedule(this.update, 0.1);
-			
-
             if (MW.SOUND) {
                 cc.AudioEngine.getInstance().setBackgroundMusicVolume(0.7);
                 cc.AudioEngine.getInstance().playBackgroundMusic(s_mainMainMusic, true);
@@ -86,33 +105,25 @@ var SysMenu = cc.Layer.extend({
 
         return bRet;
     },
-    onPlayGame:function (pSender) {
-	    var scene = cc.Scene.create();
-        scene.addChild(GameEngine.create());
-		cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
+
+    slideOutButtons:function (obj, scene) {
+        console.log('sliding out');
+        var arr = this.menu.getChildren();
+        for(var i = 0, len = arr.length; i < len; i++) {
+            console.log(arr[i]._position);
+			arr[i].runAction(cc.MoveTo.create(1, cc.p(-winSize.width, arr[i]._position.y)));
+        }
+        obj.stopAllActions();
+        obj.runAction(cc.MoveTo.create(0.5, cc.p(winSize.width, obj._position.y)));
+        this.runAction(cc.Sequence.create(
+                    cc.DelayTime.create(1),
+                    cc.CallFunc.create(this, this.switchScene, scene)));
     },
-	onHighScore:function (pSender) {
-        var scene = cc.Scene.create();
-        scene.addChild(SettingsLayer.create());
+
+    switchScene: function(scene) {
         cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
     },
-    onOptions:function (pSender) {
-        var scene = cc.Scene.create();
-        scene.addChild(SettingsLayer.create());
-        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
-    },
-	onInstructions:function (pSender) {
-        var scene = cc.Scene.create();
-        scene.addChild(SettingsLayer.create());
-        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
-    },
-    onCredits:function (pSender) {
-        var scene = cc.Scene.create();
-        scene.addChild(AboutLayer.create());
-        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
-    },
-    update:function () {
-    },
+
     onButtonEffect:function(){
         if (MW.SOUND) {
             var s = cc.AudioEngine.getInstance().playEffect(s_buttonEffect);

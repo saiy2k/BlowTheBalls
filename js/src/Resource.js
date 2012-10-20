@@ -47,6 +47,10 @@ var s_menuTitle = dirImg + "menuTitle.png";
 var s_Hero 		= dirImg + "heroSprite.png";
 
 
+var menuSheet        = dirImg + 'menuSheet.png';
+var menuSheetPlist   = dirImg + 'menuSheet.plist';
+
+
 // plist
 var s_Hero_plist = dirImg + "heroSprite.plist";
 
@@ -176,10 +180,12 @@ var g_ressources = [
     {type:"effect", src:s_shipDestroyEffect},
 
 	//Hero walk
-   {type:"image", src:s_Hero},
+    {type:"image", src:s_Hero},
+    {type:"image", src:menuSheet},
 	
 	//plist
 	{type:"plist",src:s_Hero_plist},
+	{type:"plist",src:menuSheetPlist},
     
     //game
 	{type:"image", src:r.world1.ball1},
