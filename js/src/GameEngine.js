@@ -66,6 +66,10 @@ var GameEngine = cc.Layer.extend({
             else if (State.inputType == 'dpad')
                 this.setTouchEnabled(true);
 
+            var frameCache = cc.SpriteFrameCache.getInstance();
+            sheetTexture = cc.TextureCache.getInstance().addImage(gameSheet);
+            frameCache.addSpriteFrames(gameSheetPlist);
+
             // loading background picture
             var bg = cc.Sprite.create(this.res.background);
             bg.setPosition(cc.p(winSize.width/2, winSize.height/2));
@@ -116,7 +120,6 @@ var GameEngine = cc.Layer.extend({
 
     /** function that starts a game */
     startGame: function () {
-        console.log('started');
         State.gameStatus = 'play';	
 
 
@@ -297,7 +300,6 @@ var GameEngine = cc.Layer.extend({
             this.addChild(obj, 2, 2);
         }
         this.powerData = tpowerups;
-        console.log('level loaderd');
     },
     /**
      * command left that makes the character walk to the left side

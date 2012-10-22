@@ -17,8 +17,10 @@ var Logic = {
 
         return cc.Rect.CCRectIntersectsRect(r1, r2);
     },
+
     awardScore: function(type) {
     },
+
     isArrowHitBall: function(bb, arr, layer) {
         if (Logic.spriteHitTest(bb, arr)) {
             State.score += 100 + bb.type * 10;
@@ -43,21 +45,26 @@ var Logic = {
         }
         return false;
     },
+
     powerDrop: function(bb, powerData) {
         var pp;
+        console.log('power dropppppp');
         for (var k = 0, len3 = powerData.length; k < len3, pp = powerData[k]; k++) {
             if (Math.random() < pp.seed) {
                 pp.count--;
                 if(pp.count == 0) {
                     powerData.splice(k, 1);
                 }
+                console.log('new powerup');
                 var pup = new Powerup(pp.id);
                 pup.setPosition(bb._position);
                 pup.jump();
+                console.log('new powerup jumping');
                 return pup;
             }
         }
     },
-        checkForWinCondition: function() {
+
+    checkForWinCondition: function() {
     }
 };

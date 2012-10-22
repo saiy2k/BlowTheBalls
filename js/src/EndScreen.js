@@ -58,6 +58,8 @@ var winSize; var EndScreen = cc.Layer.extend({
             var background;
             winSize = cc.Director.getInstance().getWinSize();
 
+            console.log('end screen loaded');
+
             background = cc.Sprite.create(this.res.pauseMenuBG, cc.rect(0, 0, 550, 560));
             this.addChild(background, 0, 0);
 
@@ -147,6 +149,8 @@ var winSize; var EndScreen = cc.Layer.extend({
             background.addChild(this.scoreLabel, 0, 0);
 
             bRet = true;
+
+            console.log('end screen shown');
         }
 
         return bRet;

@@ -33,32 +33,32 @@ GAME.POWERUPS = [
     {
         "id": 0,
         "name": "Cash",
-        "icon": r.world1.cashIcon
+        "icon": "cashIcon.png"
     },
     {
         "id": 1,
         "name": "Extra Time",
-        "icon": r.world1.timeIcon
+        "icon": "timeIcon.png"
     },
     {
         "id": 2,
         "name": "Nails",
-        "icon": r.world1.nailsIcon
+        "icon": "nailsIcon.png"
     },
     {
         "id": 3,
         "name": "Bomb",
-        "icon": r.world1.bombIcon
+        "icon": "bombIcon.png"
     },
     {
         "id": 4,
         "name": "Extra Life",
-        "icon": r.world1.livesIcon
+        "icon": "livesIcon.png"
     },
     {
         "id": 5,
         "name": "Shrink Hero",
-        "icon": r.world1.shrinkIcon
+        "icon": "shrinkIcon.png"
     }
 ];
 

@@ -7,8 +7,7 @@ var Powerup = cc.Sprite.extend({
 
     ctor:function (type) {
         cc.associateWithNative( this, cc.Sprite );
-        var texture = cc.TextureCache.getInstance().addImage(GAME.POWERUPS[type].icon);
-        this.initWithTexture(texture, cc.rect(0, 0, 55, 55));
+        this.initWithSpriteFrameName(GAME.POWERUPS[type].icon);
         this.tag = type;
     },
 

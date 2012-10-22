@@ -31,10 +31,6 @@ var Hero = cc.Sprite.extend({
         cc.associateWithNative( this, cc.Sprite );
 
         var frameCache = cc.SpriteFrameCache.getInstance();
-
-        herotexture = cc.TextureCache.getInstance().addImage(s_Hero);
-        frameCache.addSpriteFrames(s_Hero_plist);
-
         var bFrame0 = frameCache.getSpriteFrame("walk10.png");
         var bFrame1 = frameCache.getSpriteFrame("walk20.png");
         var bFrame2 = frameCache.getSpriteFrame("walk30.png");
@@ -51,7 +47,7 @@ var Hero = cc.Sprite.extend({
         this.runAction(this.walkAction);
 
 		//Initialize
-        this.initWithTexture(herotexture, cc.rect(0, 0, 120, 153));
+        this.initWithTexture(bFrame0.getTexture(), cc.rect(0, 0, 120, 153));
     },
 
     moveLeft: function(dt) {
