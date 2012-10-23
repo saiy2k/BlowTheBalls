@@ -82,7 +82,7 @@ var GameEngine = cc.Layer.extend({
 
             // loading hero
             this.hero = new Hero();
-            this.hero.setPosition(cc.p(winSize.width/2, this.hero._contentSize.height/2));
+            this.hero.setPosition(cc.p(winSize.width/2, GAME.GROUNDLEVEL + this.hero._contentSize.height/2));
             this.hero.targetX = winSize.width/2;
             this.addChild(this.hero, 1, 0);
 
@@ -251,7 +251,7 @@ var GameEngine = cc.Layer.extend({
             //for each arrow, update its position
             for (i = 0, len = this.arrowArray.length; i < len; i++) {
                 var arr = this.arrowArray[i];
-                arr.setPosition(cc.p(arr._position.x, arr._position.y + 50));
+                arr.setPosition(cc.p(arr._position.x, arr._position.y + 2000 * dt));
                 // and once it goes beyong border remove it
                 if (arr._position.y > 1200) {
                     arr.removeFromParentAndCleanup(true);

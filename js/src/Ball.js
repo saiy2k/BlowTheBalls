@@ -51,7 +51,7 @@ var Ball = cc.Sprite.extend({
         this.setPosition(cc.p(pos.x + this.vx * dt, pos.y + this.vy * dt));
 		
 		//Check for collision with the boundaries of the map vertically
-        if (this._position.y < this._contentSize.height / 2) {
+        if (this._position.y < GAME.GROUNDLEVEL + this._contentSize.height / 2) {
 			//"Reset" the position, making the previous setPosition call invalid
             this.setPosition(cc.p(pos.x - this.vx * dt, pos.y - this.vy * dt));
 			//Set a new velocity vertically
@@ -66,6 +66,9 @@ var Ball = cc.Sprite.extend({
 			//Reverse the velocity
             this.vx = -this.vx;
 		}
+
+        // Check for collision with ceiling and provide bonus on this event
+        // TODO
 		
 		//Update new velocity vertically by adding the acceleration
         this.vy += this.ay * dt;

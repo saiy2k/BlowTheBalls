@@ -47,11 +47,15 @@ var Hero = cc.Sprite.extend({
         this.runAction(this.walkAction);
 
 		//Initialize
-        this.initWithTexture(bFrame0.getTexture(), cc.rect(0, 0, 120, 153));
+        this.initWithTexture(bFrame0.getTexture(), cc.rect(0, 0, 50, 64));
     },
 
     moveLeft: function(dt) {
         this.targetX -= 200 * dt;
+        var llimit = State.inputType == 'dpad' ? 120 : 0;
+        if (this.targetX < llimit) {
+            this.targetX += 200 * dt;
+        }
         if (this.walkAction.getElapsed() >= this.walkAction.getDuration()) {
             this.stopAllActions();
             this.runAction(this.walkAction);
@@ -61,6 +65,10 @@ var Hero = cc.Sprite.extend({
     
     moveRight: function(dt) {
         this.targetX += 200 * dt;
+        var rlimit = State.inputType == 'dpad' ? winSize.width - 120 : winSize.width;
+        if (this.targetX > rlimit) {
+            this.targetX -= 200 * dt;
+        }
         if (this.walkAction.getElapsed() >= this.walkAction.getDuration()) {
             this.stopAllActions();
             this.runAction(this.walkAction);

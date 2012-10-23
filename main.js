@@ -33,6 +33,15 @@ var cocos2dApp = cc.Application.extend({
         // run
         director.runWithScene(new this.startScene());
 
+        var elem = document.getElementById("gameCanvas");
+        if (elem.requestFullScreen) {
+              elem.requestFullScreen();
+        } else if (elem.mozRequestFullScreen) {
+              elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullScreen) {
+              elem.webkitRequestFullScreen();
+        }
+
         return true;
     }
 });

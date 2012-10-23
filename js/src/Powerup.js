@@ -14,7 +14,7 @@ var Powerup = cc.Sprite.extend({
     jump: function() {
         var dx = ((Math.random() * 50) + 50) * (Math.round(Math.random()) * 2 - 1);
         var dt = 1 + this._position.y / 200;
-        var jump = cc.JumpTo.create(dt, cc.p(dx + this._position.x, 28), this._position.y / 2, 1);
+        var jump = cc.JumpTo.create(dt, cc.p(dx + this._position.x, GAME.GROUNDLEVEL + 28), this._position.y / 2, 1);
         var seq = cc.Sequence.create(
                 cc.DelayTime.create(dt + 1.0),
                 cc.FadeTo.create(GAME.POWERUPFADETIME, 50),

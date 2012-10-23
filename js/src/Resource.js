@@ -97,7 +97,7 @@ for (var i = 0; i < 1; i++) {
     r[worldS].arrow = dirImg + "arrow.png";
     r[worldS].sideWall = dirImg + "sideWall.jpg";
     r[worldS].background = dirImg + "gameBg.jpg";
-    r[worldS].pauseMenuBG = dirImg + "pauseMenuBg.png";
+    r[worldS].pauseMenuBG = dirImg + "pauseMenuBG.png";
     r[worldS].pauseMenuButton = dirImg + "pauseMenuButton.png";
 }
 

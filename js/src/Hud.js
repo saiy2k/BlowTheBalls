@@ -33,6 +33,30 @@ var Hud = cc.Layer.extend({
             topSpikes.setPosition(cc.p(winSize.width / 2, winSize.height - topSpikes._contentSize.height / 2));
             this.addChild(topSpikes, 0, 0);
 
+            livesIcon = cc.Sprite.createWithSpriteFrameName('livesIcon.png');
+            livesIcon.setPosition(cc.p(40, 40));
+            this.addChild(livesIcon, 2, 0);
+
+            bombIcon = cc.Sprite.createWithSpriteFrameName('bombIcon.png');
+            bombIcon.setPosition(cc.p(160, 40));
+            this.addChild(bombIcon, 2, 0);
+
+            nailsIcon = cc.Sprite.createWithSpriteFrameName('nailsIcon.png');
+            nailsIcon.setPosition(cc.p(280, 40));
+            this.addChild(nailsIcon, 2, 0);
+
+            this.livesCountLabel = cc.LabelTTF.create('x ' + State.lives, 'Arial', 30);
+            this.livesCountLabel.setPosition(cc.p(90, 40));
+            this.addChild(this.livesCountLabel, 2, 0);
+
+            this.bombCountLabel = cc.LabelTTF.create('x ' + State.bombCount, 'Arial', 30);
+            this.bombCountLabel.setPosition(cc.p(210, 40));
+            this.addChild(this.bombCountLabel, 2, 0);
+
+            this.nailsCountLabel = cc.LabelTTF.create('x ' + State.nailCount, 'Arial', 30);
+            this.nailsCountLabel.setPosition(cc.p(330, 40));
+            this.addChild(this.nailsCountLabel, 2, 0);
+
             var pauseButtonNormal = cc.Sprite.createWithSpriteFrameName('pauseButton.png');
             var pauseButtonSelected = cc.Sprite.createWithSpriteFrameName('pauseButton.png');
             var pauseButtonDisabled = cc.Sprite.createWithSpriteFrameName('pauseButton.png');
@@ -58,6 +82,15 @@ var Hud = cc.Layer.extend({
 
             if (State.inputType != 'keyboard') {
                 if (State.inputType == 'dpad') {
+
+                    livesIcon.setPosition(cc.p(30, 640));
+                    bombIcon.setPosition(cc.p(30, 580));
+                    nailsIcon.setPosition(cc.p(30, 520));
+
+                    this.livesCountLabel.setPosition(cc.p(90, 640));
+                    this.bombCountLabel.setPosition(cc.p(90, 580));
+                    this.nailsCountLabel.setPosition(cc.p(90, 520));
+
                     var sideWall = cc.Sprite.create(this.res.sideWall, cc.rect(0, 0, 120, 800));
                     sideWall.setPosition(cc.p(sideWall._contentSize.width/2, sideWall._contentSize.height / 2));
                     this.addChild(sideWall, -1, 0);
@@ -122,31 +155,6 @@ var Hud = cc.Layer.extend({
                 menu.setPosition(cc.p(winSize.width / 2, winSize.height / 2));
 
             }
-
-            livesIcon = cc.Sprite.createWithSpriteFrameName('livesIcon.png');
-            livesIcon.setPosition(cc.p(40, 40));
-            this.addChild(livesIcon, 2, 0);
-
-            bombIcon = cc.Sprite.createWithSpriteFrameName('bombIcon.png');
-            bombIcon.setPosition(cc.p(160, 40));
-            this.addChild(bombIcon, 2, 0);
-
-            nailsIcon = cc.Sprite.createWithSpriteFrameName('nailsIcon.png');
-            nailsIcon.setPosition(cc.p(280, 40));
-            this.addChild(nailsIcon, 2, 0);
-
-            this.livesCountLabel = cc.LabelTTF.create('x ' + State.lives, 'Arial', 30);
-            this.livesCountLabel.setPosition(cc.p(90, 40));
-            this.addChild(this.livesCountLabel, 2, 0);
-
-            this.bombCountLabel = cc.LabelTTF.create('x ' + State.bombCount, 'Arial', 30);
-            this.bombCountLabel.setPosition(cc.p(210, 40));
-            this.addChild(this.bombCountLabel, 2, 0);
-
-            this.nailsCountLabel = cc.LabelTTF.create('x ' + State.nailCount, 'Arial', 30);
-            this.nailsCountLabel.setPosition(cc.p(330, 40));
-            this.addChild(this.nailsCountLabel, 2, 0);
-
             bRet = true;
         }
 

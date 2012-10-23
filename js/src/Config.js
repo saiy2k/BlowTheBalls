@@ -10,6 +10,11 @@ GAME = {};
 GAME.LEVELSTARTLAPSE = 1.0;
 
 /**
+ * Ground height
+ */
+GAME.GROUNDLEVEL = 76;
+
+/**
  * powerup fade out time
  */
 GAME.POWERUPFADETIME = 3.0;

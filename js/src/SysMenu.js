@@ -45,9 +45,10 @@ var SysMenu = cc.Layer.extend({
             var playGame = cc.MenuItemSprite.create(playNormal, playSelected, playDisabled, this, function (e, held) {
                 if (!held) {
                     this.onButtonEffect();
-                    var scene = cc.Scene.create();
-                    scene.addChild(GameEngine.create());
-                    this.slideOutButtons(e, scene);
+                    //var scene = cc.Scene.create();
+                    //scene.addChild(GameEngine.create());
+                    //this.slideOutButtons(e, scene);
+                    cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, GameEngine.create()));
                 }
             });
 
