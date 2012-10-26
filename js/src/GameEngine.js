@@ -169,7 +169,7 @@ var GameEngine = cc.Layer.extend({
                     cc.DelayTime.create(GAME.LEVELSTARTLAPSE),
                     cc.CallFunc.create(this, this.startGame)));
 
-        State.lives = 99;
+        State.lives = 5;
         State.score = 0;
         State.remainingTime = 60.0;
     },
