@@ -156,9 +156,6 @@ var winSize; var EndScreen = cc.Layer.extend({
         return bRet;
     },
     onButtonEffect:function(){
-        if (MW.SOUND) {
-            var s = cc.AudioEngine.getInstance().playEffect(this.res.buttonEffect);
-        }
     }
 });
 

@@ -39,6 +39,8 @@
             'src/AboutLayer.js',
             'src/SettingsLayer.js',
             'src/SysMenu.js',
+            'src/WinLayer.js',
+            'src/LossLayer.js',
             'src/Config.js',
             'src/GameEngine.js',
             'src/Hud.js',
@@ -46,6 +48,9 @@
             'src/LevelLoader.js',
             'src/State.js',
             'src/Hero.js',
+            'src/Powerup.js',
+            'src/Logic.js',
+            'src/EndScreen.js',
             'libs/jquery.js'
         ]
     };

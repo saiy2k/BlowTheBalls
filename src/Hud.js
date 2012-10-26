@@ -169,9 +169,6 @@ var Hud = cc.Layer.extend({
         this.timeLabel.setString(State.remainingTime + ' ');
     },
     onButtonEffect:function(){
-        if (MW.SOUND) {
-            var s = cc.AudioEngine.getInstance().playEffect(this.res.buttonEffect);
-        }
     },
     decrementLife: function() {
         this.livesCountLabel.setString('x ' + State.lives);
