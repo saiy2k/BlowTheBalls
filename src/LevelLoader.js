@@ -24,7 +24,7 @@ var LevelLoader = cc.Class.extend({
             var level, arr = [];
             var self = this;
 
-            $.getJSON('js/res/w' + wrld + 'level' + lvl + '.json', function(data) {
+            $.getJSON('res/w' + wrld + 'level' + lvl + '.json', function(data) {
                 level = data;
                 //l1 hard coded for now
                 //for each balls in the json object, create one sprite here

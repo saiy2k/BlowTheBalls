@@ -82,10 +82,12 @@ var SysMenu = cc.Layer.extend({
             this.schedule(this.update, 0.1);
 			
 
+            /*
             if (MW.SOUND) {
                 cc.AudioEngine.getInstance().setBackgroundMusicVolume(0.7);
                 cc.AudioEngine.getInstance().playBackgroundMusic(s_mainMainMusic, true);
             }
+            */
 
             bRet = true;
         }
@@ -120,9 +122,6 @@ var SysMenu = cc.Layer.extend({
     update:function () {
     },
     onButtonEffect:function(){
-        if (MW.SOUND) {
-            var s = cc.AudioEngine.getInstance().playEffect(s_buttonEffect);
-        }
     }
 });
 

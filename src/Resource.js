@@ -2,8 +2,8 @@ var dirImg = "";
 var dirMusic = "";
 var musicSuffix = ".mp3";
 if( cc.config.deviceType == 'browser') {
-    dirImg = "js/res/";
-    dirMusic = "js/res/Music/";
+    dirImg = "res/";
+    dirMusic = "res/Music/";
     musicSuffix = "";
 }
 
