@@ -1,6 +1,5 @@
 cc.dumpConfig();
 var winSize;
-var self;
 /**
  * The Core component of the game. this class manages and 
  * co-ordinates between different game components from
@@ -14,9 +13,17 @@ var GameEngine = cc.Layer.extend({
      */
     ballArray: [],
     /**
+     * list of powerups to be dropped
+     */
+    powerData: [],
+    /**
      * array of arrows that are currently on screen
      */
     arrowArray: [],
+    /**
+     * array of power ups on state to be picked up by player
+     */
+    powerUpArray: [],
     /**
      * component that renders the UI controls
      */
@@ -30,8 +37,12 @@ var GameEngine = cc.Layer.extend({
      * hero object
      */
     hero: null,
+    /**
+     * UI helpeer vars
+     */
     isLeftPressed: false,
     isRightPressed: false,
+    res: r.world1,
     /**
      * constructor (dummy in my opinion)
      */
@@ -42,7 +53,6 @@ var GameEngine = cc.Layer.extend({
      * the real constructor
      */
     init:function () {
-        self = this;
         var bRet = false;
         if (this._super()) {
             winSize = cc.Director.getInstance().getWinSize();
@@ -53,26 +63,32 @@ var GameEngine = cc.Layer.extend({
                 this.setKeyboardEnabled(true);
             else if (State.inputType == 'accelerometer')
                 this.setAccelerometerEnabled(true);
+            else if (State.inputType == 'dpad')
+                this.setTouchEnabled(true);
+
+            var frameCache = cc.SpriteFrameCache.getInstance();
+            sheetTexture = cc.TextureCache.getInstance().addImage(gameSheet);
+            frameCache.addSpriteFrames(gameSheetPlist);
 
             // loading background picture
-            var bg = cc.Sprite.create(s_gameBg);
+            var bg = cc.Sprite.create(this.res.background);
             bg.setPosition(cc.p(winSize.width/2, winSize.height/2));
-            this.addChild(bg, 0, 1);
+            this.addChild(bg, 0, 0);
 
             // HUD Component
-            self.hud = Hud.create();
-            self.hud.delegate = this;
-            this.addChild(self.hud, 0, 100);
+            this.hud = Hud.create();
+            this.hud.delegate = this;
+            this.addChild(this.hud, 100, 0);
 
             // loading hero
             this.hero = new Hero();
-            this.hero.setPosition(cc.p(winSize.width/2, this.hero._contentSize.height/2));
+            this.hero.setPosition(cc.p(winSize.width/2, GAME.GROUNDLEVEL + this.hero._contentSize.height/2));
             this.hero.targetX = winSize.width/2;
-            this.addChild(this.hero, 0, 2);
+            this.addChild(this.hero, 1, 0);
 
             // level loader object
-            loader = new LevelLoader();
-            loader.delegate = this;
+            this.loader = new LevelLoader();
+            this.loader.delegate = this;
 
             // setup gameloop
             this.schedule(this.update, 30/1000);
@@ -83,54 +99,81 @@ var GameEngine = cc.Layer.extend({
 
         return bRet;
     },
+
+    registerWithTouchDispatcher:function () {
+        cc.Director.getInstance().getTouchDispatcher().addTargetedDelegate(this, cc.MENU_HANDLER_PRIORITY, true);
+    },
+
+    onTouchBegan:function (touch, e) {
+        console.log('began');
+        return true;
+    },
+
+    onTouchMoved:function (touch, e) {
+        console.log('moved')
+    },
+
+    onTouchEnded:function (touch, e) {
+        console.log('end');
+        this.fireArrow();
+    },
+
+    /** function that starts a game */
     startGame: function () {
-        console.log('started');
-        State.gameStatus = 'play';
+        State.gameStatus = 'play';	
+
+
     },
     //callback method invoked on accelerometer change
     didAccelerate:function (pAccelerationValue) {
         // calculate acc values and call moveleft / move right appropriately
     },
+
     //callback method invoked at the end of keypress
     onKeyUp:function (e) {
         if (State.gameStatus == 'play') {
             if(e === cc.KEY.left) {
-                self.isLeftPressed = false;
+                this.isLeftPressed = false;
             } else if (e === cc.KEY.right) {
-                self.isRightPressed = false;
+                this.isRightPressed = false;
             }
         }
     },
+
     //callback method invoked at the beginning of keypress
     onKeyDown:function (e) {
         if (State.gameStatus == 'play') {
             if(e === cc.KEY.left) {
-                self.isLeftPressed = true;
+                this.isLeftPressed = true;
             } else if (e === cc.KEY.right) {
-                self.isRightPressed = true;
+                this.isRightPressed = true;
             } else if (e === cc.KEY.up) {
-                self.fireArrow();
+                this.fireArrow();
             } else if (e === cc.KEY.z) {
-                self.placeBomb();
+                this.placeBomb();
             } else if (e === cc.KEY.x) {
-                self.placeNails();
+                this.placeNails();
             }
         }
     }, 
+
     /**
      * resets the stage and loads the game objects freshly
      */
     reset:function () {
-        self.cleanUp();
-        loader.load(State.currentWorld, State.currentLevel);
+        this.cleanUp();
+        this.loader.load(State.currentWorld, State.currentLevel);
 
         // TODO: setup 3 2 1 anim here and change state to 'play' once its over
         this.runAction(cc.Sequence.create(
-                    cc.DelayTime.create(2),
+                    cc.DelayTime.create(GAME.LEVELSTARTLAPSE),
                     cc.CallFunc.create(this, this.startGame)));
 
-        State.lives = 3;
+        State.lives = 5;
+        State.score = 0;
+        State.remainingTime = 60.0;
     },
+
     /**
      * function that removes all sprites from the scene
      */
@@ -141,153 +184,213 @@ var GameEngine = cc.Layer.extend({
         for (var i = 0, len = this.arrowArray.length; i < len; i++) {
             this.arrowArray[i].removeFromParentAndCleanup(true);
         }
-        self.isLeftPressed = false;
-        self.isRightPressed = false;
+        this.isLeftPressed = false;
+        this.isRightPressed = false;
+        this.powerData = [];
     },
+
     /**
      * update loop
      */
     update:function (dt) {
         if (State.gameStatus == 'play') {
             var i, j, len, len2;
+            State.remainingTime -= dt;
+            // on time out
+            if (State.remainingTime < 0) {
+                State.gameStatus = 'timeOut';
+                var endScreen = EndScreen.create();
+                endScreen.delegate = this;
+                endScreen.configLevelOver();
+                endScreen.setPosition(cc.p(winSize.width / 2, - winSize.height / 2));
+                endScreen.runAction(cc.EaseOut.create(cc.MoveTo.create(0.5, cc.p(winSize.width * 0.5, winSize.height * 0.5)), 2.0));
+                this.addChild(endScreen, 10, 0);
+                this.pause();
+            }
+                                 
+            if(this.ballArray.length == 0) {
+                State.gameStatus = 'win';
+                var endScreen = EndScreen.create();
+                endScreen.delegate = this;
+                endScreen.configLevelWin();
+                endScreen.setPosition(cc.p(winSize.width / 2, - winSize.height / 2));
+                endScreen.runAction(cc.EaseOut.create(cc.MoveTo.create(0.5, cc.p(winSize.width * 0.5, winSize.height * 0.5)), 2.0));
+                this.addChild(endScreen, 10, 0);
+                this.pause();
+            }
+                                 
             // for each ball
             for (i = 0, len = this.ballArray.length; i < len; i++) {
                 var bb = this.ballArray[i];
                 bb.update(dt);
                 // check if the ball hits the hero, if yes, reduce life
-                if (!self.hero.isSafe) {
-                    if (cc.Rect.CCRectOverlapsRect(
-                                cc.RectMake(bb._position.x, bb._position.y, bb._rect.size.width, bb._rect.size.height),
-                                cc.RectMake(this.hero._position.x, this.hero._position.y, this.hero._rect.size.width, this.hero._rect.size.height))) {
-                                    self.reduceLife();
-                                    return;
+                if (!this.hero.isSafe) {
+                    if (Logic.spriteHitTest(bb, this.hero)) {
+                        this.reduceLife();
+                        break;
                     }
                 }
                 //for each arrow
                 for (j = 0, len2 = this.arrowArray.length; j < len2; j++) {
                     var arr = this.arrowArray[j];
-                    // if ball and arrow collides
-                    if (cc.Rect.CCRectOverlapsRect(
-                                cc.RectMake(bb._position.x, bb._position.y, bb._rect.size.width, bb._rect.size.height),
-                                cc.RectMake(arr._position.x, arr._position.y - arr._rect.size.height/2, arr._rect.size.width/20, arr._rect.size.height))) {
-                                    console.log('exxxx');
-                                    //remove the arrow from screen
-                                    arr.removeFromParentAndCleanup(true);
-                                    self.arrowArray.splice(j, 1);
-                                    //if its already smallest ball, remove it
-                                    if (bb.type == 1) {
-                                        console.log('ty');
-                                        bb.removeFromParentAndCleanup(true);
-                                        self.ballArray.splice(i, 1);
-                                    // else split the big ball into 2 small balls
-                                    } else {
-                                        console.log('tyyy');
-                                        self.ballArray.splice(i, 1);
-                                        var b1 = new Ball(bb.type - 1);
-                                        b1.setPosition(bb._position);
-                                        self.ballArray.push(b1);
-                                        self.addChild(b1, 2, 2);
-                                        var b2 = new Ball(bb.type - 1);
-                                        b2.setPosition(bb._position);
-                                        b2.vx = -4;
-                                        self.ballArray.push(b2);
-                                        self.addChild(b2, 2, 2);
-                                        bb.removeFromParentAndCleanup(true);
-                                    }
-                                    return;
+                    if (Logic.isArrowHitBall(bb, arr, this)) {
+                        this.arrowArray.splice(j, 1);
+                        this.ballArray.splice(i, 1);
+                        var pup = Logic.powerDrop(bb, this.powerData);
+                        if (pup) {
+                            this.powerUpArray.push(pup);
+                            this.addChild(pup, 2, 0);
+                            pup.delegate = this;
+                        }
+                        if (Logic.checkForWinCondition()) {
+                        }
+                        return;
                     }
                 }
             }
             //for each arrow, update its position
             for (i = 0, len = this.arrowArray.length; i < len; i++) {
                 var arr = this.arrowArray[i];
-                arr.setPosition(cc.p(arr._position.x, arr._position.y + 50));
+                arr.setPosition(cc.p(arr._position.x, arr._position.y + 2000 * dt));
                 // and once it goes beyong border remove it
                 if (arr._position.y > 1200) {
-                    console.log(self.arrowArray.length);
                     arr.removeFromParentAndCleanup(true);
-                    self.arrowArray.splice(i, 1);
+                    this.arrowArray.splice(i, 1);
                     break;
                 }
             }
-            if (self.isLeftPressed) {
-                console.log('left');
-                self.hero.moveLeft(dt);
+            // for each powerup icons
+            for (i = 0, len = this.powerUpArray.length; i < len; i++) {
+                var pup = this.powerUpArray[i];
+                if (Logic.spriteHitTest(pup, this.hero)) {
+                    pup.hitReact(this.hero._position);
+                    this.powerUpArray.splice(i, 1);
+                    if (pup.tag == 2) {
+                        this.hud.incrementNailCount();
+                    } else if (pup.tag == 3) {
+                        this.hud.incrementBombCount();
+                    }
+                    break;
+                }
             }
-            if (self.isRightPressed) {
-                console.log('right');
-                self.hero.moveRight(dt);
+            if (this.isLeftPressed) {
+                this.hero.moveLeft(dt);
             }
-            self.hero.update(dt);
+            if (this.isRightPressed) {
+                this.hero.moveRight(dt);
+            }
+            this.hero.update(dt);
+            this.hud.update(dt);
+        }
+        else if (State.gameStatus == 'win') {
+            //TODO: win game screen logic
         }
     },
+
     /**
      * callback function invoked by level loader once the specified
      * level is loaded and objects are ready to be added to screen
      */
-    onLevelLoaded: function(objs) {
+    onLevelLoaded: function(objs, tpowerups) {
         var obj;
-        self.cleanUp();
+        this.cleanUp();
         // add new objects to screen
-        self.ballArray = objs;
-        for (var i = 0, len = self.ballArray.length; i < len, obj = self.ballArray[i]; i++) {
-            self.addChild(obj, 2, 2);
+        this.ballArray = objs;
+        for (var i = 0, len = this.ballArray.length; i < len, obj = this.ballArray[i]; i++) {
+            this.addChild(obj, 2, 2);
         }
+        this.powerData = tpowerups;
     },
     /**
      * command left that makes the character walk to the left side
      */
     moveLeft: function(dt) {
-        this.hero.moveLeft(dt);
-        console.log('move left');
     },
     /**
      * command right that makes the character walk to the right side
      */
     moveRight: function(dt) {
-        this.hero.moveRight(dt);
-        console.log('move right');
     },
     /**
      * command to fire curently selected arrow
+     * can have only one arrow at a time on screen
      */
     fireArrow: function() {
-        var arr = cc.Sprite.create(s_arrow);
-        arr._scaleX = 0.04;
-        arr.setPosition(cc.p(self.hero._position.x, -400));
-        self.addChild(arr, 2, 2);
-        this.arrowArray.push(arr);
-        console.log('fire arrow');
+        //if (this.hero.lastFired > 1) {
+        if (this.arrowArray.length == 0) {
+            var arr = this.hero.fire(this.res.arrow);
+            this.addChild(arr, 2, 2);
+            this.arrowArray.push(arr);
+            console.log('fire arrow');
+        }
     },
+
     /**
      * command to place a bomb if its available 
      */
     placeBomb: function() {
         console.log('place bomb');
     },
+
     /**
      * command to place nails if its available 
      */
     placeNails: function() {
         console.log('place nails');
     },
+
     reduceLife: function() {
         State.lives--;
         if (State.lives < 1) {
-            var scene = cc.Scene.create();
-            scene.addChild(SysMenu.create());
-            cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
+            var endScreen = EndScreen.create();
+            endScreen.delegate = this;
+            endScreen.configLevelOver();
+            endScreen.setPosition(cc.p(winSize.width / 2, - winSize.height / 2));
+            endScreen.runAction(cc.EaseOut.create(cc.MoveTo.create(0.5, cc.p(winSize.width * 0.5, winSize.height * 0.5)), 2.0));
+            this.addChild(endScreen, 10, 0);
+            this.pause();
         } else {
-            self.hud.decrementLife();
+            this.hud.decrementLife();
             this.hero._opacity = 100;
             this.hero.isSafe = true;
             this.runAction(cc.Sequence.create(
                         cc.DelayTime.create(5),
                         cc.CallFunc.create(this, function() {
-                            self.hero.isSafe = false; } )));
-            self.hero.runAction(cc.FadeTo.create(5, 255));
+                            this.hero.isSafe = false; } )));
+            this.hero.runAction(cc.FadeTo.create(5, 255));
         }
+    },
+
+    powerRemoved: function(pup) {
+        var index = this.powerUpArray.indexOf(pup);
+        this.powerUpArray.splice(index, 1);
+    },
+
+    pause: function() {
+        if (State.gameStatus == 'play') {
+            State.gameStatus = 'pause';
+            this.pauseSchedulerAndActions();
+        }
+    },
+
+    resume: function() {
+        if (State.gameStatus == 'pause') {
+            State.gameStatus = 'play';
+            this.resumeSchedulerAndActions();
+        }
+    },
+
+    retry: function() {
+        this.resume();
+        this.reset();
+    },
+
+    nextLevel: function() {
+        this.resume();
+        State.currentLevel++;
+        this.reset();
     }
+
 });
 
 GameEngine.create = function () {

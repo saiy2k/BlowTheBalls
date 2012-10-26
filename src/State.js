@@ -17,8 +17,7 @@ State = {
     currentLevel : 0,
 
     /**
-     * represents the current state of the game
-     * can hav values: start, play, time out, hit, win
+     * represents the current state of the game * can hav values: start, play, pause, time out, hit, win
      */
     gameStatus: '',
 
@@ -27,17 +26,12 @@ State = {
      * device in which the game is played.
      * can hav values 'keyboard', 'dpad', 'accelerometer'
      */
-    inputType: 'keyboard',
+    inputType: ('ontouchstart' in document.documentElement) ? 'dpad': 'keyboard',
 
     /**
      * the remaining time to finish the current level
      */
     remainingTime: 0,
-
-    /**
-     * number of bombs remaining
-     */
-    bombCount: 0,
 
     /**
      * number of bombs remaining
@@ -52,7 +46,22 @@ State = {
     /**
      * number of lives remaining
      */
-    lives: 3
+    lives: 9,
+
+    /**
+     * current score
+     */
+    score: 0,
+
+    /**
+     * gameplay width
+     */
+    gameWidth: 0,
+
+    /**
+     * gameplay height
+     */
+    gameHeight: 0
 
 };
 

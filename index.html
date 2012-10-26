@@ -1,13 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Cocos2d-html5 Hello World test</title>
-    <link rel="icon" type="image/GIF" href="res/favicon.ico"/>
+    <title>gg html5 game</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="gethugames" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            border:0;
+        }
+        #gameCanvas {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
 </head>
-<body style="padding:0; margin: 0; background: #000;">
-<div style="text-align: center; font-size: 0">
-    <canvas id="gameCanvas" width="1080" height="720"></canvas>
+<body>
+<div id="Container" style="margin: 0 auto">
+    <canvas id="gameCanvas" width="1170" height="780"></canvas>
 </div>
 </body>
 </html>

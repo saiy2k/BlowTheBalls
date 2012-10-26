@@ -1,3 +1,30 @@
+/**
+ * Resources will have the following hierarchy.
+ * There will be a global variable 'r' accessible from
+ * any part of the project, which is the root for all
+ * resource files.
+ * r.menu, r.settings, r.credits, r.world1, r.world2, r.world3, etc.,
+ * where above sub-object of 'r' contains sprite names, music assets
+ * for that specific screen.
+ * TODO: need to explore the possibilities of loading / unloading 
+ * wanted and unwanted assets, instead of having all assets at a time
+ */
+var r = {};
+r.menu = {};
+r.score = {};
+r.options = {};
+r.instructions = {};
+r.credits = {};
+r.world1 = {};
+r.world2 = {};
+r.world3 = {};
+r.world4 = {};
+r.world5 = {};
+r.world6 = {};
+r.world7 = {};
+r.music = {};
+r.soundFX = {};
+
 var dirImg = "";
 var dirMusic = "";
 var musicSuffix = ".mp3";
@@ -7,17 +34,20 @@ if( cc.config.deviceType == 'browser') {
     musicSuffix = "";
 }
 
-//image
-var s_menuBg = dirImg + "menuBg.jpg";
-var s_menuBackGround = dirImg + "menu_bg.jpg";
-var s_bg01 = dirImg + "bg01.jpg";
-var s_b01 = dirImg + "b01.png";
+//pre loader
 var s_loading = dirImg + "loading.png";
-var s_menu = dirImg + "menu.png";
-var s_logo = dirImg + "logo.png";
 var s_cocos2dhtml5 = dirImg + "cocos2d-html5.png";
 var s_gameOver = dirImg + "gameOver.png";
 var s_menuTitle = dirImg + "menuTitle.png";
+
+var menuSheet        = dirImg + 'menuSheet.png';
+var menuSheetPlist   = dirImg + 'menuSheet.plist';
+
+var gameSheet        = dirImg + 'gameSheet.png';
+var gameSheetPlist   = dirImg + 'gameSheet.plist';
+
+
+
 
 var s_menuButtonPlayNormal = dirImg + "menuButtonPlayNormal.png";
 //var s_menuButtonPlaySelected = dirImg + "menuButtonPlaySelected.png";
@@ -41,6 +71,8 @@ var s_menuButtonHighScoreNormal = dirImg + "menuButtonHighScoreNormal.png";
 
 
 
+//menu
+r.menu.background = dirImg + "menu_bg.jpg";
 
 //music
 var s_bgMusic = dirMusic + "bgMusic" + musicSuffix;
@@ -53,50 +85,29 @@ var s_fireEffect = dirMusic + "fireEffect" + musicSuffix;
 var s_shipDestroyEffect = dirMusic + "shipDestroyEffect" + musicSuffix;
 
 //game
-var s_ball1 = dirImg + "ball1.png";
-var s_ball2 = dirImg + "ball2.png";
-var s_ball3 = dirImg + "ball3.png";
-var s_ball4 = dirImg + "ball4.png";
-var s_ball5 = dirImg + "ball5.png";
-var s_ball6 = dirImg + "ball6.png";
-var s_ball7 = dirImg + "ball7.png";
-var s_arrow = dirImg + "arrow.jpg";
-var s_sideWall = dirImg + "sideWall.jpg";
-var s_gameBg = dirImg + "gameBg.jpg";
-var s_bombButton = dirImg + "bombButton.png";
-var s_bombButtonPressed  = dirImg + "bombButtonPress.png";
-var s_nailButton = dirImg + "nailButton.png";
-var s_nailButtonPressed  = dirImg + "nailButtonPress.png";
-var s_leftButton = dirImg + "leftButton.png";
-var s_leftButtonPressed = dirImg + "leftButtonPress.png";
-var s_rightButton = dirImg + "rightButton.png";
-var s_rightButtonPressed = dirImg + "rightButtonPress.png";
+for (var i = 0; i < 1; i++) {
+    var worldS = "world" + (i+1);
+    r[worldS].ball1 = dirImg + "ball1.png";
+    r[worldS].ball2 = dirImg + "ball2.png";
+    r[worldS].ball3 = dirImg + "ball3.png";
+    r[worldS].ball4 = dirImg + "ball4.png";
+    r[worldS].ball5 = dirImg + "ball5.png";
+    r[worldS].ball6 = dirImg + "ball6.png";
+    r[worldS].ball7 = dirImg + "ball7.png";
+    r[worldS].arrow = dirImg + "arrow.png";
+    r[worldS].sideWall = dirImg + "sideWall.jpg";
+    r[worldS].background = dirImg + "gameBg.jpg";
+    r[worldS].pauseMenuBG = dirImg + "pauseMenuBG.png";
+    r[worldS].pauseMenuButton = dirImg + "pauseMenuButton.png";
+}
 
 var g_ressources = [
-    //image
+    //pre loader
     {type:"image", src:s_loading},
-    {type:"image", src:s_menu},
-	{type:"image", src:s_menuBackGround},
-    {type:"image", src:s_logo},
     {type:"image", src:s_cocos2dhtml5},
-	{type:"image", src:s_menuTitle},
-    {type:"image", src:s_menuButtonPlayNormal},
-	//{type:"image", src:s_menuButtonPlaySelected},
-	//{type:"image", src:s_menuButtonPlayDisabled},
-	{type:"image", src:s_menuButtonOptionsNormal},
-	//{type:"image", src:s_menuButtonOptionsSelected},
-	//{type:"image", src:s_menuButtonOptionsDisabled},
-	{type:"image", src:s_menuButtonInstructionsNormal},
-	//{type:"image", src:s_menuButtonInstructionsSelected},
-	//{type:"image", src:s_menuButtonInstructionsDisabled},
-	{type:"image", src:s_menuButtonCreditsNormal},
-	//{type:"image", src:s_menuButtonCreditsSelected},
-	//{type:"image", src:s_menuButtonCreditsDisabled},
-	{type:"image", src:s_menuButtonHighScoreNormal},
-	//{type:"image", src:s_menuButtonHighScoreSelected},
-	//{type:"image", src:s_menuButtonHighScoreDisabled},
-	
-	
+
+    // menu
+	{type:"image", src:r.menu.background},
 
     //music
     {type:"bgm", src:s_bgMusic},
@@ -108,18 +119,26 @@ var g_ressources = [
     {type:"effect", src:s_fireEffect},
     {type:"effect", src:s_shipDestroyEffect},
 
+	//Hero walk
+    {type:"image", src:menuSheet},
+    {type:"image", src:gameSheet},
+	
+	//plist
+	{type:"plist",src:menuSheetPlist},
+	{type:"plist",src:gameSheetPlist},
+    
     //game
-    {type:"image", src:s_ball4},
-    {type:"image", src:s_arrow},
-    {type:"image", src:s_sideWall},
-    {type:"image", src:s_gameBg},
-    {type:"image", src:s_bombButton},
-    {type:"image", src:s_bombButtonPressed},
-    {type:"image", src:s_nailButton},
-    {type:"image", src:s_nailButtonPressed},
-    {type:"image", src:s_leftButton},
-    {type:"image", src:s_leftButtonPressed},
-    {type:"image", src:s_rightButton},
-    {type:"image", src:s_rightButtonPressed}
+	{type:"image", src:r.world1.ball1},
+	{type:"image", src:r.world1.ball2},
+	{type:"image", src:r.world1.ball3},
+	{type:"image", src:r.world1.ball4},
+	{type:"image", src:r.world1.ball5},
+	{type:"image", src:r.world1.ball6},
+	{type:"image", src:r.world1.ball7},
+	{type:"image", src:r.world1.arrow},
+	{type:"image", src:r.world1.sideWall},
+	{type:"image", src:r.world1.background},
+	{type:"image", src:r.world1.pauseMenuBG},
+	{type:"image", src:r.world1.pauseMenuButton}
 
 ];

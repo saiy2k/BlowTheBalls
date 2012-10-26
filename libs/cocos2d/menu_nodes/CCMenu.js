@@ -427,6 +427,8 @@ cc.Menu = cc.Layer.extend(/** @lends cc.Menu# */{
         if (this._selectedItem) {
             this._state = cc.MENU_STATE_TRACKING_TOUCH;
             this._selectedItem.selected();
+            if (this._selectedItem.touched)
+                this._selectedItem.touched();
             return true;
         }
         return false;
