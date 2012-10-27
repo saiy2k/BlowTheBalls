@@ -37,6 +37,10 @@ var cocos2dApp = cc.Application.extend({
         };
         cc.Loader.shareLoader().onload = function () {
             cc.AppController.shareAppController().didFinishLaunchingWithOptions();
+            cc.adjustSizeForWindow();
+            window.addEventListener("resize", function (event) {
+                cc.adjustSizeForWindow();
+            });
         };
         cc.Loader.shareLoader().preload(g_ressources);
     },
@@ -73,3 +77,38 @@ var cocos2dApp = cc.Application.extend({
 
 var myApp = new cocos2dApp(SysMenu.create);
 
+cc.adjustSizeForWindow = function () {
+    var margin = document.documentElement.clientWidth - document.body.clientWidth;
+
+    if (document.documentElement.clientWidth < cc.originalCanvasSize.width) {
+        cc.canvas.width = document.documentElement.clientWidth;//cc.originalCanvasSize.width;
+    } else {
+        cc.canvas.width = document.documentElement.clientWidth - margin;
+    }
+    if (document.documentElement.clientHeight < cc.originalCanvasSize.height) {
+        cc.canvas.height = document.documentElement.clientHeight;//cc.originalCanvasSize.height;
+    } else {
+        cc.canvas.height = document.documentElement.clientHeight - margin;
+    }
+
+    var xScale = cc.canvas.width / cc.originalCanvasSize.width;
+    var yScale = cc.canvas.height / cc.originalCanvasSize.height;
+    if (xScale > yScale) {
+        xScale = yScale;
+    }
+    cc.canvas.width = cc.originalCanvasSize.width * xScale;
+    cc.canvas.height = cc.originalCanvasSize.height * xScale;
+    var divContainer = document.getElementById("Container");
+    var parentDiv = document.getElementById("Cocos2dGameContainer");
+    if (parentDiv) {
+        parentDiv.style.width = cc.canvas.width + "px";
+        parentDiv.style.height = cc.canvas.height + "px";
+    }
+    if (divContainer) {
+        divContainer.style.width = cc.canvas.width + "px";
+        divContainer.style.height = cc.canvas.height + "px";
+    }
+    cc.renderContext.translate(0, cc.canvas.height);
+    cc.renderContext.scale(xScale, xScale);
+    cc.Director.getInstance().setContentScaleFactor(xScale);
+}

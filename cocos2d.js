@@ -33,7 +33,7 @@
         frameRate:60,
         tag:'gameCanvas', //the dom element to run cocos2d on
         engineDir:'libs/cocos2d/',
-        //SingleEngineFile:'',
+        //SingleEngineFile:'min.js',
         appFiles:[
             'src/Resource.js',
             'src/AboutLayer.js',
@@ -69,7 +69,7 @@
         }
         /*********Delete this section if you have packed all files into one*******/
 
-            //s.src = 'Packed_Release_File.js'; //IMPORTANT: Un-comment this line if you have packed all files into one
+        //s.src = 'min.js'; //IMPORTANT: Un-comment this line if you have packed all files into one
 
         d.body.appendChild(s);
         s.c = c;

@@ -2,12 +2,12 @@
 <project name="Javascript compress project" basedir="." default="compile">
 
     <taskdef name="jscomp" classname="com.google.javascript.jscomp.ant.CompileTask"
-             classpath="${basedir}/../tools/compiler/compiler.jar"/>
+        classpath="/tools/closure.jar"/>
 
     <target name="compile">
         <jscomp compilationLevel="simple" warning="quiet"
                 debug="false" output="myApp-v0.1.js">
-            <sources dir="${basedir}/../cocos2d">
+                <sources dir="${basedir}/libs/cocos2d">
                 <file name="platform/CCClass.js"/>
                 <file name="platform/CCCommon.js"/>
                 <file name="platform/platform.js"/>
@@ -47,12 +47,27 @@
                 <file name="menu_nodes/CCMenuItem.js"/>
                 <file name="menu_nodes/CCMenu.js"/>
             </sources>
-            <sources dir="${basedir}/../CocosDenshion">
+            <sources dir="${basedir}/libs/CocosDenshion">
                 <file name="SimpleAudioEngine.js"/>
             </sources>
             <sources dir="${basedir}">
-                <file name="src/resource.js"/>
-                <file name="src/myApp.js"/>
+                <file name="src/Resource.js"/>
+                <file name="src/AboutLayer.js"/>
+                <file name="src/SettingsLayer.js"/>
+                <file name="src/SysMenu.js"/>
+                <file name="src/WinLayer.js"/>
+                <file name="src/LossLayer.js"/>
+                <file name="src/Config.js"/>
+                <file name="src/GameEngine.js"/>
+                <file name="src/Hud.js"/>
+                <file name="src/Ball.js"/>
+                <file name="src/LevelLoader.js"/>
+                <file name="src/State.js"/>
+                <file name="src/Hero.js"/>
+                <file name="src/Powerup.js"/>
+                <file name="src/Logic.js"/>
+                <file name="src/EndScreen.js"/>
+                <file name="libs/jquery.js"/>
                 <file name="main.js"/>
             </sources>
         </jscomp>
