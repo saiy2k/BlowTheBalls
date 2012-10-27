@@ -12,43 +12,60 @@ var GameEngine = cc.Layer.extend({
      * when its length reaches zero, then level is over
      */
     ballArray: [],
+
     /**
      * list of powerups to be dropped
      */
     powerData: [],
+
     /**
      * array of arrows that are currently on screen
      */
     arrowArray: [],
+
     /**
      * array of power ups on state to be picked up by player
      */
     powerUpArray: [],
+
+    /**
+     * array of objects placed by player on game
+     */
+    placedObjects: [],
+
     /**
      * component that renders the UI controls
      */
     hud: null,
+
     /**
      * component that loads the game data for the
      * specified level and return as cocos2d objects (sprites)
      */
     loader: null,
+
     /**
      * hero object
      */
     hero: null,
+
     /**
      * UI helpeer vars
      */
     isLeftPressed: false,
     isRightPressed: false,
+    isPlaceNails: false,
+    isPlaceBomb: false,
+
     res: r.world1,
+
     /**
      * constructor (dummy in my opinion)
      */
     ctor:function () {
         cc.associateWithNative( this, cc.Layer );
     },
+
     /**
      * the real constructor
      */
@@ -150,9 +167,9 @@ var GameEngine = cc.Layer.extend({
             } else if (e === cc.KEY.up) {
                 this.fireArrow();
             } else if (e === cc.KEY.z) {
-                this.placeBomb();
+                this.isPlaceBomb = true;
             } else if (e === cc.KEY.x) {
-                this.placeNails();
+                this.isPlaceNails = true;
             }
         }
     }, 
@@ -172,6 +189,8 @@ var GameEngine = cc.Layer.extend({
         State.lives = 5;
         State.score = 0;
         State.remainingTime = 60.0;
+
+        this.placedObjects = [];
     },
 
     /**
@@ -186,6 +205,8 @@ var GameEngine = cc.Layer.extend({
         }
         this.isLeftPressed = false;
         this.isRightPressed = false;
+        this.isPlaceBomb = false;
+        this.isPlaceNails = false;
         this.powerData = [];
     },
 
@@ -207,7 +228,7 @@ var GameEngine = cc.Layer.extend({
                 this.addChild(endScreen, 10, 0);
                 this.pause();
             }
-                                 
+
             if(this.ballArray.length == 0) {
                 State.gameStatus = 'win';
                 var endScreen = EndScreen.create();
@@ -218,11 +239,14 @@ var GameEngine = cc.Layer.extend({
                 this.addChild(endScreen, 10, 0);
                 this.pause();
             }
-                                 
+
             // for each ball
             for (i = 0, len = this.ballArray.length; i < len; i++) {
                 var bb = this.ballArray[i];
-                bb.update(dt);
+                if (!bb.update(dt)) {
+                    this.ballArray.splice(i, 1);
+                    break;
+                }
                 // check if the ball hits the hero, if yes, reduce life
                 if (!this.hero.isSafe) {
                     if (Logic.spriteHitTest(bb, this.hero)) {
@@ -279,6 +303,14 @@ var GameEngine = cc.Layer.extend({
             if (this.isRightPressed) {
                 this.hero.moveRight(dt);
             }
+            if (this.isPlaceBomb) {
+                this.placeBomb();
+                this.isPlaceBomb = false;
+            }
+            if (this.isPlaceNails) {
+                this.placeNails();
+                this.isPlaceNails = false;
+            }
             this.hero.update(dt);
             this.hud.update(dt);
         }
@@ -329,7 +361,20 @@ var GameEngine = cc.Layer.extend({
      * command to place a bomb if its available 
      */
     placeBomb: function() {
-        console.log('place bomb');
+        console.log('place mobm');
+        var bombObj = new Powerup(6);
+        bombObj.setPosition(this.hero._position);
+        this.addChild(bombObj, 0, 0);
+
+        this.runAction(cc.Sequence.create(
+                    cc.JumpTo.create(2, cc.p(this.hero._position, 50, 5)),
+                    cc.Spawn.create(
+                        cc.FadeTo.create(0.5, 50),
+                        cc.ScaleTo.create(0.5, 3, 3)),
+                    cc.CallFunc.create(this, this.removeFromParentAndCleanup, true)));
+
+        this.placedObjects.push(bombObj);
+        
     },
 
     /**

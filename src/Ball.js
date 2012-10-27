@@ -7,7 +7,7 @@ var self;
 var Ball = cc.Sprite.extend({
     vx: 120,	//Velocity-X
     vy: 300,	//Velocity-Y
-    ax: 0,	//Acceleration-X
+    ax: 0,	    //Acceleration-X
     ay: -300,	//Acceleration-Y
     type: 0,
 	
@@ -30,7 +30,7 @@ var Ball = cc.Sprite.extend({
 
         self = this;
 
-        this.vx = 120 - this.type * 10;
+        this.vx = 120 - this.type * 4;
         this.vy = 200 + this.type * 30;
         this.ay = -200;
         //this.ay = -200 - this.type * 30;
@@ -67,13 +67,27 @@ var Ball = cc.Sprite.extend({
             this.vx = -this.vx;
 		}
 
-        // Check for collision with ceiling and provide bonus on this event
-        // TODO
-		
+        if (this._position.y > 760) {
+            this.explodeDown();
+            return false;
+        }
+
 		//Update new velocity vertically by adding the acceleration
         this.vy += this.ay * dt;
+        return true;
     },
-	
+
+	/*
+		Explode, called when...
+	*/
+    explodeDown:function() {
+        this.runAction(cc.Sequence.create(
+                    cc.ScaleTo.create(0.2, 1.5, 1.5),
+                    cc.CallFunc.create(this, this.removeFromParentAndCleanup, true)));
+        this.runAction(cc.FadeTo.create(0.2, 100));
+        this.runAction(cc.EaseIn.create(cc.MoveBy.create(0.2, cc.p(0, this._position.y/8 - 250)), 2.0));
+    },
+
 	/*
 		Explode, called when...
 	*/
@@ -85,4 +99,5 @@ var Ball = cc.Sprite.extend({
         this.runAction(cc.FadeTo.create(0.2, 50));
         this.runAction(cc.EaseIn.create(cc.MoveBy.create(0.2, cc.p(0, this._position.y/8 + 60)), 2.0));
     }
+
 });
