@@ -61,7 +61,7 @@ var Hud = cc.Layer.extend({
             var pauseButtonSelected = cc.Sprite.createWithSpriteFrameName('pauseButton.png');
             var pauseButtonDisabled = cc.Sprite.createWithSpriteFrameName('pauseButton.png');
             var pauseButton = cc.MenuItemSprite.create(pauseButtonNormal, pauseButtonSelected, pauseButtonDisabled, this, function(e, held) {
-                if (!held) {
+                if (typeof(held) != 'undefined') {
                     console.log('pause start');
                     this.onButtonEffect();
                     var endScreen = EndScreen.create();
@@ -102,10 +102,12 @@ var Hud = cc.Layer.extend({
                     var leftButtonSelected = cc.Sprite.createWithSpriteFrameName('leftButtonPress.png');
                     var leftButtonDisabled = cc.Sprite.createWithSpriteFrameName('leftButtonPress.png');
                     var leftButton = cc.MenuItemSprite.create(leftButtonNormal, leftButtonSelected, leftButtonDisabled, this, function(obj, held) {
-                        if (held && held == true)
-                            this.delegate.isLeftPressed = true;
-                        else
-                            this.delegate.isLeftPressed = false;
+                        if (typeof(held) != 'undefined') {
+                            if (held == true)
+                                this.delegate.isLeftPressed = true;
+                            else
+                                this.delegate.isLeftPressed = false;
+                        }
                         this.onButtonEffect();
                     });
                     leftButton.touched = function() {
@@ -117,10 +119,12 @@ var Hud = cc.Layer.extend({
                     var rightButtonSelected = cc.Sprite.createWithSpriteFrameName('rightButtonPress.png');
                     var rightButtonDisabled = cc.Sprite.createWithSpriteFrameName('rightButtonPress.png');
                     var rightButton = cc.MenuItemSprite.create(rightButtonNormal, rightButtonSelected, rightButtonDisabled, this, function(obj, held) {
-                        if (held && held == true)
-                            this.delegate.isRightPressed = true;
-                        else
-                            this.delegate.isRightPressed = false;
+                        if (typeof(held) != 'undefined') {
+                            if (held == true)
+                                this.delegate.isRightPressed = true;
+                            else
+                                this.delegate.isRightPressed = false;
+                        }
                     });
                     rightButton.touched = function() {
                         self.delegate.isRightPressed = true;
@@ -132,7 +136,9 @@ var Hud = cc.Layer.extend({
                 var bombButtonSelected = cc.Sprite.createWithSpriteFrameName('bombButtonPress.png');
                 var bombButtonDisabled = cc.Sprite.createWithSpriteFrameName('bombButtonPress.png');
                 var bombButton = cc.MenuItemSprite.create(bombButtonNormal, bombButtonSelected, bombButtonDisabled, this, function() {
-                    this.delegate.placeBomb();
+                    if (typeof(held) != 'undefined') {
+                        this.delegate.isPlaceBomb = true;
+                    }
                     this.onButtonEffect();
                 });
                 bombButton.setPosition(cc.p((-winSize.width + bombButton._contentSize.width) / 2, (-winSize.height + bombButton._contentSize.height) / 2));
@@ -141,7 +147,9 @@ var Hud = cc.Layer.extend({
                 var nailButtonSelected = cc.Sprite.createWithSpriteFrameName('nailButtonPress.png');
                 var nailButtonDisabled = cc.Sprite.createWithSpriteFrameName('nailButtonPress.png');
                 var nailButton = cc.MenuItemSprite.create(nailButtonNormal, nailButtonSelected, nailButtonDisabled, this, function() {
-                    this.delegate.placeNails();
+                    if (typeof(held) != 'undefined') {
+                        this.delegate.isPlaceNails = true;
+                    }
                     this.onButtonEffect();
                 });
                 nailButton.setPosition(cc.p((winSize.width - nailButton._contentSize.width) / 2, (-winSize.height + nailButton._contentSize.height) / 2));

@@ -68,9 +68,7 @@ var Hero = cc.Sprite.extend({
         if (this.targetX < llimit) {
             this.targetX += 200 * dt;
         }
-        console.log('el ' + this.walkAction.getElapsed() + ' du ' + this.walkAction.getDuration() );
         if (this.walkAction.getElapsed() >= this.walkAction.getDuration()) {
-            console.log('hit');
             this.stopAction(this.walkAction);
             this.stopAction(this.shootAction);
             this.runAction(this.walkAction);
@@ -84,9 +82,7 @@ var Hero = cc.Sprite.extend({
         if (this.targetX > rlimit) {
             this.targetX -= 200 * dt;
         }
-        console.log('r el ' + this.walkAction.getElapsed() + ' du ' + this.walkAction.getDuration() );
         if (this.walkAction.getElapsed() >= this.walkAction.getDuration()) {
-            console.log('hit');
             this.stopAction(this.walkAction);
             this.stopAction(this.shootAction);
             this.runAction(this.walkAction);

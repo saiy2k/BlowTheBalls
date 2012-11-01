@@ -370,20 +370,19 @@ var GameEngine = cc.Layer.extend({
      * command to place a bomb if its available 
      */
     placeBomb: function() {
-        console.log('place mobm');
+        console.log('place bomb');
         var bombObj = new Powerup(6);
-        bombObj.setPosition(this.hero._position);
+        bombObj.setPosition(cc.p(this.hero._position.x, this.hero._position.y));
         this.addChild(bombObj, 0, 0);
 
-        this.runAction(cc.Sequence.create(
-                    cc.JumpTo.create(2, cc.p(this.hero._position, 50, 5)),
+        bombObj.runAction(cc.Sequence.create(
+                    cc.JumpTo.create(3, cc.p(this.hero._position.x, this.hero._position.y), 30, 3),
                     cc.Spawn.create(
-                        cc.FadeTo.create(0.5, 50),
-                        cc.ScaleTo.create(0.5, 3, 3)),
-                    cc.CallFunc.create(this, this.removeFromParentAndCleanup, true)));
+                        cc.FadeTo.create(0.25, 50),
+                        cc.ScaleTo.create(0.25, 3, 3)),
+                    cc.CallFunc.create(bombObj, bombObj.removeFromParentAndCleanup, true)));
 
         this.placedObjects.push(bombObj);
-        
     },
 
     /**
@@ -391,6 +390,18 @@ var GameEngine = cc.Layer.extend({
      */
     placeNails: function() {
         console.log('place nails');
+        var nailObj = new Powerup(7);
+        nailObj.setPosition(cc.p(this.hero._position.x, this.hero._position.y));
+        this.addChild(nailObj, 0, 0);
+
+        nailObj.runAction(cc.Sequence.create(
+                    cc.DelayTime.create(3),
+                    cc.Spawn.create(
+                        cc.FadeTo.create(0.25, 50),
+                        cc.ScaleTo.create(0.25, 0.2, 0.2)),
+                    cc.CallFunc.create(nailObj, nailObj.removeFromParentAndCleanup, true)));
+
+        this.placedObjects.push(nailObj);
     },
 
     powerRemoved: function(pup) {
