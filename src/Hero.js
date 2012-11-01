@@ -12,6 +12,8 @@ var Hero = cc.Sprite.extend({
 
     walkAction:null,
 
+    shootAction:null,
+
     speed: 10,
     /**
      * when this flag is set, the hero is safe
@@ -26,6 +28,7 @@ var Hero = cc.Sprite.extend({
 
     ctor:function (type) {
         var lft = [];
+        var sht = [];
 
 		//Dunno what this does :)
         cc.associateWithNative( this, cc.Sprite );
@@ -35,6 +38,7 @@ var Hero = cc.Sprite.extend({
         var bFrame1 = frameCache.getSpriteFrame("walk20.png");
         var bFrame2 = frameCache.getSpriteFrame("walk30.png");
         var bFrame3 = frameCache.getSpriteFrame("walk40.png");
+        var bFrame4 = frameCache.getSpriteFrame("heroShoot.png");
 
         lft.push(bFrame0);
         lft.push(bFrame1);
@@ -42,9 +46,17 @@ var Hero = cc.Sprite.extend({
         lft.push(bFrame3);
 
         var lanimation = cc.Animation.create(lft, 60/1000);
-
         this.walkAction = cc.Animate.create(lanimation);
         this.runAction(this.walkAction);
+
+        sht.push(bFrame4);
+        sht.push(bFrame4);
+        sht.push(bFrame4);
+        sht.push(bFrame4);
+        sht.push(bFrame0);
+        
+        var sanimation = cc.Animation.create(sht, 60/1000);
+        this.shootAction = cc.Animate.create(sanimation);
 
 		//Initialize
         this.initWithTexture(bFrame0.getTexture(), cc.rect(0, 0, 50, 64));
@@ -56,8 +68,11 @@ var Hero = cc.Sprite.extend({
         if (this.targetX < llimit) {
             this.targetX += 200 * dt;
         }
+        console.log('el ' + this.walkAction.getElapsed() + ' du ' + this.walkAction.getDuration() );
         if (this.walkAction.getElapsed() >= this.walkAction.getDuration()) {
-            this.stopAllActions();
+            console.log('hit');
+            this.stopAction(this.walkAction);
+            this.stopAction(this.shootAction);
             this.runAction(this.walkAction);
             this.setFlipX(true);
         }
@@ -69,8 +84,11 @@ var Hero = cc.Sprite.extend({
         if (this.targetX > rlimit) {
             this.targetX -= 200 * dt;
         }
+        console.log('r el ' + this.walkAction.getElapsed() + ' du ' + this.walkAction.getDuration() );
         if (this.walkAction.getElapsed() >= this.walkAction.getDuration()) {
-            this.stopAllActions();
+            console.log('hit');
+            this.stopAction(this.walkAction);
+            this.stopAction(this.shootAction);
             this.runAction(this.walkAction);
             this.setFlipX(false);
         }
@@ -80,6 +98,11 @@ var Hero = cc.Sprite.extend({
      * creates a arrow sprite and returns it
      */
     fire: function(spriteFile) {
+        //this.stopAction(this.walkAction);
+        //this.runAction(cc.Sequence.create(
+        //            this.shootAction,
+        //            this.walkAction));
+        this.runAction(this.shootAction);
         this.lastFired = 0;
         var arr = cc.Sprite.create(spriteFile);
         arr.setPosition(cc.p(this._position.x, -400));
@@ -94,5 +117,33 @@ var Hero = cc.Sprite.extend({
         var dx = this._position.x - this.targetX;
         this._position.x -= dx * this.speed * dt;
         this.lastFired += dt;
+    },
+
+    /**
+     * reduce the life of hero and show corresponding
+     * animation
+     * returns true if dead.
+     */
+    reduceLife: function() {
+        var self = this;
+        State.lives--;
+        if (State.lives < 1) {
+            return true;
+        } else {
+            this.isSafe = true;
+            this.runAction(cc.Sequence.create(
+                        cc.DelayTime.create(1.5),
+                        cc.CallFunc.create(this, function() {
+                            self.isSafe = false; } )));
+            this.runAction(cc.Sequence.create(
+                        cc.ScaleTo.create(0.1, 0.5, 0.5),
+                        cc.ScaleTo.create(0.3, 1.0, 1.0),
+                        cc.ScaleTo.create(0.1, 0.5, 0.5),
+                        cc.ScaleTo.create(0.3, 1.0, 1.0),
+                        cc.ScaleTo.create(0.1, 0.5, 0.5),
+                        cc.ScaleTo.create(0.3, 1.0, 1.0)));
+            return false;
+        }
     }
+
 });

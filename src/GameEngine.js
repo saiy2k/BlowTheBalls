@@ -99,7 +99,7 @@ var GameEngine = cc.Layer.extend({
 
             // loading hero
             this.hero = new Hero();
-            this.hero.setPosition(cc.p(winSize.width/2, GAME.GROUNDLEVEL + this.hero._contentSize.height/2));
+            this.hero.setPosition(cc.p(winSize.width/2, GAME.GROUNDLEVEL + this.hero._contentSize.height / 2));
             this.hero.targetX = winSize.width/2;
             this.addChild(this.hero, 1, 0);
 
@@ -250,7 +250,16 @@ var GameEngine = cc.Layer.extend({
                 // check if the ball hits the hero, if yes, reduce life
                 if (!this.hero.isSafe) {
                     if (Logic.spriteHitTest(bb, this.hero)) {
-                        this.reduceLife();
+                        this.hud.decrementLife();
+                        if ( this.hero.reduceLife(this.hero) ) {
+                            var endScreen = EndScreen.create();
+                            endScreen.delegate = this;
+                            endScreen.configLevelOver();
+                            endScreen.setPosition(cc.p(winSize.width / 2, - winSize.height / 2));
+                            endScreen.runAction(cc.EaseOut.create(cc.MoveTo.create(0.5, cc.p(winSize.width * 0.5, winSize.height * 0.5)), 2.0));
+                            this.addChild(endScreen, 10, 0);
+                            this.pause();
+                        }
                         break;
                     }
                 }
@@ -382,28 +391,6 @@ var GameEngine = cc.Layer.extend({
      */
     placeNails: function() {
         console.log('place nails');
-    },
-
-    reduceLife: function() {
-        State.lives--;
-        if (State.lives < 1) {
-            var endScreen = EndScreen.create();
-            endScreen.delegate = this;
-            endScreen.configLevelOver();
-            endScreen.setPosition(cc.p(winSize.width / 2, - winSize.height / 2));
-            endScreen.runAction(cc.EaseOut.create(cc.MoveTo.create(0.5, cc.p(winSize.width * 0.5, winSize.height * 0.5)), 2.0));
-            this.addChild(endScreen, 10, 0);
-            this.pause();
-        } else {
-            this.hud.decrementLife();
-            this.hero._opacity = 100;
-            this.hero.isSafe = true;
-            this.runAction(cc.Sequence.create(
-                        cc.DelayTime.create(5),
-                        cc.CallFunc.create(this, function() {
-                            this.hero.isSafe = false; } )));
-            this.hero.runAction(cc.FadeTo.create(5, 255));
-        }
     },
 
     powerRemoved: function(pup) {
