@@ -102,12 +102,10 @@ var Hud = cc.Layer.extend({
                     var leftButtonSelected = cc.Sprite.createWithSpriteFrameName('leftButtonPress.png');
                     var leftButtonDisabled = cc.Sprite.createWithSpriteFrameName('leftButtonPress.png');
                     var leftButton = cc.MenuItemSprite.create(leftButtonNormal, leftButtonSelected, leftButtonDisabled, this, function(obj, held) {
-                        if (typeof(held) != 'undefined') {
-                            if (held == true)
-                                this.delegate.isLeftPressed = true;
-                            else
-                                this.delegate.isLeftPressed = false;
-                        }
+                        if (held && held == true)
+                            this.delegate.isLeftPressed = true;
+                        else
+                            this.delegate.isLeftPressed = false;
                         this.onButtonEffect();
                     });
                     leftButton.touched = function() {
@@ -119,12 +117,11 @@ var Hud = cc.Layer.extend({
                     var rightButtonSelected = cc.Sprite.createWithSpriteFrameName('rightButtonPress.png');
                     var rightButtonDisabled = cc.Sprite.createWithSpriteFrameName('rightButtonPress.png');
                     var rightButton = cc.MenuItemSprite.create(rightButtonNormal, rightButtonSelected, rightButtonDisabled, this, function(obj, held) {
-                        if (typeof(held) != 'undefined') {
-                            if (held == true)
-                                this.delegate.isRightPressed = true;
-                            else
-                                this.delegate.isRightPressed = false;
-                        }
+                        if (held && held == true)
+                            this.delegate.isRightPressed = true;
+                        else
+                            this.delegate.isRightPressed = false;
+                        this.onButtonEffect();
                     });
                     rightButton.touched = function() {
                         self.delegate.isRightPressed = true;
@@ -135,9 +132,11 @@ var Hud = cc.Layer.extend({
                 var bombButtonNormal = cc.Sprite.createWithSpriteFrameName('bombButton.png');
                 var bombButtonSelected = cc.Sprite.createWithSpriteFrameName('bombButtonPress.png');
                 var bombButtonDisabled = cc.Sprite.createWithSpriteFrameName('bombButtonPress.png');
-                var bombButton = cc.MenuItemSprite.create(bombButtonNormal, bombButtonSelected, bombButtonDisabled, this, function() {
+                var bombButton = cc.MenuItemSprite.create(bombButtonNormal, bombButtonSelected, bombButtonDisabled, this, function(obj, held) {
+                    console.log('placing bomb');
+                    console.log(typeof(held));
                     if (typeof(held) != 'undefined') {
-                        this.delegate.isPlaceBomb = true;
+                        self.delegate.isPlaceBomb = true;
                     }
                     this.onButtonEffect();
                 });
@@ -146,9 +145,10 @@ var Hud = cc.Layer.extend({
                 var nailButtonNormal = cc.Sprite.createWithSpriteFrameName('nailButton.png');
                 var nailButtonSelected = cc.Sprite.createWithSpriteFrameName('nailButtonPress.png');
                 var nailButtonDisabled = cc.Sprite.createWithSpriteFrameName('nailButtonPress.png');
-                var nailButton = cc.MenuItemSprite.create(nailButtonNormal, nailButtonSelected, nailButtonDisabled, this, function() {
+                var nailButton = cc.MenuItemSprite.create(nailButtonNormal, nailButtonSelected, nailButtonDisabled, this, function(obj, held) {
+                    console.log('placing nail');
                     if (typeof(held) != 'undefined') {
-                        this.delegate.isPlaceNails = true;
+                        self.delegate.isPlaceNails = true;
                     }
                     this.onButtonEffect();
                 });

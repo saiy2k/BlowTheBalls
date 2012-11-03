@@ -247,6 +247,7 @@ var GameEngine = cc.Layer.extend({
                     this.ballArray.splice(i, 1);
                     break;
                 }
+
                 // check if the ball hits the hero, if yes, reduce life
                 if (!this.hero.isSafe) {
                     if (Logic.spriteHitTest(bb, this.hero)) {
@@ -263,6 +264,7 @@ var GameEngine = cc.Layer.extend({
                         break;
                     }
                 }
+
                 //for each arrow
                 for (j = 0, len2 = this.arrowArray.length; j < len2; j++) {
                     var arr = this.arrowArray[j];
@@ -280,6 +282,33 @@ var GameEngine = cc.Layer.extend({
                         return;
                     }
                 }
+
+                // for each power up objects like nails on ground
+                for (j = 0, len2 = this.placedObjects.length; j < len2; j++) {
+                    var plo = this.placedObjects[j];
+                    if (plo.tag == 7) {
+                        if (Logic.spriteHitTest(plo, bb)) {
+                            if (bb.type == 1) {
+                                bb.explode();
+                            // else split the big ball into 2 small balls
+                            } else {
+                                var b1 = new Ball(bb.type - 1);
+                                b1.setPosition(bb._position);
+                                this.ballArray.push(b1);
+                                this.addChild(b1, 2, 2);
+                                var b2 = new Ball(bb.type - 1);
+                                b2.setPosition(bb._position);
+                                b2.vx = -b2.vx;
+                                this.ballArray.push(b2);
+                                this.addChild(b2, 2, 2);
+                                bb.removeFromParentAndCleanup(true);
+                            }
+                            this.ballArray.splice(i, 1);
+                            return;
+                        }
+                    }
+                }
+
             }
             //for each arrow, update its position
             for (i = 0, len = this.arrowArray.length; i < len; i++) {
@@ -380,9 +409,8 @@ var GameEngine = cc.Layer.extend({
                     cc.Spawn.create(
                         cc.FadeTo.create(0.25, 50),
                         cc.ScaleTo.create(0.25, 3, 3)),
+                    cc.CallFunc.create(this, this.bombExploding, bombObj),
                     cc.CallFunc.create(bombObj, bombObj.removeFromParentAndCleanup, true)));
-
-        this.placedObjects.push(bombObj);
     },
 
     /**
@@ -399,9 +427,46 @@ var GameEngine = cc.Layer.extend({
                     cc.Spawn.create(
                         cc.FadeTo.create(0.25, 50),
                         cc.ScaleTo.create(0.25, 0.2, 0.2)),
+                    cc.CallFunc.create(this, this.removeNails, nailObj),
                     cc.CallFunc.create(nailObj, nailObj.removeFromParentAndCleanup, true)));
 
         this.placedObjects.push(nailObj);
+    },
+
+    removeNails: function(n) {
+        for (var i = 0, len = this.placedObjects.length; i < len; i++) {
+            if (this.placedObjects[i] == n) {
+                this.placedObjects.splice(i, 1);
+                break;
+            }
+        }
+    },
+
+    bombExploding: function(b) {
+        for (var i = 0, len = this.ballArray.length; i < len; i++) {
+            var bb = this.ballArray[i];
+            var dx = b._position.x - bb._position.x;
+            var dy = b._position.y - bb._position.y;
+            var dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < 200) {
+                if (bb.type == 1) {
+                    bb.explode();
+                } else {
+                    var b1 = new Ball(bb.type - 1);
+                    b1.setPosition(bb._position);
+                    this.ballArray.push(b1);
+                    this.addChild(b1, 2, 2);
+                    var b2 = new Ball(bb.type - 1);
+                    b2.setPosition(bb._position);
+                    b2.vx = -b2.vx;
+                    this.ballArray.push(b2);
+                    this.addChild(b2, 2, 2);
+                    bb.removeFromParentAndCleanup(true);
+                    this.ballArray.splice(i, 1);
+                }
+            }
+        }
     },
 
     powerRemoved: function(pup) {

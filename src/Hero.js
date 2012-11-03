@@ -75,7 +75,7 @@ var Hero = cc.Sprite.extend({
             this.setFlipX(true);
         }
     },
-    
+
     moveRight: function(dt) {
         this.targetX += 200 * dt;
         var rlimit = State.inputType == 'dpad' ? winSize.width - 120 : winSize.width;
