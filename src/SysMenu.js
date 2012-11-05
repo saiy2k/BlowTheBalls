@@ -13,10 +13,12 @@ var SysMenu = cc.Layer.extend({
         var bRet = false;
         if (this._super()) {
             winSize = cc.Director.getInstance().getWinSize();
+            console.log('1');
 
             var frameCache = cc.SpriteFrameCache.getInstance();
             sheetTexture = cc.TextureCache.getInstance().addImage(menuSheet);
             frameCache.addSpriteFrames(menuSheetPlist);
+            console.log('2');
 
             var sp = cc.Sprite.createWithSpriteFrameName('menuBackground.jpg');
             sp.setPosition(cc.p(winSize.width/2, winSize.height/2));
