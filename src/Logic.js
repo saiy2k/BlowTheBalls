@@ -65,6 +65,26 @@ var Logic = {
         }
     },
 
-    checkForWinCondition: function() {
+    winLevel: function(lyr) {
+        State.gameStatus = 'win';
+        var endScreen = EndScreen.create();
+        endScreen.delegate = lyr;
+        endScreen.configLevelWin();
+        endScreen.setPosition(cc.p(winSize.width / 2, - winSize.height / 2));
+        endScreen.runAction(cc.EaseOut.create(cc.MoveTo.create(0.5, cc.p(winSize.width * 0.5, winSize.height * 0.5)), 2.0));
+        lyr.addChild(endScreen, 10, 0);
+        lyr.pause();
+        lyr.hero.walkOut();
+    },
+
+    endLevel: function(lyr) {
+        State.gameStatus = 'timeOut';
+        var endScreen = EndScreen.create();
+        endScreen.delegate = lyr;
+        endScreen.configLevelOver();
+        endScreen.setPosition(cc.p(winSize.width / 2, - winSize.height / 2));
+        endScreen.runAction(cc.EaseOut.create(cc.MoveTo.create(0.5, cc.p(winSize.width * 0.5, winSize.height * 0.5)), 2.0));
+        lyr.addChild(endScreen, 10, 0);
+        lyr.pause();
     }
 };

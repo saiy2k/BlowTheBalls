@@ -115,6 +115,26 @@ var Hero = cc.Sprite.extend({
         this.lastFired += dt;
     },
 
+    walkIn:function() {
+        var infWalk = cc.RepeatForever.create(this.walkAction);
+        infWalk.setTag(999);
+        //this.runAction(infWalk);
+        this.runAction(cc.MoveTo.create(2.0, cc.p(winSize.width / 2, this._position.y)));
+    },
+
+    walkOut:function() {
+        this.stopAllActions();
+        var infWalk = cc.RepeatForever.create(this.walkAction);
+        infWalk.setTag(998);
+        //this.runAction(infWalk);
+        this.runAction(cc.MoveTo.create(2.0, cc.p(winSize.width + 100, this._position.y)));
+    },
+
+    stopWalk: function() {
+        console.log('stopwalk called');
+        this.stopActionByTag(999);
+    },
+
     /**
      * reduce the life of hero and show corresponding
      * animation

@@ -111,6 +111,6 @@ var g_ressources = [
 	{type:"image", src:r.world1.sideWall},
 	{type:"image", src:r.world1.background},
 	{type:"image", src:r.world1.pauseMenuBG},
-	{type:"image", src:r.world1.pauseMenuButton},
+	{type:"image", src:r.world1.pauseMenuButton}
 
 ];

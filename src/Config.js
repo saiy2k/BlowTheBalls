@@ -7,7 +7,7 @@ GAME = {};
 /**
  * level start lapse time
  */
-GAME.LEVELSTARTLAPSE = 1.0;
+GAME.LEVELSTARTLAPSE = 3.0;
 
 /**
  * Ground height

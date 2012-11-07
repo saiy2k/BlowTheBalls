@@ -181,10 +181,10 @@ var Hud = cc.Layer.extend({
     decrementLife: function() {
         this.livesCountLabel.setString('x ' + State.lives);
     },
-    incrementNailCount: function() {
+    updateNailCount: function() {
         this.nailsCountLabel.setString('x ' + State.nailCount);
     },
-    incrementBombCount: function() {
+    updateBombCount: function() {
         this.bombCountLabel.setString('x ' + State.bombCount);
     }
 });

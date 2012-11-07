@@ -99,7 +99,6 @@ var GameEngine = cc.Layer.extend({
 
             // loading hero
             this.hero = new Hero();
-            this.hero.setPosition(cc.p(winSize.width/2, GAME.GROUNDLEVEL + this.hero._contentSize.height / 2));
             this.hero.targetX = winSize.width/2;
             this.addChild(this.hero, 1, 0);
 
@@ -107,8 +106,6 @@ var GameEngine = cc.Layer.extend({
             this.loader = new LevelLoader();
             this.loader.delegate = this;
 
-            // setup gameloop
-            this.schedule(this.update, 30/1000);
             this.reset();
 
             bRet = true;
@@ -180,19 +177,26 @@ var GameEngine = cc.Layer.extend({
     reset:function () {
         this.cleanUp();
         this.loader.load(State.currentWorld, State.currentLevel);
+        this.hero.setPosition(cc.p(-100, GAME.GROUNDLEVEL + this.hero._contentSize.height / 2));
+        this.hero.stopActionByTag(999);
+        this.hero.stopActionByTag(998);
 
-        // TODO: setup 3 2 1 anim here and change state to 'play' once its over
+        // setup gameloop
         this.runAction(cc.Sequence.create(
+                    cc.DelayTime.create(0.5),
+                    cc.CallFunc.create(this.hero, this.hero.walkIn, null),
                     cc.DelayTime.create(GAME.LEVELSTARTLAPSE),
-                    cc.CallFunc.create(this, this.startGame)));
+                    cc.CallFunc.create(this.hero, this.hero.stopWalk, null),
+                    cc.DelayTime.create(0.1),
+                    cc.CallFunc.create(this, this.initUpdate, null)));
 
         State.lives = 5;
         State.score = 0;
         State.remainingTime = 60.0;
-        State.bombCount = 1;
+        State.bomupdateBombCount = 1;
         State.nailCount = 1;
-        this.hud.incrementBombCount();
-        this.hud.incrementNailCount();
+        this.hud.updateBombCount();
+        this.hud.updateNailCount();
 
         this.placedObjects = [];
     },
@@ -221,27 +225,10 @@ var GameEngine = cc.Layer.extend({
         if (State.gameStatus == 'play') {
             var i, j, len, len2;
             State.remainingTime -= dt;
+
             // on time out
             if (State.remainingTime < 0) {
-                State.gameStatus = 'timeOut';
-                var endScreen = EndScreen.create();
-                endScreen.delegate = this;
-                endScreen.configLevelOver();
-                endScreen.setPosition(cc.p(winSize.width / 2, - winSize.height / 2));
-                endScreen.runAction(cc.EaseOut.create(cc.MoveTo.create(0.5, cc.p(winSize.width * 0.5, winSize.height * 0.5)), 2.0));
-                this.addChild(endScreen, 10, 0);
-                this.pause();
-            }
-
-            if(this.ballArray.length == 0) {
-                State.gameStatus = 'win';
-                var endScreen = EndScreen.create();
-                endScreen.delegate = this;
-                endScreen.configLevelWin();
-                endScreen.setPosition(cc.p(winSize.width / 2, - winSize.height / 2));
-                endScreen.runAction(cc.EaseOut.create(cc.MoveTo.create(0.5, cc.p(winSize.width * 0.5, winSize.height * 0.5)), 2.0));
-                this.addChild(endScreen, 10, 0);
-                this.pause();
+                Logic.endLevel(this);
             }
 
             // for each ball
@@ -256,14 +243,8 @@ var GameEngine = cc.Layer.extend({
                 if (!this.hero.isSafe) {
                     if (Logic.spriteHitTest(bb, this.hero)) {
                         this.hud.decrementLife();
-                        if ( this.hero.reduceLife(this.hero) ) {
-                            var endScreen = EndScreen.create();
-                            endScreen.delegate = this;
-                            endScreen.configLevelOver();
-                            endScreen.setPosition(cc.p(winSize.width / 2, - winSize.height / 2));
-                            endScreen.runAction(cc.EaseOut.create(cc.MoveTo.create(0.5, cc.p(winSize.width * 0.5, winSize.height * 0.5)), 2.0));
-                            this.addChild(endScreen, 10, 0);
-                            this.pause();
+                        if ( this.hero.reduceLife() ) {
+                            Logic.endLevel(this);
                         }
                         break;
                     }
@@ -281,7 +262,8 @@ var GameEngine = cc.Layer.extend({
                             this.addChild(pup, 2, 0);
                             pup.delegate = this;
                         }
-                        if (Logic.checkForWinCondition()) {
+                        if(this.ballArray.length == 0) {
+                            Logic.winLevel(this);
                         }
                         return;
                     }
@@ -332,13 +314,15 @@ var GameEngine = cc.Layer.extend({
                     pup.hitReact(this.hero._position);
                     this.powerUpArray.splice(i, 1);
                     if (pup.tag == 2) {
-                        this.hud.incrementNailCount();
+                        this.hud.updateNailCount();
                     } else if (pup.tag == 3) {
-                        this.hud.incrementBombCount();
+                        this.hud.updateBombCount();
                     }
                     break;
                 }
             }
+
+            // update input status
             if (this.isLeftPressed) {
                 this.hero.moveLeft(dt);
             }
@@ -375,16 +359,24 @@ var GameEngine = cc.Layer.extend({
         }
         this.powerData = tpowerups;
     },
+
+    initUpdate: function() {
+        State.gameStatus = 'play';
+        this.schedule(this.update, 30/1000);
+    },
+
     /**
      * command left that makes the character walk to the left side
      */
     moveLeft: function(dt) {
     },
+
     /**
      * command right that makes the character walk to the right side
      */
     moveRight: function(dt) {
     },
+
     /**
      * command to fire curently selected arrow
      * can have only one arrow at a time on screen
@@ -403,7 +395,7 @@ var GameEngine = cc.Layer.extend({
      * command to place a bomb if its available 
      */
     placeBomb: function() {
-        if (State.bombCount <= 0) return;
+        if (State.bomupdateBombCount <= 0) return;
         console.log('place bomb');
         var bombObj = new Powerup(6);
         bombObj.setPosition(cc.p(this.hero._position.x, this.hero._position.y));
@@ -416,8 +408,8 @@ var GameEngine = cc.Layer.extend({
                         cc.ScaleTo.create(0.25, 3, 3)),
                     cc.CallFunc.create(this, this.bombExploding, bombObj),
                     cc.CallFunc.create(bombObj, bombObj.removeFromParentAndCleanup, true)));
-        State.bombCount--;
-        this.hud.incrementBombCount();
+        State.bomupdateBombCount--;
+        this.hud.updateBombCount();
     },
 
     /**
@@ -440,7 +432,7 @@ var GameEngine = cc.Layer.extend({
 
         this.placedObjects.push(nailObj);
         State.nailCount--;
-        this.hud.incrementNailCount();
+        this.hud.updateNailCount();
     },
 
     removeNails: function(n) {
