@@ -44,9 +44,6 @@ var menuSheetPlist   = dirImg + 'menuSheet.plist';
 var gameSheet        = dirImg + 'gameSheet.png';
 var gameSheetPlist   = dirImg + 'gameSheet.plist';
 
-
-
-
 var s_menuButtonPlayNormal = dirImg + "menuButtonPlayNormal.png";
 //var s_menuButtonPlaySelected = dirImg + "menuButtonPlaySelected.png";
 //var s_menuButtonPlayDisabled = dirImg + "menuButtonPlayDisabled.png";
@@ -114,6 +111,6 @@ var g_ressources = [
 	{type:"image", src:r.world1.sideWall},
 	{type:"image", src:r.world1.background},
 	{type:"image", src:r.world1.pauseMenuBG},
-	{type:"image", src:r.world1.pauseMenuButton}
+	{type:"image", src:r.world1.pauseMenuButton},
 
 ];

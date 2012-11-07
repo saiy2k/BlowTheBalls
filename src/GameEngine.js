@@ -189,6 +189,10 @@ var GameEngine = cc.Layer.extend({
         State.lives = 5;
         State.score = 0;
         State.remainingTime = 60.0;
+        State.bombCount = 1;
+        State.nailCount = 1;
+        this.hud.incrementBombCount();
+        this.hud.incrementNailCount();
 
         this.placedObjects = [];
     },
@@ -399,6 +403,7 @@ var GameEngine = cc.Layer.extend({
      * command to place a bomb if its available 
      */
     placeBomb: function() {
+        if (State.bombCount <= 0) return;
         console.log('place bomb');
         var bombObj = new Powerup(6);
         bombObj.setPosition(cc.p(this.hero._position.x, this.hero._position.y));
@@ -411,12 +416,15 @@ var GameEngine = cc.Layer.extend({
                         cc.ScaleTo.create(0.25, 3, 3)),
                     cc.CallFunc.create(this, this.bombExploding, bombObj),
                     cc.CallFunc.create(bombObj, bombObj.removeFromParentAndCleanup, true)));
+        State.bombCount--;
+        this.hud.incrementBombCount();
     },
 
     /**
      * command to place nails if its available 
      */
     placeNails: function() {
+        if (State.nailCount <= 0) return;
         console.log('place nails');
         var nailObj = new Powerup(7);
         nailObj.setPosition(cc.p(this.hero._position.x, this.hero._position.y));
@@ -431,6 +439,8 @@ var GameEngine = cc.Layer.extend({
                     cc.CallFunc.create(nailObj, nailObj.removeFromParentAndCleanup, true)));
 
         this.placedObjects.push(nailObj);
+        State.nailCount--;
+        this.hud.incrementNailCount();
     },
 
     removeNails: function(n) {
