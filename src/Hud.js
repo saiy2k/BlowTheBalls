@@ -168,6 +168,7 @@ var Hud = cc.Layer.extend({
 
         return bRet;
     },
+
     update:function (dt) {
         if (State.score != this.dScore) {
             var ds = State.score - this.dScore;
@@ -176,17 +177,22 @@ var Hud = cc.Layer.extend({
         }
         this.timeLabel.setString(State.remainingTime + ' ');
     },
+
     onButtonEffect:function(){
     },
+
     decrementLife: function() {
         this.livesCountLabel.setString('x ' + State.lives);
     },
+
     updateNailCount: function() {
         this.nailsCountLabel.setString('x ' + State.nailCount);
     },
+
     updateBombCount: function() {
         this.bombCountLabel.setString('x ' + State.bombCount);
     }
+
 });
 
 Hud.create = function () {

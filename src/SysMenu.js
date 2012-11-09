@@ -20,9 +20,7 @@ var SysMenu = cc.Layer.extend({
             frameCache.addSpriteFrames(menuSheetPlist);
             console.log('2');
 
-            var sp = cc.Sprite.createWithSpriteFrameName('menuBackground.jpg');
-            sp.setPosition(cc.p(winSize.width/2, winSize.height/2));
-            this.addChild(sp, 0, 1);
+            $('#gameCanvas').css("background-image", "url(res/menuBg.jpg)");  
 
             var playNormal = cc.Sprite.createWithSpriteFrameName('menuPlayButton.png');
             var playSelected = cc.Sprite.createWithSpriteFrameName('menuPlayButton.png');

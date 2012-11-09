@@ -38,6 +38,7 @@ if( cc.config.deviceType == 'browser') {
 var s_gameOver = dirImg + "gameOver.png";
 var s_menuTitle = dirImg + "menuTitle.png";
 
+var menuBg           = dirImg + 'menuBg.jpg';
 var menuSheet        = dirImg + 'menuSheet.png';
 var menuSheetPlist   = dirImg + 'menuSheet.plist';
 
@@ -66,18 +67,9 @@ var s_menuButtonHighScoreNormal = dirImg + "menuButtonHighScoreNormal.png";
 
 
 
-//menu
-r.menu.background = dirImg + "menu_bg.jpg";
 //game
 for (var i = 0; i < 1; i++) {
     var worldS = "world" + (i+1);
-    r[worldS].ball1 = dirImg + "ball1.png";
-    r[worldS].ball2 = dirImg + "ball2.png";
-    r[worldS].ball3 = dirImg + "ball3.png";
-    r[worldS].ball4 = dirImg + "ball4.png";
-    r[worldS].ball5 = dirImg + "ball5.png";
-    r[worldS].ball6 = dirImg + "ball6.png";
-    r[worldS].ball7 = dirImg + "ball7.png";
     r[worldS].arrow = dirImg + "arrow.png";
     r[worldS].sideWall = dirImg + "sideWall.jpg";
     r[worldS].background = dirImg + "gameBg.jpg";
@@ -86,10 +78,7 @@ for (var i = 0; i < 1; i++) {
 }
 
 var g_ressources = [
-    //pre loader
-
-    // menu
-	{type:"image", src:r.menu.background},
+    {type:"image", src:menuBg},
 
 	//Hero walk
     {type:"image", src:menuSheet},
@@ -100,13 +89,6 @@ var g_ressources = [
 	{type:"plist",src:gameSheetPlist},
     
     //game
-	{type:"image", src:r.world1.ball1},
-	{type:"image", src:r.world1.ball2},
-	{type:"image", src:r.world1.ball3},
-	{type:"image", src:r.world1.ball4},
-	{type:"image", src:r.world1.ball5},
-	{type:"image", src:r.world1.ball6},
-	{type:"image", src:r.world1.ball7},
 	{type:"image", src:r.world1.arrow},
 	{type:"image", src:r.world1.sideWall},
 	{type:"image", src:r.world1.background},

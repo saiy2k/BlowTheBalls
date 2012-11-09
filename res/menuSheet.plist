@@ -4,23 +4,10 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>menuBackground.jpg</key>
-            <dict>
-                <key>frame</key>
-                <string>{{311,68},{1080,720}}</string>
-                <key>offset</key>
-                <string>{0,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,0},{1080,720}}</string>
-                <key>sourceSize</key>
-                <string>{1080,720}</string>
-            </dict>
             <key>menuCreditsButton.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{0,68},{311,55}}</string>
+                <string>{{622,68},{311,55}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -33,7 +20,7 @@
             <key>menuFBButton.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{65,0},{65,68}}</string>
+                <string>{{0,0},{65,68}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -46,7 +33,7 @@
             <key>menuGoogleButton.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{0,0},{65,68}}</string>
+                <string>{{65,0},{65,68}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -59,7 +46,7 @@
             <key>menuInstructionButton.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{817,0},{311,55}}</string>
+                <string>{{311,68},{311,55}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -72,7 +59,7 @@
             <key>menuOptionsButton.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{1128,0},{311,55}}</string>
+                <string>{{0,68},{311,55}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -85,7 +72,7 @@
             <key>menuPlayButton.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{195,0},{311,55}}</string>
+                <string>{{506,0},{311,55}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -98,7 +85,7 @@
             <key>menuScoreButton.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{506,0},{311,55}}</string>
+                <string>{{195,0},{311,55}}</string>
                 <key>offset</key>
                 <string>{0,0}</string>
                 <key>rotated</key>
@@ -129,9 +116,9 @@
             <key>realTextureFileName</key>
             <string>menuSheet.png</string>
             <key>size</key>
-            <string>{1439,788}</string>
+            <string>{933,123}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:590e24aa017319aff2d9d7f145710d76$</string>
+            <string>$TexturePacker:SmartUpdate:28e0c829cd9e4f41d960497fe273c283$</string>
             <key>textureFileName</key>
             <string>menuSheet.png</string>
         </dict>

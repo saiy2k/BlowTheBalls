@@ -87,10 +87,11 @@ var GameEngine = cc.Layer.extend({
             sheetTexture = cc.TextureCache.getInstance().addImage(gameSheet);
             frameCache.addSpriteFrames(gameSheetPlist);
 
-            // loading background picture
-            var bg = cc.Sprite.create(this.res.background);
-            bg.setPosition(cc.p(winSize.width/2, winSize.height/2));
-            this.addChild(bg, 0, 0);
+            // loading bgggackground picture
+            $('#gameCanvas').css("background-image", "url(res/gameBg.jpg)");  
+            var bg = cc.Sprite.createWithSpriteFrameName('groundBg.jpg');
+            bg.setPosition(cc.p(winSize.width/2, bg._contentSize.height/2));
+            this.addChild(bg, 5, 0);
 
             // HUD Component
             this.hud = Hud.create();
