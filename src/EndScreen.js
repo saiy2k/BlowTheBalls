@@ -144,7 +144,7 @@ var winSize; var EndScreen = cc.Layer.extend({
             this.pMenu.alignItemsVerticallyWithPadding(5);
             background.addChild(this.pMenu, 0, 2);
 
-            this.scoreLabel = cc.LabelTTF.create('Score : 14000', 'font2', 28);
+            this.scoreLabel = cc.LabelTTF.create('Score : ' + State.score, 'font2', 28);
             this.scoreLabel.setPosition(cc.p(background._contentSize.width / 2, background._contentSize.height * 0.32));
             background.addChild(this.scoreLabel, 0, 0);
 

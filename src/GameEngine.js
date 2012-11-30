@@ -109,6 +109,8 @@ var GameEngine = cc.Layer.extend({
             this.loader.delegate = this;
 
             this.reset();
+            this.loader.load(State.currentWorld, State.currentLevel);
+            //this.loader.load(State.currentWorld, 5);
 
             bRet = true;
         }
@@ -178,7 +180,6 @@ var GameEngine = cc.Layer.extend({
      */
     reset:function () {
         this.cleanUp();
-        this.loader.load(State.currentWorld, State.currentLevel);
         this.hero.setPosition(cc.p(-100, GAME.GROUNDLEVEL + this.hero._contentSize.height / 2));
         this.hero.stopActionByTag(999);
         this.hero.stopActionByTag(998);
@@ -194,10 +195,8 @@ var GameEngine = cc.Layer.extend({
 
         State.lives = 5;
         State.score = 0;
-        State.remainingTime = 60.0;
-        State.totalTime = 60.0;
-        State.bomupdateBombCount = 1;
-        State.nailCount = 1;
+        State.bombCount = 0;
+        State.nailCount = 0;
         this.hud.updateBombCount();
         this.hud.updateNailCount();
 
@@ -496,12 +495,14 @@ var GameEngine = cc.Layer.extend({
     retry: function() {
         this.resume();
         this.reset();
+        this.loader.load(State.currentWorld, State.currentLevel);
     },
 
     nextLevel: function() {
         this.resume();
         State.currentLevel++;
         this.reset();
+        this.loader.load(State.currentWorld, State.currentLevel);
     }
 
 });

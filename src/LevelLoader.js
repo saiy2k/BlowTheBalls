@@ -1,4 +1,3 @@
-
 /*
 	CLASS LevelLoader : Class
 	Description: This class reads the level data file and sets up the game objects appropriately
@@ -26,6 +25,8 @@ var LevelLoader = cc.Class.extend({
 
             $.getJSON('res/w' + wrld + 'level' + lvl + '.json', function(data) {
                 level = data;
+                State.remainingTime = data.time;
+                State.totalTime = data.time;
                 //l1 hard coded for now
                 //for each balls in the json object, create one sprite here
                 //and set the type and position appropriately
