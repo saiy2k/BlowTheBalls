@@ -89,6 +89,7 @@ var GameEngine = cc.Layer.extend({
 
             // loading bgggackground picture
             $('#gameCanvas').css("background-image", "url(res/gameBg.jpg)");  
+            $('body').css("background-color", "#30444d");  
             var bg = cc.Sprite.createWithSpriteFrameName('groundBg.jpg');
             bg.setPosition(cc.p(winSize.width/2, bg._contentSize.height/2));
             this.addChild(bg, 5, 0);
@@ -194,6 +195,7 @@ var GameEngine = cc.Layer.extend({
         State.lives = 5;
         State.score = 0;
         State.remainingTime = 60.0;
+        State.totalTime = 60.0;
         State.bomupdateBombCount = 1;
         State.nailCount = 1;
         this.hud.updateBombCount();

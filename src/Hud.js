@@ -3,7 +3,7 @@ var self;
 var Hud = cc.Layer.extend({
     delegate: null,
     scoreLabel: null,
-    timeLabel: null,
+    timeSprite: null,
     dScore: 0,
     res: r.world1,
     livesCountLabel: null,
@@ -21,40 +21,44 @@ var Hud = cc.Layer.extend({
             var nailsIcon;
             winSize = cc.Director.getInstance().getWinSize();
 
-            this.scoreLabel = cc.LabelTTF.create('0', 'Arial', 60);
-            this.scoreLabel.setPosition(cc.p(winSize.width - 150, winSize.height * 0.05));
+            this.scoreLabel = cc.LabelTTF.create('0', 'font1', 48);
+            this.scoreLabel.setPosition(cc.p(winSize.width - 150, winSize.height * 0.030));
             this.addChild(this.scoreLabel, 0, 0);
 
-            this.timeLabel = cc.LabelTTF.create('0', 'Arial', 30);
-            this.timeLabel.setPosition(cc.p(winSize.width * 0.95, winSize.height * 0.95));
-            this.addChild(this.timeLabel, 0, 0);
+            this.timeSprite = cc.Sprite.createWithSpriteFrameName('timeSeekBG.png');
+            this.timeSprite.setPosition(cc.p(winSize.width * 0.5, 70));
+            this.addChild(this.timeSprite, 0, 0);
+
+            this.timeSprite = cc.Sprite.createWithSpriteFrameName('timeSeekFiller.png');
+            this.timeSprite.setPosition(cc.p(winSize.width * 0.5, 70));
+            this.addChild(this.timeSprite, 0, 0);
 
             var topSpikes = cc.Sprite.createWithSpriteFrameName('topSpikes.png');
             topSpikes.setPosition(cc.p(winSize.width / 2, winSize.height - topSpikes._contentSize.height / 2));
             this.addChild(topSpikes, 0, 0);
 
             livesIcon = cc.Sprite.createWithSpriteFrameName('livesIcon.png');
-            livesIcon.setPosition(cc.p(40, 40));
+            livesIcon.setPosition(cc.p(40, 32));
             this.addChild(livesIcon, 2, 0);
 
             bombIcon = cc.Sprite.createWithSpriteFrameName('bombIcon.png');
-            bombIcon.setPosition(cc.p(160, 40));
+            bombIcon.setPosition(cc.p(160, 32));
             this.addChild(bombIcon, 2, 0);
 
             nailsIcon = cc.Sprite.createWithSpriteFrameName('nailsIcon.png');
-            nailsIcon.setPosition(cc.p(280, 40));
+            nailsIcon.setPosition(cc.p(280, 32));
             this.addChild(nailsIcon, 2, 0);
 
-            this.livesCountLabel = cc.LabelTTF.create('x ' + State.lives, 'Arial', 30);
-            this.livesCountLabel.setPosition(cc.p(90, 40));
+            this.livesCountLabel = cc.LabelTTF.create('x ' + State.lives, 'font2', 30);
+            this.livesCountLabel.setPosition(cc.p(90, 22));
             this.addChild(this.livesCountLabel, 2, 0);
 
-            this.bombCountLabel = cc.LabelTTF.create('x ' + State.bombCount, 'Arial', 30);
-            this.bombCountLabel.setPosition(cc.p(210, 40));
+            this.bombCountLabel = cc.LabelTTF.create('x ' + State.bombCount, 'font2', 30);
+            this.bombCountLabel.setPosition(cc.p(210, 22));
             this.addChild(this.bombCountLabel, 2, 0);
 
-            this.nailsCountLabel = cc.LabelTTF.create('x ' + State.nailCount, 'Arial', 30);
-            this.nailsCountLabel.setPosition(cc.p(330, 40));
+            this.nailsCountLabel = cc.LabelTTF.create('x ' + State.nailCount, 'font2', 30);
+            this.nailsCountLabel.setPosition(cc.p(330, 22));
             this.addChild(this.nailsCountLabel, 2, 0);
 
             var pauseButtonNormal = cc.Sprite.createWithSpriteFrameName('pauseButton.png');
@@ -175,7 +179,8 @@ var Hud = cc.Layer.extend({
             this.dScore += ds/5 < 0 ? 1 : ds/5;
             this.scoreLabel.setString(Math.round(this.dScore));
         }
-        this.timeLabel.setString(State.remainingTime + ' ');
+        //this.timeLabel.setString(State.remainingTime + ' ');
+        this.timeSprite.setScaleX(State.remainingTime / State.totalTime);
     },
 
     onButtonEffect:function(){

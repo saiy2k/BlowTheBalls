@@ -21,6 +21,7 @@ var SysMenu = cc.Layer.extend({
             console.log('2');
 
             $('#gameCanvas').css("background-image", "url(res/menuBg.jpg)");  
+            $('body').css("background-color", "#68e9fc");  
 
             var playNormal = cc.Sprite.createWithSpriteFrameName('menuPlayButton.png');
             var playSelected = cc.Sprite.createWithSpriteFrameName('menuPlayButton.png');

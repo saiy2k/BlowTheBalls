@@ -63,8 +63,8 @@ var winSize; var EndScreen = cc.Layer.extend({
             background = cc.Sprite.create(this.res.pauseMenuBG, cc.rect(0, 0, 550, 560));
             this.addChild(background, 0, 0);
 
-            this.headerLabel = cc.LabelTTF.create('', 'Arial', 30);
-            this.headerLabel.setPosition(cc.p(background._contentSize.width / 2, background._contentSize.height * 0.8));
+            this.headerLabel = cc.LabelTTF.create('', 'font2', 40);
+            this.headerLabel.setPosition(cc.p(background._contentSize.width / 2, background._contentSize.height * 0.78));
             background.addChild(this.headerLabel, 0, 0);
 
             var resumeButtonNormal = cc.Sprite.create(this.res.pauseMenuButton, cc.rect(0, 0, 250, 65));
@@ -81,7 +81,7 @@ var winSize; var EndScreen = cc.Layer.extend({
             });
             resumeButton.setTag(0);
 
-            var resumeLbl= cc.LabelTTF.create('resume', 'Arial', 20);
+            var resumeLbl= cc.LabelTTF.create('resume', 'font1', 28);
             resumeLbl.setPosition(cc.p(resumeButton._contentSize.width * 0.5, resumeButton._contentSize.height * 0.5));
             resumeButton.addChild(resumeLbl, 10, 10);
 
@@ -99,7 +99,7 @@ var winSize; var EndScreen = cc.Layer.extend({
             });
             quitButton.setTag(1);
 
-            var quitLbl= cc.LabelTTF.create('quit', 'Arial', 20);
+            var quitLbl= cc.LabelTTF.create('quit', 'font1', 28);
             quitLbl.setPosition(cc.p(quitButton._contentSize.width * 0.5, quitButton._contentSize.height * 0.5));
             quitButton.addChild(quitLbl, 10, 10);
 
@@ -117,7 +117,7 @@ var winSize; var EndScreen = cc.Layer.extend({
             });
             retryButton.setTag(2);
 
-            var retryLbl= cc.LabelTTF.create('retry', 'Arial', 20);
+            var retryLbl= cc.LabelTTF.create('retry', 'font1', 28);
             retryLbl.setPosition(cc.p(retryButton._contentSize.width * 0.5, retryButton._contentSize.height * 0.5));
             retryButton.addChild(retryLbl, 10, 10);
 
@@ -135,7 +135,7 @@ var winSize; var EndScreen = cc.Layer.extend({
             });
             nextButton.setTag(3);
 
-            var nextLbl= cc.LabelTTF.create('next', 'Arial', 20);
+            var nextLbl= cc.LabelTTF.create('next', 'font1', 28);
             nextLbl.setPosition(cc.p(nextButton._contentSize.width * 0.5, nextButton._contentSize.height * 0.5));
             nextButton.addChild(nextLbl, 10, 10);
 
@@ -144,7 +144,7 @@ var winSize; var EndScreen = cc.Layer.extend({
             this.pMenu.alignItemsVerticallyWithPadding(5);
             background.addChild(this.pMenu, 0, 2);
 
-            this.scoreLabel = cc.LabelTTF.create('Score : 14000', 'Arial', 24);
+            this.scoreLabel = cc.LabelTTF.create('Score : 14000', 'font2', 28);
             this.scoreLabel.setPosition(cc.p(background._contentSize.width / 2, background._contentSize.height * 0.32));
             background.addChild(this.scoreLabel, 0, 0);
 

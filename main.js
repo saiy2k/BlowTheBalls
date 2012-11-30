@@ -74,7 +74,7 @@ var cocos2dApp = cc.Application.extend({
     }
 });
 
-var myApp = new cocos2dApp(SysMenu.create);
+var myApp = new cocos2dApp(GameEngine.create);
 
 cc.adjustSizeForWindow = function () {
     var margin = document.documentElement.clientWidth - document.body.clientWidth;
