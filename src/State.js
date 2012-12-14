@@ -34,6 +34,11 @@ State = {
     remainingTime: 0,
 
     /**
+     * total time allocated to complete the Level
+     */
+    totalTime: 0,
+
+    /**
      * number of bombs remaining
      */
     bombCount: 0,

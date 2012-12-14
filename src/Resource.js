@@ -35,19 +35,15 @@ if( cc.config.deviceType == 'browser') {
 }
 
 //pre loader
-var s_loading = dirImg + "loading.png";
-var s_cocos2dhtml5 = dirImg + "cocos2d-html5.png";
 var s_gameOver = dirImg + "gameOver.png";
 var s_menuTitle = dirImg + "menuTitle.png";
 
+var menuBg           = dirImg + 'menuBg.jpg';
 var menuSheet        = dirImg + 'menuSheet.png';
 var menuSheetPlist   = dirImg + 'menuSheet.plist';
 
 var gameSheet        = dirImg + 'gameSheet.png';
 var gameSheetPlist   = dirImg + 'gameSheet.plist';
-
-
-
 
 var s_menuButtonPlayNormal = dirImg + "menuButtonPlayNormal.png";
 //var s_menuButtonPlaySelected = dirImg + "menuButtonPlaySelected.png";
@@ -70,30 +66,9 @@ var s_menuButtonHighScoreNormal = dirImg + "menuButtonHighScoreNormal.png";
 //var s_menuButtonHighScoreDisabled = dirImg + "menuButtonHighScoreDisabled.png";
 
 
-
-//menu
-r.menu.background = dirImg + "menuBg.jpg";
-
-//music
-var s_bgMusic = dirMusic + "bgMusic" + musicSuffix;
-var s_mainMainMusic = dirMusic + "mainMainMusic" + musicSuffix;
-
-//effect
-var s_buttonEffect = dirMusic + "buttonEffet" + musicSuffix;
-var s_explodeEffect = dirMusic + "explodeEffect" + musicSuffix;
-var s_fireEffect = dirMusic + "fireEffect" + musicSuffix;
-var s_shipDestroyEffect = dirMusic + "shipDestroyEffect" + musicSuffix;
-
 //game
 for (var i = 0; i < 1; i++) {
     var worldS = "world" + (i+1);
-    r[worldS].ball1 = dirImg + "ball1.png";
-    r[worldS].ball2 = dirImg + "ball2.png";
-    r[worldS].ball3 = dirImg + "ball3.png";
-    r[worldS].ball4 = dirImg + "ball4.png";
-    r[worldS].ball5 = dirImg + "ball5.png";
-    r[worldS].ball6 = dirImg + "ball6.png";
-    r[worldS].ball7 = dirImg + "ball7.png";
     r[worldS].arrow = dirImg + "arrow.png";
     r[worldS].sideWall = dirImg + "sideWall.jpg";
     r[worldS].background = dirImg + "gameBg.jpg";
@@ -102,22 +77,7 @@ for (var i = 0; i < 1; i++) {
 }
 
 var g_ressources = [
-    //pre loader
-    {type:"image", src:s_loading},
-    {type:"image", src:s_cocos2dhtml5},
-
-    // menu
-	{type:"image", src:r.menu.background},
-
-    //music
-    {type:"bgm", src:s_bgMusic},
-    {type:"bgm", src:s_mainMainMusic},
-
-    //effect
-    {type:"effect", src:s_buttonEffect},
-    {type:"effect", src:s_explodeEffect},
-    {type:"effect", src:s_fireEffect},
-    {type:"effect", src:s_shipDestroyEffect},
+    {type:"image", src:menuBg},
 
 	//Hero walk
     {type:"image", src:menuSheet},
@@ -128,13 +88,6 @@ var g_ressources = [
 	{type:"plist",src:gameSheetPlist},
     
     //game
-	{type:"image", src:r.world1.ball1},
-	{type:"image", src:r.world1.ball2},
-	{type:"image", src:r.world1.ball3},
-	{type:"image", src:r.world1.ball4},
-	{type:"image", src:r.world1.ball5},
-	{type:"image", src:r.world1.ball6},
-	{type:"image", src:r.world1.ball7},
 	{type:"image", src:r.world1.arrow},
 	{type:"image", src:r.world1.sideWall},
 	{type:"image", src:r.world1.background},

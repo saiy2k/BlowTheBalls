@@ -7,7 +7,7 @@ GAME = {};
 /**
  * level start lapse time
  */
-GAME.LEVELSTARTLAPSE = 1.0;
+GAME.LEVELSTARTLAPSE = 3.0;
 
 /**
  * Ground height
@@ -64,6 +64,17 @@ GAME.POWERUPS = [
         "id": 5,
         "name": "Shrink Hero",
         "icon": "shrinkIcon.png"
+    },
+    {
+        "id": 6,
+        "name": "In-Game Bomb",
+        "icon": "bomb.png"
+    },
+    {
+        "id": 7,
+        "name": "In-Game Spikes",
+        "icon": "spikes.png"
     }
+
 ];
 

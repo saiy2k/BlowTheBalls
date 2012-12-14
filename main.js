@@ -58,8 +58,7 @@ var cocos2dApp = cc.Application.extend({
         director.setAnimationInterval(1.0 / this.config['frameRate']);
 
         // create a scene. it's an autorelease object
-
-        // run
+// run
         director.runWithScene(new this.startScene());
 
         var elem = document.getElementById("gameCanvas");

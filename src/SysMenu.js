@@ -22,10 +22,11 @@ var SysMenu = cc.Layer.extend({
             var frameCache = cc.SpriteFrameCache.getInstance();
             this.sheetTexture = cc.TextureCache.getInstance().addImage(menuSheet);
             frameCache.addSpriteFrames(menuSheetPlist);
+            console.log('2');
 
             //$('body').css("background-image", "url(res/menuBg.jpg)");  
 
-            var bgSprite = cc.Sprite.create(r.menu.background);
+            var bgSprite = cc.Sprite.create(menuBg);
             bgSprite.setAnchorPoint( cc.p(0.5, 0.5) );
             bgSprite.setPosition( cc.p(winSize.width / 2, winSize.height / 2) );
             bgSprite.setScale(scaleFactor);
@@ -82,7 +83,7 @@ var SysMenu = cc.Layer.extend({
             tmpLabel.setPosition(cc.p(highScoreNormal.getBoundingBox().size.width / 2, highScoreNormal.getBoundingBox().size.height / 2));
             tmpLabel.setColor( new cc.Color3B(0, 0, 100) );
             highScoreNormal.addChild(tmpLabel, 0, 0);
-			
+		
             var optionsNormal = cc.Sprite.createWithSpriteFrameName('button.png');
             var optionsSelected = cc.Sprite.createWithSpriteFrameName('button.png');
             var optionsDisabled = cc.Sprite.createWithSpriteFrameName('');
