@@ -1,10 +1,12 @@
 cc.dumpConfig();
- var winSize;
- var actionScaleTo = cc.ScaleTo.create(1, 2,1.5);
+var winSize;
+
 var SysMenu = cc.Layer.extend({
-    _ship:null,
     sheetTexture: null,
     menu: null,
+    cloudLeft: null,
+    cloudRight: null,
+    titleLabel: null,
 
     ctor:function () {
         cc.associateWithNative( this, cc.Layer );
@@ -12,35 +14,98 @@ var SysMenu = cc.Layer.extend({
     init:function () {
         var bRet = false;
         if (this._super()) {
+            var scaleFactor;
+            var tmpLabel;
             winSize = cc.Director.getInstance().getWinSize();
+            scaleFactor = Math.min(winSize.width / 1170, winSize.height / 780);
 
             var frameCache = cc.SpriteFrameCache.getInstance();
-            sheetTexture = cc.TextureCache.getInstance().addImage(menuSheet);
+            this.sheetTexture = cc.TextureCache.getInstance().addImage(menuSheet);
             frameCache.addSpriteFrames(menuSheetPlist);
 
-            var sp = cc.Sprite.createWithSpriteFrameName('menuBackground.jpg');
-            sp.setPosition(cc.p(winSize.width/2, winSize.height/2));
-            this.addChild(sp, 0, 1);
+            //$('body').css("background-image", "url(res/menuBg.jpg)");  
 
-            var playNormal = cc.Sprite.createWithSpriteFrameName('menuPlayButton.png');
-            var playSelected = cc.Sprite.createWithSpriteFrameName('menuPlayButton.png');
-            var playDisabled = cc.Sprite.createWithSpriteFrameName('menuPlayButton.png');
+            var bgSprite = cc.Sprite.create(r.menu.background);
+            bgSprite.setAnchorPoint( cc.p(0.5, 0.5) );
+            bgSprite.setPosition( cc.p(winSize.width / 2, winSize.height / 2) );
+            bgSprite.setScale(scaleFactor);
+            this.addChild(bgSprite);
 
-            var highScoreNormal = cc.Sprite.createWithSpriteFrameName('menuScoreButton.png');
-            var highScoreSelected = cc.Sprite.createWithSpriteFrameName('menuScoreButton.png');
-            var highScoreDisabled = cc.Sprite.createWithSpriteFrameName('menuScoreButton.png');
+            this.cloudLeft= cc.Sprite.createWithSpriteFrameName('cloudLeft.png');
+            this.cloudLeft.setAnchorPoint( cc.p(0.0, 0.5) );
+            this.cloudLeft.setPosition( cc.p(-this.cloudLeft.getBoundingBox().size.width, winSize.height * 0.8) );
+            this.addChild(this.cloudLeft);
+            this.cloudLeft.runAction( cc.Sequence.create(
+                        cc.DelayTime.create(0.25),
+                        cc.MoveTo.create(0.2, cc.p(0, winSize.height * 0.8)),
+                        null));
+
+            this.titleLabel = cc.LabelTTF.create('Blow The Balls', 'font1', 90);
+            this.titleLabel.setPosition(this.cloudLeft.getPosition());
+            this.titleLabel.setAnchorPoint( cc.p(0.0, 0.5) );
+            this.titleLabel.setColor( new cc.Color3B(44, 247, 255) );
+            this.addChild(this.titleLabel, 0, 0);
+            this.titleLabel.runAction( cc.Sequence.create(
+                        cc.DelayTime.create(0.4),
+                        cc.MoveTo.create(0.2, cc.p(winSize.width * 0.05, winSize.height * 0.8)),
+                        null));
+
+            this.cloudRight= cc.Sprite.createWithSpriteFrameName('cloudRight.png');
+            this.cloudRight.setAnchorPoint( cc.p(1.0, 1.0) );
+            this.cloudRight.setPosition( cc.p(this.cloudRight.getBoundingBox().size.width + winSize.width, winSize.height) );
+            this.addChild(this.cloudRight);
+            this.cloudRight.runAction( cc.Sequence.create(
+                        cc.DelayTime.create(0.5),
+                        cc.MoveTo.create(0.2, cc.p(winSize.width, winSize.height)),
+                        null));
+
+            var playNormal = cc.Sprite.createWithSpriteFrameName('button.png');
+            var playSelected = cc.Sprite.createWithSpriteFrameName('button.png');
+            var playDisabled = cc.Sprite.createWithSpriteFrameName('button.png');
+            tmpLabel = cc.LabelTTF.create('play', 'font2', 40);
+            tmpLabel.setPosition(cc.p(playNormal.getBoundingBox().size.width / 2, playNormal.getBoundingBox().size.height / 2));
+            tmpLabel.setColor( new cc.Color3B(0, 0, 100) );
+            playNormal.addChild(tmpLabel, 0, 0);
+
+            var playNormal = cc.Sprite.createWithSpriteFrameName('button.png');
+            var playSelected = cc.Sprite.createWithSpriteFrameName('button.png');
+            var playDisabled = cc.Sprite.createWithSpriteFrameName('button.png');
+            tmpLabel = cc.LabelTTF.create('play', 'font2', 40);
+            tmpLabel.setPosition(cc.p(playNormal.getBoundingBox().size.width / 2, playNormal.getBoundingBox().size.height / 2));
+            tmpLabel.setColor( new cc.Color3B(0, 0, 100) );
+            playNormal.addChild(tmpLabel, 0, 0);
+
+            var highScoreNormal = cc.Sprite.createWithSpriteFrameName('button.png');
+            var highScoreSelected = cc.Sprite.createWithSpriteFrameName('button.png');
+            var highScoreDisabled = cc.Sprite.createWithSpriteFrameName('button.png');
+            tmpLabel = cc.LabelTTF.create('high score', 'font2', 40);
+            tmpLabel.setPosition(cc.p(highScoreNormal.getBoundingBox().size.width / 2, highScoreNormal.getBoundingBox().size.height / 2));
+            tmpLabel.setColor( new cc.Color3B(0, 0, 100) );
+            highScoreNormal.addChild(tmpLabel, 0, 0);
 			
-            var optionsNormal = cc.Sprite.createWithSpriteFrameName('menuOptionsButton.png');
-            var optionsSelected = cc.Sprite.createWithSpriteFrameName('menuOptionsButton.png');
-            var optionsDisabled = cc.Sprite.createWithSpriteFrameName('menuOptionsButton.png');
+            var optionsNormal = cc.Sprite.createWithSpriteFrameName('button.png');
+            var optionsSelected = cc.Sprite.createWithSpriteFrameName('button.png');
+            var optionsDisabled = cc.Sprite.createWithSpriteFrameName('');
+            tmpLabel = cc.LabelTTF.create('options', 'font2', 40);
+            tmpLabel.setPosition(cc.p(optionsNormal.getBoundingBox().size.width / 2, optionsNormal.getBoundingBox().size.height / 2));
+            tmpLabel.setColor( new cc.Color3B(0, 0, 100) );
+            optionsNormal.addChild(tmpLabel, 0, 0);
 			
-            var instructionsNormal = cc.Sprite.createWithSpriteFrameName('menuInstructionButton.png');
-            var instructionsSelected = cc.Sprite.createWithSpriteFrameName('menuInstructionButton.png');
-            var instructionsDisabled = cc.Sprite.createWithSpriteFrameName('menuInstructionButton.png');
+            var instructionsNormal = cc.Sprite.createWithSpriteFrameName('button.png');
+            var instructionsSelected = cc.Sprite.createWithSpriteFrameName('button.png');
+            var instructionsDisabled = cc.Sprite.createWithSpriteFrameName('button.png');
+            tmpLabel = cc.LabelTTF.create('instructions', 'font2', 40);
+            tmpLabel.setPosition(cc.p(instructionsNormal.getBoundingBox().size.width / 2, instructionsNormal.getBoundingBox().size.height / 2));
+            tmpLabel.setColor( new cc.Color3B(0, 0, 100) );
+            instructionsNormal.addChild(tmpLabel, 0, 0);
 
-            var creditsNormal = cc.Sprite.createWithSpriteFrameName('menuCreditsButton.png');
-            var creditsSelected = cc.Sprite.createWithSpriteFrameName('menuCreditsButton.png');
-            var creditsDisabled = cc.Sprite.createWithSpriteFrameName('menuCreditsButton.png');
+            var creditsNormal = cc.Sprite.createWithSpriteFrameName('button.png');
+            var creditsSelected = cc.Sprite.createWithSpriteFrameName('button.png');
+            var creditsDisabled = cc.Sprite.createWithSpriteFrameName('button.png');
+            tmpLabel = cc.LabelTTF.create('credits', 'font2', 40);
+            tmpLabel.setPosition(cc.p(creditsNormal.getBoundingBox().size.width / 2, creditsNormal.getBoundingBox().size.height / 2));
+            tmpLabel.setColor( new cc.Color3B(0, 0, 100) );
+            creditsNormal.addChild(tmpLabel, 0, 0);
 			
             var playGame = cc.MenuItemSprite.create(playNormal, playSelected, playDisabled, this, function (e, held) {
                 if (!held) {
@@ -92,9 +157,11 @@ var SysMenu = cc.Layer.extend({
             this.menu.alignItemsVerticallyWithPadding(10);
             this.addChild(this.menu, 1, 2);
 			this.menu.setPosition(cc.p(-playNormal._contentSize.width, winSize.height * 0.25));
-			this.menu.runAction(
-                    cc.EaseElasticIn.create(
-                       cc.MoveTo.create(1,cc.p(winSize.width * 0.3, winSize.height * 0.25))));
+            this.menu.runAction( cc.Sequence.create(
+                        cc.DelayTime.create(0.4),
+                        cc.EaseElasticIn.create(
+                            cc.MoveTo.create(1,cc.p(winSize.width * 0.3, winSize.height * 0.25))),
+                        null));
 
             bRet = true;
         }

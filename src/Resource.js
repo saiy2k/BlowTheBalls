@@ -72,7 +72,7 @@ var s_menuButtonHighScoreNormal = dirImg + "menuButtonHighScoreNormal.png";
 
 
 //menu
-r.menu.background = dirImg + "menu_bg.jpg";
+r.menu.background = dirImg + "menuBg.jpg";
 
 //music
 var s_bgMusic = dirMusic + "bgMusic" + musicSuffix;

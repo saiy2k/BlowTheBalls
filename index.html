@@ -10,21 +10,47 @@
     <style>
         body {
             padding: 0;
-            margin: 0;
             border:0;
+            margin:0;
+            background-color: #2cf7fe;
+            margin-right:auto;
+            margin-left:auto;
+            text-align:center;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
         }
+
         #gameCanvas {
             user-select: none;
             -webkit-user-select: none;
             -moz-user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
+
+        #socialDiv {
+            position: absolute;
+            right: 0px;
+            bottom: 0px;
+            float: right;
+        }
+
+        @font-face {
+            font-family: 'font1';
+            src: url('res/fontDomoan.TTF');
+        }
+
+        @font-face {
+            font-family: 'font2';
+            src: url('res/fontChangChang.ttf');
+        }
+
     </style>
 </head>
 <body>
 <div id="Container" style="margin: 0 auto">
-    <canvas id="gameCanvas" width="1170" height="780"></canvas>
+    <canvas style="background-size:100%" id="gameCanvas" width="1170" height="780"></canvas>
 </div>
 </body>
 </html>
+<script src="libs/jquery.js"></script>
 <script src="cocos2d.js"></script>
