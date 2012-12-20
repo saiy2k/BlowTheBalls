@@ -7,10 +7,12 @@ var SysMenu = cc.Layer.extend({
     cloudLeft: null,
     cloudRight: null,
     titleLabel: null,
+    sceneToGo: '',
 
     ctor:function () {
         cc.associateWithNative( this, cc.Layer );
     },
+
     init:function () {
         var bRet = false;
         if (this._super()) {
@@ -22,9 +24,6 @@ var SysMenu = cc.Layer.extend({
             var frameCache = cc.SpriteFrameCache.getInstance();
             this.sheetTexture = cc.TextureCache.getInstance().addImage(menuSheet);
             frameCache.addSpriteFrames(menuSheetPlist);
-            console.log('2');
-
-            //$('body').css("background-image", "url(res/menuBg.jpg)");  
 
             var bgSprite = cc.Sprite.create(menuBg);
             bgSprite.setAnchorPoint( cc.p(0.5, 0.5) );
@@ -86,7 +85,7 @@ var SysMenu = cc.Layer.extend({
 		
             var optionsNormal = cc.Sprite.createWithSpriteFrameName('button.png');
             var optionsSelected = cc.Sprite.createWithSpriteFrameName('button.png');
-            var optionsDisabled = cc.Sprite.createWithSpriteFrameName('');
+            var optionsDisabled = cc.Sprite.createWithSpriteFrameName('button.png');
             tmpLabel = cc.LabelTTF.create('options', 'font2', 40);
             tmpLabel.setPosition(cc.p(optionsNormal.getBoundingBox().size.width / 2, optionsNormal.getBoundingBox().size.height / 2));
             tmpLabel.setColor( new cc.Color3B(0, 0, 100) );
@@ -110,47 +109,36 @@ var SysMenu = cc.Layer.extend({
 			
             var playGame = cc.MenuItemSprite.create(playNormal, playSelected, playDisabled, this, function (e, held) {
                 if (!held) {
-                    this.onButtonEffect();
-                    //var scene = cc.Scene.create();
-                    //scene.addChild(GameEngine.create());
-                    //this.slideOutButtons(e, scene);
+                    this.sceneToGo = 'game';
                     cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, GameEngine.create()));
                 }
             });
 
 			var highScore = cc.MenuItemSprite.create(highScoreNormal, highScoreSelected, highScoreDisabled, this, function (e, held) {
                 if (!held) {
-                    this.onButtonEffect();
-                    var scene = cc.Scene.create();
-                    scene.addChild(SettingsLayer.create());
-                    this.slideOutButtons(e, scene);
+                    this.sceneToGo = 'highscore';
+                    this.slideOutButtons(e, null);
                 }
             });
 
             var options = cc.MenuItemSprite.create(optionsNormal, optionsSelected, optionsDisabled, this, function (e, held) {
                 if (!held) {
-                    this.onButtonEffect();
-                    var scene = cc.Scene.create();
-                    scene.addChild(SettingsLayer.create());
-                    this.slideOutButtons(e, scene);
+                    this.sceneToGo = 'options';
+                    this.slideOutButtons(e, null);
                 }
             });
 
 			var instructions = cc.MenuItemSprite.create(instructionsNormal, instructionsSelected, instructionsDisabled, this, function (e, held) {
                 if (!held) {
-                    this.onButtonEffect();
-                    var scene = cc.Scene.create();
-                    scene.addChild(SettingsLayer.create());
-                    this.slideOutButtons(e, scene);
+                    this.sceneToGo = 'instructions';
+                    this.slideOutButtons(e, null);
                 }
             });
 
             var credits = cc.MenuItemSprite.create(creditsNormal, creditsSelected, creditsDisabled, this, function (e, held) {
                 if (!held) {
-                    this.onButtonEffect();
-                    var scene = cc.Scene.create();
-                    scene.addChild(AboutLayer.create());
-                    this.slideOutButtons(e, scene);
+                    this.sceneToGo = 'credits';
+                    this.slideOutButtons(e, null);
                 }
             });
 				
@@ -159,9 +147,8 @@ var SysMenu = cc.Layer.extend({
             this.addChild(this.menu, 1, 2);
 			this.menu.setPosition(cc.p(-playNormal._contentSize.width, winSize.height * 0.25));
             this.menu.runAction( cc.Sequence.create(
-                        cc.DelayTime.create(0.4),
-                        cc.EaseElasticIn.create(
-                            cc.MoveTo.create(1,cc.p(winSize.width * 0.3, winSize.height * 0.25))),
+                        cc.DelayTime.create(0.8),
+                        cc.MoveTo.create(0.2,cc.p(winSize.width * 0.3, winSize.height * 0.25)),
                         null));
 
             bRet = true;
@@ -171,25 +158,46 @@ var SysMenu = cc.Layer.extend({
     },
 
     slideOutButtons:function (obj, scene) {
-        console.log('sliding out');
-        var arr = this.menu.getChildren();
-        for(var i = 0, len = arr.length; i < len; i++) {
-            console.log(arr[i]._position);
-			arr[i].runAction(cc.MoveTo.create(1, cc.p(-winSize.width, arr[i]._position.y)));
-        }
-        obj.stopAllActions();
-        obj.runAction(cc.MoveTo.create(0.5, cc.p(winSize.width, obj._position.y)));
-        this.runAction(cc.Sequence.create(
-                    cc.DelayTime.create(1),
-                    cc.CallFunc.create(this, this.switchScene, scene)));
+
+        console.log('slide out buttons');
+
+        this.menu.runAction( cc.Sequence.create(
+                    cc.DelayTime.create(0.1),
+                    cc.MoveTo.create(0.3,  cc.p(winSize.width + this.menu.getBoundingBox().size.width, winSize.height * 0.25) ),
+                    null));
+
+        this.titleLabel.runAction( cc.Sequence.create(
+                    cc.DelayTime.create(0.3),
+                    cc.MoveTo.create(0.2,  cc.p(-this.titleLabel.getBoundingBox().size.width, winSize.height * 0.8) ),
+                    null));
+
+        this.cloudLeft.runAction( cc.Sequence.create(
+                    cc.DelayTime.create(0.4),
+                    cc.MoveTo.create(0.2,  cc.p(-this.cloudLeft.getBoundingBox().size.width, winSize.height * 0.8) ),
+                    null));
+
+        this.cloudRight.runAction( cc.Sequence.create(
+                    cc.DelayTime.create(0.5),
+                    cc.MoveTo.create(0.2,  cc.p(winSize.width + this.cloudRight.getBoundingBox().size.width, winSize.height * 0.8) ),
+                    cc.CallFunc.create(this, this.switchScene, scene),
+                    null));
+
     },
 
     switchScene: function(scene) {
-        cc.Director.getInstance().replaceScene(cc.TransitionFade.create(1.2, scene));
+        if (this.sceneToGo == 'game') {
+            cc.Director.getInstance().replaceScene(GameEngine.scene());
+        } else if (this.sceneToGo == 'highscore') {
+            cc.Director.getInstance().replaceScene(HighScore.scene());
+        } else if (this.sceneToGo == 'options') {
+            cc.Director.getInstance().replaceScene(SettingsLayer.scene());
+        } else if (this.sceneToGo == 'instructions') {
+            cc.Director.getInstance().replaceScene(Instructions.scene());
+        } else if (this.sceneToGo == 'credits') {
+            cc.Director.getInstance().replaceScene(Credits.scene());
+        }
     },
 
-    onButtonEffect:function(){
-    }
 });
 
 SysMenu.create = function () {

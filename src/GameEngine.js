@@ -88,9 +88,12 @@ var GameEngine = cc.Layer.extend({
             frameCache.addSpriteFrames(gameSheetPlist);
 
             // loading bgggackground picture
-            $('#gameCanvas').css("background-image", "url(res/gameBg.jpg)");  
-            $('body').css("background-color", "#30444d");  
-            var bg = cc.Sprite.createWithSpriteFrameName('groundBg.jpg');
+            //$('#gameCanvas').css("background-image", "url(res/gameBg.jpg)");  
+            //$('body').css("background-color", "#30444d");  
+            var bg = cc.Sprite.create(r.world1.background);
+            bg.setPosition(cc.p(winSize.width/2, winSize.height/2));
+            this.addChild(bg, 0, 0);
+            bg = cc.Sprite.createWithSpriteFrameName('groundBg.jpg');
             bg.setPosition(cc.p(winSize.width/2, bg._contentSize.height/2));
             this.addChild(bg, 5, 0);
 

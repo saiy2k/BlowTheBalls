@@ -1,6 +1,6 @@
 var winSize;
 
-var SettingsLayer = cc.Layer.extend({
+var HighScore = cc.Layer.extend({
     sheetTexture: null,
     menu: null,
     cloudLeft: null,
@@ -42,7 +42,7 @@ var SettingsLayer = cc.Layer.extend({
                         null));
 
             console.log('4');
-            this.titleLabel = cc.LabelTTF.create('Options', 'font1', 90);
+            this.titleLabel = cc.LabelTTF.create('High Scores', 'font1', 90);
             this.titleLabel.setPosition(this.cloudLeft.getPosition());
             this.titleLabel.setAnchorPoint( cc.p(0.0, 0.5) );
             this.titleLabel.setColor( new cc.Color3B(44, 247, 255) );
@@ -62,28 +62,6 @@ var SettingsLayer = cc.Layer.extend({
                         cc.MoveTo.create(0.2, cc.p(winSize.width, winSize.height)),
                         null));
 
-            var musicOn = cc.Sprite.createWithSpriteFrameName('radioOn.png');
-            var musicOff = cc.Sprite.createWithSpriteFrameName('radioOff.png');
-            var musicOnM = cc.MenuItemSprite.create(musicOn, null, null, this, this._dummy);
-            var musicOffM = cc.MenuItemSprite.create(musicOff, null, null, this, this._dummy);
-            var musicLabel = cc.LabelTTF.create('Music', 'font1', 60);
-            musicLabel.setPosition( cc.p(160, musicLabel.getBoundingBox().size.height * 0.5) );
-            musicLabel.setColor( new cc.Color3B(0, 0, 140) );
-            var musicToggle = cc.MenuItemToggle.create(this, this.toggleMusic, musicOffM, musicOnM);
-            musicToggle.addChild(musicLabel);
-            this.addChild(musicToggle);
-
-            var soundOn = cc.Sprite.createWithSpriteFrameName('radioOn.png');
-            var soundOff = cc.Sprite.createWithSpriteFrameName('radioOff.png');
-            var soundOnM = cc.MenuItemSprite.create(soundOn, null, null, this, this._dummy);
-            var soundOffM = cc.MenuItemSprite.create(soundOff, null, null, this, this._dummy);
-            var soundLabel = cc.LabelTTF.create(' Sound', 'font1', 60);
-            soundLabel.setPosition( cc.p(160, soundLabel.getBoundingBox().size.height * 0.5) );
-            soundLabel.setColor( new cc.Color3B(0, 0, 140) );
-            var soundToggle = cc.MenuItemToggle.create(this, this.toggleSound, soundOffM, soundOnM);
-            soundToggle.addChild(soundLabel);
-            this.addChild(soundToggle);
-
             console.log('6');
             var backNormal = cc.Sprite.createWithSpriteFrameName('button.png');
             var backSelected = cc.Sprite.createWithSpriteFrameName('button.png');
@@ -101,8 +79,12 @@ var SettingsLayer = cc.Layer.extend({
                     this.slideOutButtons(e, scene);
                 }
             });
+
+            var tmpLabel = cc.LabelTTF.create('1. Vader 1000;\n2. Anakin 900\n3. Hosana 850', 'arial', 32, cc.SizeMake(400, 300), cc.TEXT_ALIGNMENT_CENTER);
+            tmpLabel.setPosition( cc.p(winSize.width / 2, winSize.height / 2) );
+            this.addChild(tmpLabel);
 				
-            this.menu = cc.Menu.create(musicToggle, soundToggle, back);
+            this.menu = cc.Menu.create(back);
             this.menu.alignItemsVerticallyWithPadding(10);
             this.addChild(this.menu, 1, 2);
 			this.menu.setPosition(cc.p(-backNormal._contentSize.width, winSize.height * 0.4));
@@ -151,17 +133,17 @@ var SettingsLayer = cc.Layer.extend({
     }
 });
 
-SettingsLayer.create = function () {
-    var sg = new SettingsLayer();
+HighScore.create = function () {
+    var sg = new HighScore();
     if (sg && sg.init()) {
         return sg;
     }
     return null;
 };
 
-SettingsLayer.scene = function () {
+HighScore.scene = function () {
     var scene = cc.Scene.create();
-    var layer = SettingsLayer.create();
+    var layer = HighScore.create();
     scene.addChild(layer);
     return scene;
 };

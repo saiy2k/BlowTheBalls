@@ -42,6 +42,7 @@ var menuBg           = dirImg + 'menuBg.jpg';
 var menuSheet        = dirImg + 'menuSheet.png';
 var menuSheetPlist   = dirImg + 'menuSheet.plist';
 
+var gameBg           = dirImg + 'gameBg.jpg';
 var gameSheet        = dirImg + 'gameSheet.png';
 var gameSheetPlist   = dirImg + 'gameSheet.plist';
 
@@ -82,6 +83,7 @@ var g_ressources = [
 	//Hero walk
     {type:"image", src:menuSheet},
     {type:"image", src:gameSheet},
+    {type:"image", src:gameBg},
 	
 	//plist
 	{type:"plist",src:menuSheetPlist},
